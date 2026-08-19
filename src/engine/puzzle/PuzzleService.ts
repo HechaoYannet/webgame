@@ -43,7 +43,7 @@ export interface SubmitResult {
   locked: boolean
   /** 旧存档首次解开此谜题（用于 UI 区分"已解"）。 */
   newlySolved: boolean
-  /** 风险值变化（失败时为本次单次加风险值；H3 单一来源后不叠加）。 */
+  /** 风险值变化——重写后恒为 0（风险系统已废，保留字段兼容调用点 QqLogin.tsx）。 */
   riskDelta: number
   /** 错误信息（如 puzzle 不存在）。 */
   error?: string
@@ -135,24 +135,10 @@ export function submit(puzzleId: PuzzleId, value: PuzzleInput): SubmitResult {
 
   const wrongAttempts = store.attemptPuzzle(puzzleId)
 
-  // 风险累加（CLAUDE.md §6.8）—— 单一来源，避免双计（REVIEW_REPORT H3）。
-  // 优先以 onFailure.addRisk effect 为唯一风险来源（经 EffectExecutor→RiskService 统一加）；
-  // 仅当 onFailure 不含 addRisk effect 时，才回退到直接调 store.addRisk(riskPerWrongAttempt)。
-  // 保证单次错答只加一次风险，绝不叠加 riskPerWrongAttempt + onFailure.addRisk。
-  const onFailureHasAddRisk = !!(puzzle.onFailure && puzzle.onFailure.some((e) => e.type === 'addRisk'))
-  let riskDelta = 0
-  if (onFailureHasAddRisk) {
-    // 风险由下方 executeEffects(puzzle.onFailure) 统一加；
-    // 此处只回填 riskDelta 供 SubmitResult 告知 UI（取首个 addRisk amount）。
-    const addRiskEffect = puzzle.onFailure!.find((e) => e.type === 'addRisk') as
-      | { type: 'addRisk'; amount: number }
-      | undefined
-    riskDelta = addRiskEffect ? addRiskEffect.amount : 0
-  } else if (puzzle.riskPerWrongAttempt && puzzle.riskPerWrongAttempt > 0) {
-    // onFailure 无 addRisk：用 riskPerWrongAttempt 作为唯一来源直加。
-    store.addRisk(puzzle.riskPerWrongAttempt)
-    riskDelta = puzzle.riskPerWrongAttempt
-  }
+  // 风险累加分支已移除（玩家决策 2026-08-19：风险值系统整体废除）。
+  // onFailure 里若仍写 addRisk effect，由下方 executeEffects(puzzle.onFailure) 经
+  // EffectExecutor 静默忽略；riskPerWrongAttempt 字段不再生效。riskDelta 恒 0。
+  const riskDelta = 0
 
   // 提示触发（attemptsToHint）
   let hintTriggered = false

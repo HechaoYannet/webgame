@@ -416,8 +416,21 @@ export interface Chapter {
   objectives: ChapterObjective[];
 }
 
-// ===== 游戏状态（运行态，非数据文件）=====
-export interface GameState {
+// ===== 游戏状态 =====
+//
+// 重写后的进度模型（玩家决策 2026-08-19）：
+//  - 持久化只存"检查点"（见 PersistedCheckpoint）：章节 + 已解谜题 + 已收集证据 +
+//    解锁记录 + 结局。断点续玩只恢复这些。
+//  - 易变态字段（倒计时 / 查看记录 / 已显提示）只在内存，刷新即清——
+//    彻底修掉"刷新即坏结局"（旧设计把 countdowns.startedAt 落盘，刷新会续算到 0 触发 bad）。
+//  - registerClue / risk 两个机制已被玩家决定整体移除，故 GameState 不再持有
+//    registeredClueIds / risk。
+//
+// GameState 现仅作为"运行态"类型（含易变态字段，供同会话内逻辑使用）；
+// 落盘由 store 的 partialize 映射到 PersistedCheckpoint。
+
+/** 落盘的检查点子集（localStorage webgame-save 实际持久化的形态）。 */
+export interface PersistedCheckpoint {
   saveId: string;
   createdAt: ISODateString;
   updatedAt: ISODateString;
@@ -429,21 +442,26 @@ export interface GameState {
   unlockedPageIds: PageId[];
   unlockedThreadIds: ThreadId[];
   unlockedAssetIds: string[];
-  registeredClueIds: ClueId[];
   collectedEvidenceIds: EvidenceId[];
-  risk: number;
-  countdowns: Record<
+  endingId?: EndingId;
+  finished: boolean;
+}
+
+/** 运行态：检查点字段 + 易变态（内存）字段。易变态字段一律标注 ?。 */
+export interface GameState extends PersistedCheckpoint {
+  /** 易变态（内存）：倒计时。刷新后清空，由页面首访 onViewEffects 重新触发。 */
+  countdowns?: Record<
     string,
     { startedAt: ISODateString; durationSec: number; expired: boolean }
   >;
-  shownHintIds: string[];
+  /** 易变态（内存）：本次会话已展示的提示 id。 */
+  shownHintIds?: string[];
   lastHintAt?: ISODateString;
-  visitedPages: PageId[];
-  visitedThreads: ThreadId[];
-  viewedMessages: string[];
-  viewedMoments: string[];
-  endingId?: EndingId;
-  finished: boolean;
+  /** 易变态（内存）：已访问页面/会话/已查看消息/朋友圈，纯本地 UI 态，不落盘。 */
+  visitedPages?: PageId[];
+  visitedThreads?: ThreadId[];
+  viewedMessages?: string[];
+  viewedMoments?: string[];
 }
 
 // ===== 手机/故事数据文件类型（writer-phone-story 产出，mirror SCHEMA.md）=====

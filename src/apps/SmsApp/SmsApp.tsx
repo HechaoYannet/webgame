@@ -70,7 +70,9 @@ export default function SmsApp(): ReactNode {
   const currentChapterId = useGameStore((s) => s.currentChapterId);
   const endingId = useGameStore((s) => s.endingId) as EndingId | undefined;
   const countdowns = useGameStore((s) => s.countdowns);
-  const risk = useGameStore((s) => s.risk);
+  // 重写后风险值系统已废：risk 恒 0。原 risk>=20 解锁的二段威胁短信（sms-zhangqiang-second-threat）不再显示——
+  // 威胁压迫感改由 page-lab-funding-report 的倒计时四件套 + 刀哥门铃承担（玩家决策 2026-08-19）。
+  const risk = 0;
   const solvedPuzzleIds = useGameStore((s) => s.solvedPuzzleIds);
 
   // 字符→显示名速查（从 localStorage 已加载过的 ContactId → 展示）
@@ -223,7 +225,7 @@ export default function SmsApp(): ReactNode {
 
   // 终章倒计时进行态（用于威胁紧迫感提示）
   const countdownActive = useMemo(
-    () => Object.values(countdowns).some((c) => !c.expired),
+    () => Object.values(countdowns ?? {}).some((c) => !c.expired),
     [countdowns],
   );
 

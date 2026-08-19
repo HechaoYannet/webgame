@@ -6,18 +6,20 @@
  * 数据驱动：音频 assetId → 实际 <audio> 元素，按 AssetRegistry 解析 URL。
  * 支持循环（心跳 audio-heartbeat / 门铃敲击 audio-doorbell-knock）。
  *
- * 触发源：
+ * 触发源（重写后）：
  *  - EffectExecutor.playAudio(assetId, loop)
- *  - RiskService risk>70 → 自启 audio-heartbeat 循环
- *  - 倒计时 tick 期间低频心跳
+ *  - 经费报告页 onViewEffects 四件套里的 playAudio('audio-heartbeat', true)
+ *    （倒计时进行期间的心跳，由该 effect 直接启动，不再经风险值驱动）
  *  - 门铃事件 audio.loop
+ *
+ * 重写后（玩家决策 2026-08-19）：风险值系统整体移除，故不再有 RiskService risk>70
+ * 自启心跳 / initHeartbeatWatcher 监听 riskChanged 的逻辑——心跳一律由 playAudio effect 驱动。
  *
  * 音量由 settingsStore.masterVolume / sfxVolume 控制。
  */
 
-import { emit, on } from '@/engine/eventBus'
+import { emit } from '@/engine/eventBus'
 import { getSettings } from '@/engine/store/settingsStore'
-import { isRedAlert } from '@/engine/risk/RiskService'
 
 /** assetId → 音频 URL 解析（由前端 AssetRegistry 注入；默认走 public/assets/<id>.mp3）。 */
 let _assetResolver: ((assetId: string) => string | undefined) | null = null
@@ -84,21 +86,4 @@ export function stop(assetId?: string): void {
 /** 是否在播某音频。 */
 export function isPlaying(assetId: string): boolean {
   return _active.has(assetId)
-}
-
-/** 心跳管理：risk>70 启 / 否则停。 */
-export function syncHeartbeatWithRisk(): void {
-  if (isRedAlert()) {
-    if (!isPlaying('audio-heartbeat')) play('audio-heartbeat', true)
-  } else {
-    if (isPlaying('audio-heartbeat')) stop('audio-heartbeat')
-  }
-}
-
-let _heartInit = false
-/** 启动心跳风险监听（engine 初始化时调用一次）。 */
-export function initHeartbeatWatcher(): void {
-  if (_heartInit) return
-  _heartInit = true
-  on('riskChanged', () => syncHeartbeatWithRisk())
 }

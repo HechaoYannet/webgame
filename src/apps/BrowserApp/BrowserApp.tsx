@@ -35,7 +35,6 @@ import {
   type UrlMatch,
 } from "./pageData";
 import { PageBlockView } from "./PageBlockView";
-import { useClue } from "@/engine/hooks/useClue";
 import { useCountdown } from "@/engine/hooks/useCountdown";
 import { useChapter } from "@/engine/hooks/useChapter";
 
@@ -49,8 +48,8 @@ type View =
 const COUNTDOWN_ID = "countdown-finale";
 
 export default function BrowserApp() {
-  // 引擎真源：clue 注册 + 倒计时监听 + 章节导演（visitPage 触发 onViewEffects）
-  const clueApi = useClue();
+  // 引擎真源：倒计时监听 + 章节导演（visitPage 触发 onViewEffects）
+  // 重写后：线索注册机制已废，useClue 已移除；页面首访效果由 chapter.visitPage→ChapterDirector 触发。
   const chapter = useChapter();
   const countdown = useCountdown(COUNTDOWN_ID);
 
@@ -105,10 +104,9 @@ export default function BrowserApp() {
       // gameStore 内部去重，已访问过的页面不会二次触发副作用。
       chapter.visitPage(page.id);
 
-      // 引擎：查看即取证——ClueRegistry 查表决定是否注册线索/证据
-      void clueApi.view({ kind: "page", pageId: page.id }, null);
+      // 重写后：线索注册装饰已废，查看页面不再派发 clue.view。
     },
-    [historyIdx, chapter, clueApi],
+    [historyIdx, chapter],
   );
 
   /** 处理地址栏原始输入：分流 baidu 搜索 / url 匹配 */

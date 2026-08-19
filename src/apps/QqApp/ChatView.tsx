@@ -14,7 +14,6 @@ import { useEffect, useRef, useState } from 'react'
 import type { ChatMessage, ChatThread, ContactId } from '@/types'
 import { getMessages, getContact, getQqContact } from '@/data/loader'
 import { isSolved } from '@/engine/puzzle/PuzzleService'
-import { useClue } from '@/engine/hooks/useClue'
 import {
   Avatar,
   EmptyState,
@@ -92,7 +91,6 @@ export function ChatList({
 }
 
 export function ChatView({ thread, onBack }: { thread: ChatThread; onBack: () => void }) {
-  const clue = useClue()
   const { data: messages, error } = useAsync(() => getMessages(thread.id), [thread.id])
   const [zoomAsset, setZoomAsset] = useState<{ assetId: string; alt: string } | null>(null)
   const scrollerRef = useRef<HTMLDivElement>(null)
@@ -110,9 +108,8 @@ export function ChatView({ thread, onBack }: { thread: ChatThread; onBack: () =>
     return q?.qqRemark || q?.qqNickname || c?.displayName || c?.name || ''
   }
 
-  function handleViewMessage(m: ChatMessage) {
-    // 关键消息查看事件 → engine ClueRegistry 决定是否注册线索/收集证据（App 不持表）
-    void clue.view({ kind: 'message', threadId: thread.id, messageId: m.id })
+  function handleViewMessage(_m: ChatMessage) {
+    // 重写后线索注册装饰已废：查看消息不再注册线索/收集证据。保留函数签名供 onView 回调。
   }
 
   return (

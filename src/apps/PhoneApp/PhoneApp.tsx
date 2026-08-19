@@ -75,7 +75,7 @@ export default function PhoneApp(): ReactNode {
   const countdowns = useGameStore((s) => s.countdowns);
   // 多倒计时场景任一未过期即视为进行中
   const countdownRunning = useMemo(
-    () => Object.values(countdowns).some((c) => !c.expired) || hasActiveCountdown('countdown-finale'),
+    () => Object.values(countdowns ?? {}).some((c) => !c.expired) || hasActiveCountdown('countdown-finale'),
     [countdowns],
   );
 
@@ -245,7 +245,7 @@ function CallView({ display, script, onHangup }: CallViewProps): ReactNode {
 
   // 终章谜题状态 + 倒计时进行态读 engine store（真值，与 PhoneShell 同源）
   const finalePuzzled = useGameStore((s) => s.solvedPuzzleIds.includes(FINALE_PUZZLE_ID));
-  const countdownRunning = useGameStore((s) => Object.values(s.countdowns).some((c) => !c.expired));
+  const countdownRunning = useGameStore((s) => Object.values(s.countdowns ?? {}).some((c) => !c.expired));
   // 引擎 usePuzzle(puzzleId)：submit(value) 走 PuzzleService（内部已执行 onSuccess/onFailure）
   const { submit: submitFinale } = usePuzzle(FINALE_PUZZLE_ID);
 

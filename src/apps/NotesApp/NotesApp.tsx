@@ -11,39 +11,25 @@
  * 线索笔记摘要读 @/engine/clue/ClueRegistry.getClueNotes()。
  */
 
+/**
+ * src/apps/NotesApp/NotesApp.tsx — 备忘录
+ *
+ * 重写后（玩家决策 2026-08-19）：线索注册装饰机制（ClueRegistry）整体废除，
+ * 不再有"查看线索 → 自动追加线索摘要到备忘录"的连锁。本组件现仅展示
+ * phone/notes.json 的初始模板笔记 + 章节开场独白（useChapter().monologue）。
+ */
+
 import { useEffect, useMemo, useState } from 'react';
-import { useSyncExternalStore } from 'react';
 import type { ReactNode } from 'react';
 import { loadNotes } from '../PhoneApp/data';
 import type { Note } from '../PhoneApp/data';
 import { useChapter } from '@/engine/hooks/useChapter';
-import { useGameStore } from '@/engine/store/gameStore';
-import { on } from '@/engine/eventBus';
-import { getClueNotes } from '@/engine/clue/ClueRegistry';
 
 type Tab = 'notes' | 'monologue';
 
-// engine ClueRegistry.getClueNotes() 返回类型的元素（不直接 import 未导出的类型名，
-// 用 ReturnType 推导，避免触碰 src/engine/**）。
-type ClueNoteEl = ReturnType<typeof getClueNotes>[number];
-
-// engine ClueRegistry 的线索笔记是内存态（onView/registerClue 副作用写入）。
-// 用 useSyncExternalStore 订阅 clueRegistered/evidenceCollected 事件触发重渲染。
-function useClueNotes(): readonly ClueNoteEl[] {
-  const [, force] = useState(0);
-  useEffect(() => {
-    const u1 = on('clueRegistered', () => force((n) => n + 1));
-    const u2 = on('evidenceCollected', () => force((n) => n + 1));
-    return () => {
-      u1();
-      u2();
-    };
-  }, []);
-  return useSyncExternalStore(
-    () => () => {},
-    () => getClueNotes(),
-    () => getClueNotes(),
-  );
+// （重写后）线索笔记机制已废，useClueNotes 恒返回空数组，保留占位以维持调用面。
+function useClueNotes(): readonly Note[] {
+  return [];
 }
 
 export default function NotesApp(): ReactNode {
@@ -54,9 +40,6 @@ export default function NotesApp(): ReactNode {
 
   // engine useChapter：monologue（getMonologueByChapter 已封装在 hook 内，按 currentChapterId 取）
   const { monologue } = useChapter();
-  // engine useGameStore：registeredClueIds（真值，仅用于触发重渲染——getClueNotes 已是真值读取）
-  const registeredClueIds = useGameStore((s) => s.registeredClueIds);
-  void registeredClueIds;
 
   const clueNotes = useClueNotes();
 
@@ -76,17 +59,8 @@ export default function NotesApp(): ReactNode {
     };
   }, []);
 
-  // 动态笔记 = engine ClueRegistry 写入的线索摘要（onView / registerClue 副作用产生）
-  const dynamicNotes: Note[] = useMemo(() => {
-    return clueNotes.map((c) => ({
-      id: c.id,
-      title: c.title,
-      createdAt: c.createdAt,
-      pinned: false,
-      body: c.body,
-      isTemplate: false,
-    }));
-  }, [clueNotes]);
+  // （重写后）线索笔记机制已废，clueNotes 恒空，dynamicNotes 亦空；保留以维持 allNotes 组装逻辑。
+  const dynamicNotes: Note[] = useMemo(() => [...clueNotes], [clueNotes]);
 
   // 全部笔记：初始模板置顶 + 动态线索笔记
   const allNotes = useMemo<Note[]>(() => {

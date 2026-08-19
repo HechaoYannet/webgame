@@ -13,7 +13,6 @@
  */
 import { useState } from 'react'
 import { getQzone, getContact, loadGameData } from '@/data/loader'
-import { useClue } from '@/engine/hooks/useClue'
 import {
   Avatar,
   EmptyState,
@@ -25,7 +24,6 @@ import {
 } from './components'
 
 export function Qzone() {
-  const clue = useClue()
   const [zoom, setZoom] = useState<{ assetId: string; alt: string } | null>(null)
   // 复用顶层 loadGameData（幂等缓存）；ready 后 getQzone() 同步可读
   const { error } = useAsync(loadGameData, [])
@@ -48,7 +46,9 @@ export function Qzone() {
             <li
               key={p.id}
               className="qq-qzone-item"
-              onClick={() => void clue.view({ kind: 'qzone', postId: p.id })}
+              onClick={() => {
+                /* 重写后线索注册装饰已废：查看说说不再注册线索。 */
+              }}
             >
               <div className="qq-qzone-head">
                 <Avatar charId={p.authorCharacterId} name={authorName} size={36} />

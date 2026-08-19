@@ -20,12 +20,11 @@ export function useChapter() {
     const u = on('chapterAdvanced', () => force((n) => n + 1))
     const u2 = on('puzzleSolved', () => force((n) => n + 1))
     const u3 = on('evidenceCollected', () => force((n) => n + 1))
-    const u4 = on('clueRegistered', () => force((n) => n + 1))
+    // 重写后已移除 clueRegistered 订阅：线索注册装饰机制废除。
     return () => {
       u()
       u2()
       u3()
-      u4()
     }
   }, [])
 

@@ -3,19 +3,21 @@
  *
  * 游戏运行态（Zustand 5 persist 柯里化形式，CLAUDE.md §2 强制）。
  *
- * 对外暴露**语义化 action**（CLAUDE.md §4.2）：
- *   solvePuzzle(id) / registerClue(id) / collectEvidence(id) / addRisk(n) /
- *   removeRisk(n) / attemptPuzzle(id) / visitPage(id) / visitThread(id) /
- *   viewMessage(id) / viewMoment(id) / startCountdown(id, sec) / expireCountdown(id) /
- *   advanceChapter(id) / completeObjective(id) / pushEnding(id) / resetGame()
+ * 重写后（玩家决策 2026-08-19）：
+ *  - 持久化只存检查点 PersistedCheckpoint（章节/已解谜题/已收集证据/解锁/结局）。
+ *  - 易变态字段（countdowns / visited* / viewed* / shownHintIds）只在内存，partialize 不输出。
+ *  - 已移除：风险值（risk/addRisk/removeRisk/setRisk）、线索注册（registerClue/registeredClueIds）、
+ *    访问计数类 action（visitPage/visitThread/viewMessage/viewMoment —— "查看即取证"装饰已废，
+ *    查看不再写状态；页面首访效果改由 usePageViewEffects hook 触发）。
  *
- * App 组件不直接改 state 字段，全经这些 action 收口。
+ * 对外暴露**语义化 action**：solvePuzzle / collectEvidence / attemptPuzzle /
+ * advanceChapter / startCountdown / expireCountdown / pushEnding / unlockAsset /
+ * unlockPage / unlockThread / completeObjective / markHintShown / resetGame。
  *
  * 关键约束：
- *  - 倒计时持久化 startedAt 时间戳（非剩余秒，§6.6），刷新后按 (now-startedAt) 算真实剩余。
- *  - 倒计时归零 / 风险满 100 → bad 结局不可回退：pushEnding 后 finished=true，所有 action no-op。
- *  - addRisk >=100 触发 bad（由 RiskService 调用本 store）。
- *  - visitPage 首次记录某 pageId 时触发本 store 的 onPageFirstVisit 钩子（ChapterDirector 监听执行 onViewEffects）。
+ *  - 倒计时只存内存（不再落盘 startedAt）：刷新后 countdowns={} → 无活跃倒计时 → 不会触发坏结局。
+ *  - 倒计时归零 → bad 结局不可回退：pushEnding 后 finished=true，所有 action no-op。
+ *  - expireCountdown 由 CountdownService 调，store 本身不判定结局（保持单一职责）。
  */
 
 import { create } from 'zustand'
@@ -33,6 +35,7 @@ import type {
 } from '@/types'
 import { SAVE_KEY, SAVE_VERSION, ensureGameStateShape } from './persistence'
 
+/** 运行态默认值（含易变态字段，全部留内存）。 */
 function newGameState(): GameState {
   const now = new Date().toISOString() as ISODateString
   return {
@@ -47,12 +50,10 @@ function newGameState(): GameState {
     unlockedPageIds: [],
     unlockedThreadIds: [],
     unlockedAssetIds: [],
-    registeredClueIds: [],
     collectedEvidenceIds: [],
-    risk: 0,
+    // 易变态（内存）
     countdowns: {},
     shownHintIds: [],
-    lastHintAt: undefined,
     visitedPages: [],
     visitedThreads: [],
     viewedMessages: [],
@@ -62,48 +63,33 @@ function newGameState(): GameState {
   }
 }
 
-/** 首次访问页面事件的 payload（供 ChapterDirector 监听执行 onViewEffects）。 */
-export interface PageFirstVisitEvent {
-  pageId: PageId
-  /** 由本 store 在 action 层挂上的 effects，调用方（ChapterDirector）消费。 */
-  pendingOnViewEffects: boolean
-}
-
 export interface GameStoreState extends GameState {
   // ===== actions =====
   /** 记录一次谜题尝试（无论成败）。返回当前该谜题累计错误次数。 */
   attemptPuzzle: (puzzleId: PuzzleId) => number
-  /** 标记谜题已解：加 solvedPuzzleIds、解锁关联 thread/page/asset、注册关联证据。返回是否首次解。 */
+  /** 标记谜题已解：加 solvedPuzzleIds、解锁关联 thread/page/asset、收集关联证据。返回是否首次解。 */
   solvePuzzle: (puzzleId: PuzzleId, opts?: { unlockedThreadIds?: ThreadId[]; unlockedPageIds?: PageId[]; unlockedAssetIds?: string[]; registerEvidenceIds?: EvidenceId[]; completeObjectiveId?: string }) => boolean
-  /** 注册线索（查看即取证）。返回是否首次注册。 */
-  registerClue: (clueId: ClueId) => boolean
   /** 收集证据。返回是否首次收集。 */
   collectEvidence: (evidenceId: EvidenceId) => boolean
   /** 完成目标。 */
   completeObjective: (objectiveId: string) => void
-  /** 加风险（n 可负）。返回新风险值。 */
-  addRisk: (n: number) => number
-  /** 减风险。 */
-  removeRisk: (n: number) => number
-  /** 直接设置风险值（RiskService 内部用，钳到 0..100）。 */
-  setRisk: (n: number) => number
-  /** 记录访问页面。返回是否首次访问（true 时 ChapterDirector 应执行 onViewEffects）。 */
+  /** 记录访问页面（纯内存，不落盘；返回是否首次以供调用方决定是否触发 onViewEffects）。 */
   visitPage: (pageId: PageId) => boolean
-  /** 记录访问会话。返回是否首次访问。 */
+  /** 记录访问会话（纯内存）。返回是否首次。 */
   visitThread: (threadId: ThreadId) => boolean
-  /** 记录查看消息。返回是否首次查看。 */
+  /** 记录查看消息（纯内存）。返回是否首次。 */
   viewMessage: (messageId: string) => boolean
-  /** 记录查看朋友圈/QQ空间动态。返回是否首次查看。 */
+  /** 记录查看朋友圈/QQ空间动态（纯内存）。返回是否首次。 */
   viewMoment: (momentId: string) => boolean
-  /** 启动倒计时（持久化 startedAt 时间戳）。若已存在同 id 且未过期则不覆盖（避免重置）。 */
+  /** 启动倒计时（仅写内存）。若已存在同 id 且未过期则不覆盖。 */
   startCountdown: (id: string, durationSec: number) => void
-  /** 标记倒计时已过期（不可回退，§6.6）。 */
+  /** 标记倒计时已过期（不可回退）。 */
   expireCountdown: (id: string) => void
   /** 推进章节。 */
   advanceChapter: (chapterId: ChapterId) => void
   /** 推送结局（不可回退：设 finished=true）。 */
   pushEnding: (endingId: EndingId) => void
-  /** 显示提示后记录。 */
+  /** 显示提示后记录（纯内存）。 */
   markHintShown: (hintId: string) => void
   /** 解锁 asset。 */
   unlockAsset: (assetId: string) => void
@@ -113,7 +99,7 @@ export interface GameStoreState extends GameState {
   unlockThread: (threadId: ThreadId) => void
   /** 重置存档。 */
   resetGame: () => void
-  /** 仅读取当前态（便于非 React 上下文）。 */
+  /** 仅读取当前运行态（便于非 React 上下文）。 */
   getState: () => GameState
 }
 
@@ -168,16 +154,6 @@ export const useGameStore = create<GameStoreState>()(
         return !alreadySolved
       },
 
-      registerClue: (clueId) => {
-        const exists = get().registeredClueIds.includes(clueId)
-        if (exists) return false
-        set((s) => ({
-          registeredClueIds: [...s.registeredClueIds, clueId],
-          updatedAt: new Date().toISOString() as ISODateString,
-        }))
-        return true
-      },
-
       collectEvidence: (evidenceId) => {
         const exists = get().collectedEvidenceIds.includes(evidenceId)
         if (exists) return false
@@ -195,88 +171,57 @@ export const useGameStore = create<GameStoreState>()(
         }))
       },
 
-      addRisk: (n) => {
-        let val = get().risk
-        set((s) => {
-          val = Math.max(0, Math.min(100, s.risk + n))
-          return { risk: val, updatedAt: new Date().toISOString() as ISODateString }
-        })
-        return val
-      },
-
-      removeRisk: (n) => get().addRisk(-n),
-
-      setRisk: (n) => {
-        const val = Math.max(0, Math.min(100, n))
-        set(() => ({ risk: val, updatedAt: new Date().toISOString() as ISODateString }))
-        return val
-      },
-
       visitPage: (pageId) => {
-        const exists = get().visitedPages.includes(pageId)
+        const exists = (get().visitedPages ?? []).includes(pageId)
         if (exists) return false
-        set((s) => ({
-          visitedPages: [...s.visitedPages, pageId],
-          updatedAt: new Date().toISOString() as ISODateString,
-        }))
+        set((s) => ({ visitedPages: [...(s.visitedPages ?? []), pageId] }))
         return true
       },
 
       visitThread: (threadId) => {
-        const exists = get().visitedThreads.includes(threadId)
+        const exists = (get().visitedThreads ?? []).includes(threadId)
         if (exists) return false
-        set((s) => ({
-          visitedThreads: [...s.visitedThreads, threadId],
-          updatedAt: new Date().toISOString() as ISODateString,
-        }))
+        set((s) => ({ visitedThreads: [...(s.visitedThreads ?? []), threadId] }))
         return true
       },
 
       viewMessage: (messageId) => {
-        const exists = get().viewedMessages.includes(messageId)
+        const exists = (get().viewedMessages ?? []).includes(messageId)
         if (exists) return false
-        set((s) => ({
-          viewedMessages: [...s.viewedMessages, messageId],
-          updatedAt: new Date().toISOString() as ISODateString,
-        }))
+        set((s) => ({ viewedMessages: [...(s.viewedMessages ?? []), messageId] }))
         return true
       },
 
       viewMoment: (momentId) => {
-        const exists = get().viewedMoments.includes(momentId)
+        const exists = (get().viewedMoments ?? []).includes(momentId)
         if (exists) return false
-        set((s) => ({
-          viewedMoments: [...s.viewedMoments, momentId],
-          updatedAt: new Date().toISOString() as ISODateString,
-        }))
+        set((s) => ({ viewedMoments: [...(s.viewedMoments ?? []), momentId] }))
         return true
       },
 
       startCountdown: (id, durationSec) => {
-        const existing = get().countdowns[id]
-        // 已存在且未过期 → 不覆盖（避免重置已开始的倒计时，§6.6）
+        const existing = get().countdowns?.[id]
+        // 已存在且未过期 → 不覆盖（避免重置已开始的倒计时）
         if (existing && !existing.expired) return
         set((s) => ({
           countdowns: {
-            ...s.countdowns,
+            ...(s.countdowns ?? {}),
             [id]: {
               startedAt: new Date().toISOString() as ISODateString,
               durationSec,
               expired: false,
             },
           },
-          updatedAt: new Date().toISOString() as ISODateString,
         }))
       },
 
       expireCountdown: (id) => {
         set((s) => {
-          const c = s.countdowns[id]
+          const c = s.countdowns?.[id]
           if (!c) return s
           // 一旦过期不可回退
           return {
-            countdowns: { ...s.countdowns, [id]: { ...c, expired: true } },
-            updatedAt: new Date().toISOString() as ISODateString,
+            countdowns: { ...(s.countdowns ?? {}), [id]: { ...c, expired: true } },
           }
         })
       },
@@ -297,9 +242,8 @@ export const useGameStore = create<GameStoreState>()(
 
       markHintShown: (hintId) => {
         set((s) => ({
-          shownHintIds: Array.from(new Set([...s.shownHintIds, hintId])),
+          shownHintIds: Array.from(new Set([...(s.shownHintIds ?? []), hintId])),
           lastHintAt: new Date().toISOString() as ISODateString,
-          updatedAt: new Date().toISOString() as ISODateString,
         }))
       },
 
@@ -332,11 +276,10 @@ export const useGameStore = create<GameStoreState>()(
         const s = get()
         // 剥离 actions，只返回 GameState 字段
         const {
-          attemptPuzzle: _a, solvePuzzle: _b, registerClue: _c, collectEvidence: _d,
-          completeObjective: _e, addRisk: _f, removeRisk: _g, setRisk: _h, visitPage: _i,
-          visitThread: _j, viewMessage: _k, viewMoment: _l, startCountdown: _m,
-          expireCountdown: _n, advanceChapter: _o, pushEnding: _p, markHintShown: _q,
-          unlockAsset: _r, unlockPage: _s2, unlockThread: _t, resetGame: _u, getState: _v,
+          attemptPuzzle: _a, solvePuzzle: _b, collectEvidence: _c, completeObjective: _d,
+          visitPage: _e, visitThread: _f, viewMessage: _g, viewMoment: _h, startCountdown: _i,
+          expireCountdown: _j, advanceChapter: _k, pushEnding: _l, markHintShown: _m,
+          unlockAsset: _n, unlockPage: _o, unlockThread: _p, resetGame: _q, getState: _r,
           ...rest
         } = s
         return rest as GameState
@@ -346,26 +289,29 @@ export const useGameStore = create<GameStoreState>()(
       name: SAVE_KEY,
       storage: createJSONStorage(() => localStorage),
       version: SAVE_VERSION,
-      // 只存 GameState 字段（partialize 自动剥离函数；这里显式构造保证干净）
+      // 持久化只存检查点 PersistedCheckpoint：剥离 actions 与易变态字段（countdowns/visited*/viewed*/shownHintIds）。
+      // 易变态字段留在内存态但不落盘 → 刷新后回到检查点，倒计时不会"续算到 0 触发 bad"。
       partialize: (s) => {
         const {
-          attemptPuzzle: _a, solvePuzzle: _b, registerClue: _c, collectEvidence: _d,
-          completeObjective: _e, addRisk: _f, removeRisk: _g, setRisk: _h, visitPage: _i,
-          visitThread: _j, viewMessage: _k, viewMoment: _l, startCountdown: _m,
-          expireCountdown: _n, advanceChapter: _o, pushEnding: _p, markHintShown: _q,
-          unlockAsset: _r, unlockPage: _s2, unlockThread: _t, resetGame: _u, getState: _v,
+          attemptPuzzle: _a, solvePuzzle: _b, collectEvidence: _c, completeObjective: _d,
+          visitPage: _e, visitThread: _f, viewMessage: _g, viewMoment: _h, startCountdown: _i,
+          expireCountdown: _j, advanceChapter: _k, pushEnding: _l, markHintShown: _m,
+          unlockAsset: _n, unlockPage: _o, unlockThread: _p, resetGame: _q, getState: _r,
+          countdowns: _cd, shownHintIds: _sh, visitedPages: _vp, visitedThreads: _vt,
+          viewedMessages: _vm, viewedMoments: _vw, lastHintAt: _lh,
           ...rest
         } = s
-        return rest as unknown as GameState
+        return rest
       },
       migrate: (persisted, _version) => {
-        // 迁移：补全/升级 GameState 结构
+        // 迁移：补全/升级到检查点结构（v1→v2 移除 risk/clue/易变态字段）
         const base = (persisted ?? {}) as Record<string, unknown>
         return ensureGameStateShape(base) as unknown as GameStoreState
       },
       onRehydrateStorage: () => (state) => {
         if (!state) return
-        // 重水合后兜底：保证 GameState 字段齐全
+        // 重水合后兜底：保证检查点字段齐全；易变态字段用内存默认值（已由 newGameState 兜底，
+        // 但 rehydrate 会覆盖部分字段，这里确保不残留旧版 risk/registeredClueIds）。
         const ensured = ensureGameStateShape(state as unknown as Record<string, unknown>)
         Object.assign(state, ensured)
       },
@@ -378,9 +324,9 @@ export function getGameStore(): GameStoreState {
   return useGameStore.getState()
 }
 
-/** 计算某倒计时的真实剩余秒（§6.6：按 now-startedAt 算，非存剩余秒）。 */
+/** 计算某倒计时的真实剩余秒（按 now-startedAt 算，非存剩余秒）。 */
 export function getRemainingSec(countdownId: string, now: number = Date.now()): number {
-  const c = useGameStore.getState().countdowns[countdownId]
+  const c = useGameStore.getState().countdowns?.[countdownId]
   if (!c) return 0
   if (c.expired) return 0
   const startedAtMs = new Date(c.startedAt).getTime()
@@ -390,7 +336,10 @@ export function getRemainingSec(countdownId: string, now: number = Date.now()): 
 
 /** 是否有活跃（未过期且剩余>0）倒计时。 */
 export function hasActiveCountdown(countdownId: string, now: number = Date.now()): boolean {
-  const c = useGameStore.getState().countdowns[countdownId]
+  const c = useGameStore.getState().countdowns?.[countdownId]
   if (!c || c.expired) return false
   return getRemainingSec(countdownId, now) > 0
 }
+
+// 保留 ClueId/EndingId 类型 re-export 给旧调用点（部分 action 签名已不带，但外部类型引用仍存在）。
+export type { ClueId, EndingId}

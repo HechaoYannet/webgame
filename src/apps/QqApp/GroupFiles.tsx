@@ -13,7 +13,6 @@
  */
 import { useState } from 'react'
 import { getContact } from '@/data/loader'
-import { useClue } from '@/engine/hooks/useClue'
 import { usePuzzle } from '@/engine/hooks/usePuzzle'
 import { PUZZLE_PDF_SCREENING } from './qqConstants'
 import type { QqGroupFile } from './qqData'
@@ -73,7 +72,6 @@ function GroupFileRow({
   onOpenPdf: () => void
   onZoomImage: (assetId: string) => void
 }) {
-  const clue = useClue()
   const uploader = getContact(f.uploaderCharacterId)
   const uploaderName = uploader?.displayName ?? uploader?.name ?? f.uploaderCharacterId
   const typeLabel: Record<QqGroupFile['type'], string> = {
@@ -84,8 +82,7 @@ function GroupFileRow({
   }
 
   function handleClick() {
-    // 群文件查看事件（交引擎裁决线索注册，如 clue-siguo-window 钩子）
-    void clue.view({ kind: 'qzone', postId: f.id })
+    // 重写后线索注册装饰已废：查看群文件不再注册线索。PDF 门禁与图片放大逻辑保留。
     if (f.type === 'pdf') onOpenPdf()
     else if (f.type === 'image' && f.assetId) onZoomImage(f.assetId)
   }

@@ -6,31 +6,36 @@
  * 消费 PuzzleEffect[]（puzzle.onSuccess / onFailure / page.onViewEffects /
  * chapter.onEnterEffects / callScript.branch.endEffects 等），逐条执行。
  *
- * 覆盖全部 PuzzleEffect 类型（types/index.ts）：
- *   addRisk / removeRisk / startCountdown / advanceChapter / pushSms / pushDoorbell /
- *   registerClue / collectEvidence / playAudio(loop) / stopAudio / vibrate /
- *   fullscreenAlert / pushEnding / openNewsApp / openApp
+ * 重写后（玩家决策 2026-08-19）已移除：
+ *   - addRisk / removeRisk（风险值系统整体废除，坏结局只靠倒计时）
+ *   - registerClue（"查看即注册线索 + 截图入相册"装饰机制废除）
+ *   - openNewsApp（无 NewsApp 注册，EndingOverlay 已覆盖播放 epilogue，直接 pushEnding）
+ *
+ * 现覆盖 PuzzleEffect 子集（types/index.ts 仍保留全部联合，未用类型在此静默不派发）：
+ *   startCountdown / advanceChapter / pushSms / pushDoorbell / collectEvidence /
+ *   playAudio(loop) / stopAudio / vibrate / fullscreenAlert / pushEnding / openApp
  *
  * 通过 effectHandlers 注入实际副作用（与 store/services 耦合），便于：
  *  1. 单元测试时注入 mock handlers。
  *  2. reviewer 离线验证时可直接断言 effect 序列。
  *
- * 副作用执行幂等性：registerClue/collectEvidence 在 store 内部去重，EffectExecutor 不重复去重。
+ * 副作用执行幂等性：collectEvidence 在 store 内部去重，EffectExecutor 不重复去重。
+ *
+ * 数据层兼容：puzzles.json / call-scripts.json / page onViewEffects 里若仍含
+ * addRisk/removeRisk/registerClue/openNewsApp（旧字段），本执行器按"静默忽略"处理，
+ * 既不报错也不触发副作用——保证数据即契约层零改动。
  */
 
 import type { PuzzleEffect } from '@/types'
 import { getGameStore } from '@/engine/store/gameStore'
 
 export interface EffectHandlers {
-  addRisk: (amount: number) => void
-  removeRisk: (amount: number) => void
   startCountdown: (id: string, durationSec: number) => void
   advanceChapter: (toChapterId: string) => void
   /** 推送短信事件（由 SmsService 把 phone/sms.json 的事件加入收件箱 + 通知）。 */
   pushSms: (smsEventId: string) => void
   /** 推送门铃事件（由 DoorbellService 打开来电/门铃画面 + 循环音频 + 震屏）。 */
   pushDoorbell: (doorbellEventId: string) => void
-  registerClue: (clueId: string) => void
   collectEvidence: (evidenceId: string) => void
   /** 播放音频（loop 可循环，如心跳/门铃敲击）。 */
   playAudio: (assetId: string, loop?: boolean) => void
@@ -41,8 +46,6 @@ export interface EffectHandlers {
   fullscreenAlert: (text: string) => void
   /** 推送结局（不可回退）。 */
   pushEnding: (endingId: 'good' | 'normal' | 'bad') => void
-  /** 打开新闻 App 播放破案播报（真结局专用，good）。 */
-  openNewsApp: (endingId: 'good' | 'normal' | 'bad') => void
   /** 打开任意 App（按 appId 路由跳转）。 */
   openApp: (appId: string) => void
 }
@@ -110,12 +113,6 @@ export function executeEffects(effects: readonly PuzzleEffect[] | undefined | nu
 
 function dispatch(e: PuzzleEffect, h: EffectHandlers): void {
   switch (e.type) {
-    case 'addRisk':
-      h.addRisk(e.amount)
-      return
-    case 'removeRisk':
-      h.removeRisk(e.amount)
-      return
     case 'startCountdown':
       h.startCountdown(e.id, e.durationSec)
       return
@@ -127,9 +124,6 @@ function dispatch(e: PuzzleEffect, h: EffectHandlers): void {
       return
     case 'pushDoorbell':
       h.pushDoorbell(e.doorbellEventId)
-      return
-    case 'registerClue':
-      h.registerClue(e.clueId)
       return
     case 'collectEvidence':
       h.collectEvidence(e.evidenceId)
@@ -149,14 +143,19 @@ function dispatch(e: PuzzleEffect, h: EffectHandlers): void {
     case 'pushEnding':
       h.pushEnding(e.endingId)
       return
-    case 'openNewsApp':
-      h.openNewsApp(e.endingId)
-      return
     case 'openApp':
       h.openApp(e.appId)
       return
+    // 重写后已废除的 effect：数据层若仍含这些旧字段，静默忽略（不报错、不触发）。
+    case 'addRisk':
+    case 'removeRisk':
+    case 'registerClue':
+      return
+    case 'openNewsApp':
+      // 无 NewsApp 注册，EndingOverlay 已渲染 epilogue；这里收敛为同 endingId 的 pushEnding。
+      h.pushEnding(e.endingId)
+      return
     default: {
-      // exhaustive check
       const _exhaustive: never = e
       void _exhaustive
       return

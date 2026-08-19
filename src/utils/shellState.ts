@@ -23,16 +23,13 @@
 import { useSyncExternalStore } from 'react'
 import type {
   ChapterId,
-  ClueId,
   EndingId,
   EvidenceId,
   PuzzleId,
 } from '@/types'
-import { useRisk as engineUseRisk } from '@/engine/hooks/useRisk'
 import { useCountdown as engineUseCountdown } from '@/engine/hooks/useCountdown'
 import { useEvidence as engineUseEvidence } from '@/engine/hooks/useEvidence'
 import { useChapter as engineUseChapter } from '@/engine/hooks/useChapter'
-import { useClue as engineUseClue } from '@/engine/hooks/useClue'
 import { useGameStore } from '@/engine/store/gameStore'
 import {
   fullscreenAlert as engineFullscreenAlert,
@@ -45,9 +42,7 @@ import {
 import { subscribeDelivered as subscribeSmsDelivered } from '@/engine/feedback/SmsService'
 import { subscribe as subscribeDoorbell, getActive as getActiveDoorbell } from '@/engine/feedback/DoorbellService'
 import { on as onEngineEvent } from '@/engine/eventBus'
-import { onView as clueOnView } from '@/engine/clue/ClueRegistry'
 import { getSmsEventById } from '@/data/loader'
-import type { ViewPayload } from '@/data/loader'
 import type { SmsEvent, DoorbellEvent } from '@/types'
 
 // ===== shell 本地轻量 store：通知队列 + 视觉态（与剧情无关，纯 UI）=====
@@ -254,16 +249,21 @@ subscribeToasts((ts) => {
   }))
 })
 
-// ===== 风险值 / 倒计时 / 证据 / 章节 / 谜题 / 线索：直接转发 engine hooks =====
+// ===== 倒计时 / 证据 / 章节 / 谜题：直接转发 engine hooks =====
+//
+// 重写后（玩家决策 2026-08-19）：风险值系统整体移除、线索注册装饰废除。
+// useRisk 保留为 no-op（risk 恒 0、永不红告警）以维持 PhoneShell/StatusBar 编译过渡；
+// 红边强度改由门铃/倒计时驱动（见 wireShellToEngine 的 doorbell/countdownExpired 分支）。
+// useRegisteredClues / viewClueSource 已删除（线索机制不再存在）。
 export interface RiskSnapshot {
   risk: number
   isRedAlert: boolean
   isMaxed: boolean
 }
 
+/** no-op：风险系统已废。恒返回 risk=0、无红告警。 */
 export function useRisk(): RiskSnapshot {
-  const r = engineUseRisk()
-  return { risk: r.risk, isRedAlert: r.redAlert, isMaxed: r.riskMaxed }
+  return { risk: 0, isRedAlert: false, isMaxed: false }
 }
 
 export interface CountdownSnapshot {
@@ -299,11 +299,6 @@ export function useEvidence(): EvidenceSnapshot {
   }
 }
 
-export function useRegisteredClues(): ClueId[] {
-  const c = engineUseClue()
-  return c.registeredClueIds
-}
-
 export interface ChapterSnapshot {
   currentChapterId: ChapterId
   endingId?: EndingId
@@ -319,24 +314,6 @@ export function useChapter(): ChapterSnapshot {
 export function useSolvedPuzzles(): Set<PuzzleId> {
   const solved = useGameStore((s) => s.solvedPuzzleIds)
   return new Set<PuzzleId>(solved)
-}
-
-/**
- * 注册"查看事件"触发线索注册（engine useClue().view 闸口）。
- * 各 App 在关键交互处调用以触发"查看即取证"。
- */
-export function viewClueSource(payload: ViewPayload): void {
-  // useClue().view 是 hook-bound 回调，这里直接走 ClueRegistry.onView（非 React 路径）
-  // 但 onView 是 async 且依赖 domEl；这里 fire-and-forget。
-  void triggerClueView(payload)
-}
-
-async function triggerClueView(payload: ViewPayload): Promise<void> {
-  try {
-    await clueOnView(payload, null)
-  } catch {
-    // 静默：引擎未就绪或数据未加载时不破坏 UI
-  }
 }
 
 // ===== engine 集成：phone-shell 启动时绑定（在 App 顶层 useEffect 调一次）=====
@@ -386,15 +363,13 @@ export function wireShellToEngine(): void {
     }
   })
 
-  // 3) 风险值变化 → 红边强度
-  onEngineEvent('riskChanged', ({ risk }) => {
-    if (risk > 70) setRedEdgeIntensity(Math.min(1, 0.5 + (risk - 70) / 60))
-    else setRedEdgeIntensity(0)
-  })
+  // 3) 风险值系统已废（玩家决策 2026-08-19）：红边强度改由门铃事件驱动（见上方 doorbell 分支 setRedEdgeIntensity(0.9)），
+  //    门铃解除时不再由 riskChanged 清零——这里监听 countdownExpired 时同步清零红边（倒计时结束=危机解除）。
 
-  // 4) 倒计时到期 → 屏幕黑屏 + 震屏停止
+  // 4) 倒计时到期 → 屏幕黑屏 + 震屏停止 + 红边清零
   onEngineEvent('countdownExpired', () => {
     setShaking(false)
+    setRedEdgeIntensity(0)
   })
 
   // 5) 结局推送 → 清通知 + 来电结束
@@ -404,18 +379,16 @@ export function wireShellToEngine(): void {
 }
 
 // ===== 类型 re-export 便于 App agent 使用 =====
-export type { ViewPayload } from '@/data/loader'
+// （重写后）ViewPayload 已随线索机制删除，不再 re-export。
 export type { SmsEvent, DoorbellEvent } from '@/types'
 
-/** engine 连接器类型（供需要注入的组件声明 props 用）。 */
+/** engine 连接器类型（供需要注入的组件声明 props 用）。重写后无 useRegisteredClues/viewClueSource。 */
 export interface EngineConnector {
   useRisk: typeof useRisk
   useCountdown: typeof useCountdown
   useEvidence: typeof useEvidence
   useChapter: typeof useChapter
   useSolvedPuzzles: typeof useSolvedPuzzles
-  useRegisteredClues: typeof useRegisteredClues
-  viewClueSource: typeof viewClueSource
 }
 
 export const defaultEngineConnector: EngineConnector = {
@@ -424,8 +397,6 @@ export const defaultEngineConnector: EngineConnector = {
   useEvidence,
   useChapter,
   useSolvedPuzzles,
-  useRegisteredClues,
-  viewClueSource,
 }
 
 // 重置（仅测试用）

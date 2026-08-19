@@ -34,7 +34,7 @@ export function startCountdown(id: string, durationSec: number): void {
 /** 标记过期并尝试触发对应 bad 结局。 */
 export function expireCountdown(id: string): void {
   const store = getGameStore()
-  const c = store.countdowns[id]
+  const c = store.countdowns?.[id]
   if (!c || c.expired) return
   store.expireCountdown(id)
   emit('countdownExpired', { countdownId: id })
@@ -50,7 +50,7 @@ export function expireCountdown(id: string): void {
 /** 查询某倒计时信息（含真实剩余秒）。 */
 export function getCountdownInfo(id: string, now: number = Date.now()): CountdownInfo | null {
   const store = getGameStore()
-  const c = store.countdowns[id]
+  const c = store.countdowns?.[id]
   if (!c) return null
   const remainingSec = getRemainingSec(id, now)
   return {
@@ -74,7 +74,7 @@ export function isActive(id: string, now: number = Date.now()): boolean {
 
 /** 是否已过期。 */
 export function isExpired(id: string): boolean {
-  const c = getGameStore().countdowns[id]
+  const c = getGameStore().countdowns?.[id]
   return c?.expired ?? false
 }
 

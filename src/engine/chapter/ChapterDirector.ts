@@ -32,10 +32,9 @@ export function initChapterDirector(): void {
 
   on('puzzleSolved', () => reevaluateChapters())
   on('evidenceCollected', () => reevaluateChapters())
-  on('clueRegistered', () => reevaluateChapters())
+  // 重写后已移除 clueRegistered 订阅：线索注册装饰机制废除，registeredClueIds 不再存在。
   // 页面首次查看 → 执行 onViewEffects
   on('pageFirstVisited', ({ pageId }) => triggerOnViewEffects(pageId))
-  // 风险/倒计时变化不推进章节，但 RiskService/CountdownService 自行处理结局
 }
 
 /** 评估全部章节的 enterCondition，推进到第一个可进入且未进入的章节。 */
@@ -56,7 +55,10 @@ export function reevaluateChapters(): void {
   }
 }
 
-/** 评估章节条件（递归 and）。 */
+/**
+ * 评估章节条件（递归 and）。
+ * 重写后：线索注册机制已废，clueRegistered 永为 false（数据里也无人再用此条件）。
+ */
 export function evaluateCondition(cond: ChapterCondition): boolean {
   const store = getGameStore()
   switch (cond.kind) {
@@ -67,7 +69,9 @@ export function evaluateCondition(cond: ChapterCondition): boolean {
     case 'evidenceCollected':
       return store.collectedEvidenceIds.includes(cond.evidenceId)
     case 'clueRegistered':
-      return store.registeredClueIds.includes(cond.clueId)
+      // 重写后线索注册已废；registeredClueIds 已从 GameState 移除。
+      // 数据层若仍含 clueRegistered 条件（实际无），按 false 处理。
+      return false
     case 'and':
       return cond.conditions.every(evaluateCondition)
     default: {
