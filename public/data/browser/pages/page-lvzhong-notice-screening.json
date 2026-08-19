@@ -38,7 +38,8 @@
     },
     {
       "type": "sourceComment",
-      "comment": "<!-- 测试地址 /notice/screening/qiangzhang（后台维护：仅 zhangqiang 账号可登录校务内部系统） -->"
+      "comment": "<!-- 测试地址 /notice/screening/qiangzhang（后台维护：仅 zhangqiang 账号可登录校务内部系统） -->",
+      "linkPageId": "page-lvzhong-qiangzhang"
     }
   ]
 }

@@ -198,7 +198,7 @@ export type PageBlock =
   | { type: "image"; assetId: string; caption?: string; zoomable?: boolean }
   | { type: "table"; headers: string[]; rows: string[][] }
   | { type: "form"; formId: string; onSubmitMessage: string }
-  | { type: "sourceComment"; comment: string }
+  | { type: "sourceComment"; comment: string; linkPageId?: PageId }
   | { type: "loginForm"; puzzleId: PuzzleId }
   | { type: "pdfViewer"; assetId: string; requiresPuzzleId?: PuzzleId };
 

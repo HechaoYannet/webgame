@@ -71,6 +71,10 @@ export default function SiteView(): JSX.Element {
     setView((v) => (v.kind === 'page' ? { kind: 'source', page: v.page } : v))
   }, [])
 
+  const onBackToPage = useCallback(() => {
+    setView((v) => (v.kind === 'source' ? { kind: 'page', page: v.page } : v))
+  }, [])
+
   if (view.kind === 'loading') {
     return <div style={centerStyle}>加载中…</div>
   }
@@ -89,7 +93,7 @@ export default function SiteView(): JSX.Element {
       <SiteChromeBar url={page.url} title={page.title} />
       <main style={mainStyle}>
         {view.kind === 'source' ? (
-          <SourceView page={page} onBack={() => setView({ kind: 'page', page })} />
+          <SourceView page={page} onBack={onBackToPage} onNavigatePage={navigateInSite} />
         ) : (
           <article className="web-page" data-page-id={page.id}>
             <div className="web-page__blocks">
@@ -122,10 +126,21 @@ function SiteChromeBar({ url, title }: { url: string; title?: string }): JSX.Ele
   )
 }
 
-/* ---------- 查看源代码视图（藏后台地址线索的 sourceComment 展示） ---------- */
-function SourceView({ page, onBack }: { page: WebPage; onBack: () => void }): JSX.Element {
+/* ---------- 查看源代码视图（藏后台地址线索的 sourceComment 展示，linkPageId 可点进入） ---------- */
+function SourceView({
+  page,
+  onBack,
+  onNavigatePage,
+}: {
+  page: WebPage
+  onBack: () => void
+  onNavigatePage: (pageId: PageId) => void
+}): JSX.Element {
   const comments = useMemo(
-    () => page.blocks.filter((b): b is Extract<PageBlock, { type: 'sourceComment' }> => b.type === 'sourceComment').map((b) => b.comment),
+    () =>
+      page.blocks.filter(
+        (b): b is Extract<PageBlock, { type: 'sourceComment' }> => b.type === 'sourceComment',
+      ),
     [page],
   )
   return (
@@ -134,10 +149,26 @@ function SourceView({ page, onBack }: { page: WebPage; onBack: () => void }): JS
         <span>查看源代码 — {page.url}</span>
         <button type="button" className="web-page__source-close" onClick={onBack}>返回页面</button>
       </div>
-      <pre className="web-page__source-pre"><code>{page.title}</code></pre>
-      {comments.length === 0
-        ? <p className="web-page__source-empty">本页源码中未发现特殊注释。</p>
-        : comments.map((c, i) => <pre key={i} className="web-page__source-pre"><code>{c}</code></pre>)}
+      <pre className="web-page__source-pre"><code>{`<!doctype html><head><title>${page.title}</title></head><body>`}</code></pre>
+      {comments.length === 0 ? (
+        <p className="web-page__source-empty">本页源码中未发现特殊注释。</p>
+      ) : (
+        comments.map((c, i) => (
+          <div key={i}>
+            <pre className="web-page__source-pre"><code>{c.comment}</code></pre>
+            {c.linkPageId && (
+              <button
+                type="button"
+                className="wc-article-link-btn"
+                style={{ margin: '8px 0 16px', padding: '6px 14px', background: '#1f6feb', color: '#fff', border: 'none', borderRadius: 6, cursor: 'pointer' }}
+                onClick={() => onNavigatePage(c.linkPageId!)}
+              >
+                发现隐藏入口，点此进入 ›
+              </button>
+            )}
+          </div>
+        ))
+      )}
     </div>
   )
 }
@@ -185,3 +216,4 @@ const closeBtnStyle: React.CSSProperties = {
   fontSize: 18,
   cursor: 'pointer',
 }
+
