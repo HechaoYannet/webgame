@@ -1,0 +1,192 @@
+[
+  {
+    "id": "msg-cli-001",
+    "threadId": "thread-cliparents-wechat",
+    "direction": "received",
+    "authorCharacterId": "char-liqiaorui-mom",
+    "timestamp": "2026-03-10T09:20:00+08:00",
+    "kind": "text",
+    "text": "最近我家孩子天天玩手机，怎么办"
+  },
+  {
+    "id": "msg-cli-002",
+    "threadId": "thread-cliparents-wechat",
+    "direction": "received",
+    "authorCharacterId": "char-liqiaorui-mom",
+    "timestamp": "2026-03-10T09:22:00+08:00",
+    "kind": "text",
+    "text": "@张强 张校长，学校是不是有那个什么成长中心推荐"
+  },
+  {
+    "id": "msg-cli-003",
+    "threadId": "thread-cliparents-wechat",
+    "direction": "received",
+    "authorCharacterId": "char-zhangqiang",
+    "timestamp": "2026-03-10T09:25:00+08:00",
+    "kind": "text",
+    "text": "是的，我们学校与新希望成长中心有合作，专治手机成瘾，效果很好"
+  },
+  {
+    "id": "msg-cli-004",
+    "threadId": "thread-cliparents-wechat",
+    "direction": "received",
+    "authorCharacterId": "char-liqiaorui-mom",
+    "timestamp": "2026-03-10T09:26:00+08:00",
+    "kind": "text",
+    "text": "多少钱？"
+  },
+  {
+    "id": "msg-cli-005",
+    "threadId": "thread-cliparents-wechat",
+    "direction": "received",
+    "authorCharacterId": "char-zhangqiang",
+    "timestamp": "2026-03-10T09:28:00+08:00",
+    "kind": "text",
+    "text": "一学期20万，名额有限，需要的私聊我"
+  },
+  {
+    "id": "msg-cli-006",
+    "threadId": "thread-cliparents-wechat",
+    "direction": "received",
+    "authorCharacterId": "char-liqiaorui-mom",
+    "timestamp": "2026-03-10T09:29:00+08:00",
+    "kind": "text",
+    "text": "太贵了"
+  },
+  {
+    "id": "msg-cli-007",
+    "threadId": "thread-cliparents-wechat",
+    "direction": "received",
+    "authorCharacterId": "char-zhangqiang",
+    "timestamp": "2026-03-10T09:30:00+08:00",
+    "kind": "text",
+    "text": "为了孩子，值得"
+  },
+  {
+    "id": "msg-cli-008",
+    "threadId": "thread-cliparents-wechat",
+    "direction": "received",
+    "authorCharacterId": "char-liqiaorui-mom",
+    "timestamp": "2026-03-10T09:32:00+08:00",
+    "kind": "text",
+    "text": "李桥瑞妈妈，你家孩子不也天天玩手机吗，你送不送？"
+  },
+  {
+    "id": "msg-cli-009",
+    "threadId": "thread-cliparents-wechat",
+    "direction": "received",
+    "authorCharacterId": "char-liqiaorui-mom",
+    "timestamp": "2026-03-10T09:33:00+08:00",
+    "kind": "text",
+    "text": "不送，我家孩子还行"
+  },
+  {
+    "id": "msg-cli-010",
+    "threadId": "thread-cliparents-wechat",
+    "direction": "received",
+    "authorCharacterId": "char-liqiaorui-mom",
+    "timestamp": "2026-03-10T09:35:00+08:00",
+    "kind": "text",
+    "text": "@张强 我家孩子叫XXX，能优惠点吗"
+  },
+  {
+    "id": "msg-cli-011",
+    "threadId": "thread-cliparents-wechat",
+    "direction": "received",
+    "authorCharacterId": "char-zhangqiang",
+    "timestamp": "2026-03-10T09:36:00+08:00",
+    "kind": "text",
+    "text": "私聊"
+  },
+  {
+    "id": "msg-cli-012",
+    "threadId": "thread-cliparents-wechat",
+    "direction": "received",
+    "authorCharacterId": "char-liqiaorui-mom",
+    "timestamp": "2026-03-13T08:50:00+08:00",
+    "kind": "text",
+    "text": "听说昨晚有学生被宿管抓了？"
+  },
+  {
+    "id": "msg-cli-013",
+    "threadId": "thread-cliparents-wechat",
+    "direction": "received",
+    "authorCharacterId": "char-liqiaorui-mom",
+    "timestamp": "2026-03-13T08:52:00+08:00",
+    "kind": "text",
+    "text": "好像是高二一班的"
+  },
+  {
+    "id": "msg-cli-014",
+    "threadId": "thread-cliparents-wechat",
+    "direction": "received",
+    "authorCharacterId": "char-liqiaorui-mom",
+    "timestamp": "2026-03-13T09:00:00+08:00",
+    "kind": "text",
+    "text": "是李桥瑞吗？我刚给他打电话怎么打不通？"
+  },
+  {
+    "id": "msg-cli-015",
+    "threadId": "thread-cliparents-wechat",
+    "direction": "received",
+    "authorCharacterId": "char-wangshufen",
+    "timestamp": "2026-03-13T09:10:00+08:00",
+    "kind": "text",
+    "text": "@李桥瑞妈妈 李桥瑞昨晚被家长接回家了",
+    "registersClueId": "clue-parents-group-contradiction"
+  },
+  {
+    "id": "msg-cli-016",
+    "threadId": "thread-cliparents-wechat",
+    "direction": "received",
+    "authorCharacterId": "char-liqiaorui-mom",
+    "timestamp": "2026-03-13T09:12:00+08:00",
+    "kind": "text",
+    "text": "接回家了？没有啊，我没去接他"
+  },
+  {
+    "id": "msg-cli-017",
+    "threadId": "thread-cliparents-wechat",
+    "direction": "received",
+    "authorCharacterId": "char-wangshufen",
+    "timestamp": "2026-03-13T09:15:00+08:00",
+    "kind": "text",
+    "text": "……"
+  },
+  {
+    "id": "msg-cli-018",
+    "threadId": "thread-cliparents-wechat",
+    "direction": "received",
+    "authorCharacterId": "char-zhangqiang",
+    "timestamp": "2026-03-13T09:18:00+08:00",
+    "kind": "text",
+    "text": "@李桥瑞妈妈 李桥瑞今早已离校，请放心，具体情况学校会另行沟通"
+  },
+  {
+    "id": "msg-cli-019",
+    "threadId": "thread-cliparents-wechat",
+    "direction": "received",
+    "authorCharacterId": "char-liqiaorui-mom",
+    "timestamp": "2026-03-13T09:20:00+08:00",
+    "kind": "text",
+    "text": "张校长，怎么回事？我儿子在哪？"
+  },
+  {
+    "id": "msg-cli-020",
+    "threadId": "thread-cliparents-wechat",
+    "direction": "received",
+    "authorCharacterId": "char-zhangqiang",
+    "timestamp": "2026-03-13T09:22:00+08:00",
+    "kind": "text",
+    "text": "请私聊"
+  },
+  {
+    "id": "msg-cli-021",
+    "threadId": "thread-cliparents-wechat",
+    "direction": "received",
+    "authorCharacterId": "char-liqiaorui-mom",
+    "timestamp": "2026-03-13T10:20:00+08:00",
+    "kind": "text",
+    "text": "他爸在外面打工也联系不上，谁能告诉我儿子到底怎么了"
+  }
+]

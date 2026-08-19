@@ -1,0 +1,47 @@
+[
+  {
+    "id": "m-lizhou-0310-1",
+    "threadId": "thread-li-zhouming-qq",
+    "direction": "received",
+    "authorCharacterId": "char-zhouming",
+    "timestamp": "2026-03-10T19:00:00+08:00",
+    "kind": "text",
+    "text": "桥瑞，期末借我抄抄呗"
+  },
+  {
+    "id": "m-lizhou-0310-2",
+    "threadId": "thread-li-zhouming-qq",
+    "direction": "sent",
+    "authorCharacterId": "char-liqiaorui",
+    "timestamp": "2026-03-10T19:05:00+08:00",
+    "kind": "text",
+    "text": "再说吧"
+  },
+  {
+    "id": "m-lizhou-0313-1",
+    "threadId": "thread-li-zhouming-qq",
+    "direction": "received",
+    "authorCharacterId": "char-zhouming",
+    "timestamp": "2026-03-13T13:50:00+08:00",
+    "kind": "text",
+    "text": "你人呢？老师说你被接走了，借我那50啥时候还"
+  },
+  {
+    "id": "m-lizhou-0313-2",
+    "threadId": "thread-li-zhouming-qq",
+    "direction": "received",
+    "authorCharacterId": "char-zhouming",
+    "timestamp": "2026-03-13T13:55:00+08:00",
+    "kind": "text",
+    "text": "不是，你到底去哪了，群里都没你"
+  },
+  {
+    "id": "m-lizhou-0313-3",
+    "threadId": "thread-li-zhouming-qq",
+    "direction": "received",
+    "authorCharacterId": "char-zhouming",
+    "timestamp": "2026-03-13T13:56:00+08:00",
+    "kind": "text",
+    "text": "你别吓我，回个话"
+  }
+]

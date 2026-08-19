@@ -1,0 +1,93 @@
+[
+  {
+    "id": "msg-lin-wang-001",
+    "threadId": "thread-lin-wang-wechat",
+    "direction": "sent",
+    "authorCharacterId": "char-linzhe",
+    "timestamp": "2026-03-13T15:02:00+08:00",
+    "kind": "text",
+    "text": "王老师，李桥瑞回家了吗？我联系不上他"
+  },
+  {
+    "id": "msg-lin-wang-002",
+    "threadId": "thread-lin-wang-wechat",
+    "direction": "received",
+    "authorCharacterId": "char-wangshufen",
+    "timestamp": "2026-03-13T15:05:00+08:00",
+    "kind": "text",
+    "text": "他昨晚被家长接走了"
+  },
+  {
+    "id": "msg-lin-wang-003",
+    "threadId": "thread-lin-wang-wechat",
+    "direction": "sent",
+    "authorCharacterId": "char-linzhe",
+    "timestamp": "2026-03-13T15:06:00+08:00",
+    "kind": "text",
+    "text": "哪个家长？他爸妈都在外地"
+  },
+  {
+    "id": "msg-lin-wang-004",
+    "threadId": "thread-lin-wang-wechat",
+    "direction": "received",
+    "authorCharacterId": "char-wangshufen",
+    "timestamp": "2026-03-13T15:08:00+08:00",
+    "kind": "text",
+    "text": "……"
+  },
+  {
+    "id": "msg-lin-wang-005",
+    "threadId": "thread-lin-wang-wechat",
+    "direction": "received",
+    "authorCharacterId": "char-wangshufen",
+    "timestamp": "2026-03-13T15:09:00+08:00",
+    "kind": "text",
+    "text": "林哲，别问了，学校会处理的",
+    "recalled": true
+  },
+  {
+    "id": "msg-lin-wang-006",
+    "threadId": "thread-lin-wang-wechat",
+    "direction": "received",
+    "authorCharacterId": "char-wangshufen",
+    "timestamp": "2026-03-13T15:09:30+08:00",
+    "kind": "text",
+    "text": "林哲，别问了，学校会处理的"
+  },
+  {
+    "id": "msg-lin-wang-007",
+    "threadId": "thread-lin-wang-wechat",
+    "direction": "sent",
+    "authorCharacterId": "char-linzhe",
+    "timestamp": "2026-03-13T15:10:00+08:00",
+    "kind": "text",
+    "text": "老师，我只是担心同学"
+  },
+  {
+    "id": "msg-lin-wang-008",
+    "threadId": "thread-lin-wang-wechat",
+    "direction": "received",
+    "authorCharacterId": "char-wangshufen",
+    "timestamp": "2026-03-13T15:11:00+08:00",
+    "kind": "text",
+    "text": "我知道，你先安心学习"
+  },
+  {
+    "id": "msg-lin-wang-009",
+    "threadId": "thread-lin-wang-wechat",
+    "direction": "sent",
+    "authorCharacterId": "char-linzhe",
+    "timestamp": "2026-03-13T15:12:00+08:00",
+    "kind": "text",
+    "text": "李桥瑞妈妈刚在群里说没去接他"
+  },
+  {
+    "id": "msg-lin-wang-010",
+    "threadId": "thread-lin-wang-wechat",
+    "direction": "received",
+    "authorCharacterId": "char-wangshufen",
+    "timestamp": "2026-03-13T15:13:00+08:00",
+    "kind": "text",
+    "text": "……"
+  }
+]

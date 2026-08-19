@@ -1,0 +1,65 @@
+[
+  {
+    "id": "msg-lin-liushu-001",
+    "threadId": "thread-lin-liushu-wechat",
+    "direction": "sent",
+    "authorCharacterId": "char-linzhe",
+    "timestamp": "2026-03-13T15:20:00+08:00",
+    "kind": "text",
+    "text": "刘叔，李桥瑞昨晚被您带走后去哪了？"
+  },
+  {
+    "id": "msg-lin-liushu-002",
+    "threadId": "thread-lin-liushu-wechat",
+    "direction": "received",
+    "authorCharacterId": "char-liushu",
+    "timestamp": "2026-03-13T15:22:00+08:00",
+    "kind": "text",
+    "text": "他家长来接走了"
+  },
+  {
+    "id": "msg-lin-liushu-003",
+    "threadId": "thread-lin-liushu-wechat",
+    "direction": "sent",
+    "authorCharacterId": "char-linzhe",
+    "timestamp": "2026-03-13T15:23:00+08:00",
+    "kind": "text",
+    "text": "哪个家长？他说他爸妈在外地"
+  },
+  {
+    "id": "msg-lin-liushu-004",
+    "threadId": "thread-lin-liushu-wechat",
+    "direction": "received",
+    "authorCharacterId": "char-liushu",
+    "timestamp": "2026-03-13T15:25:00+08:00",
+    "kind": "text",
+    "text": "我只负责把人交给学校，别的我不管"
+  },
+  {
+    "id": "msg-lin-liushu-005",
+    "threadId": "thread-lin-liushu-wechat",
+    "direction": "sent",
+    "authorCharacterId": "char-linzhe",
+    "timestamp": "2026-03-13T15:27:00+08:00",
+    "kind": "text",
+    "text": "刘叔，李桥瑞是我兄弟"
+  },
+  {
+    "id": "msg-lin-liushu-006",
+    "threadId": "thread-lin-liushu-wechat",
+    "direction": "sent",
+    "authorCharacterId": "char-linzhe",
+    "timestamp": "2026-03-13T15:28:00+08:00",
+    "kind": "text",
+    "text": "我听说他可能被送去那个新希望成长中心了"
+  },
+  {
+    "id": "msg-lin-liushu-007",
+    "threadId": "thread-lin-liushu-wechat",
+    "direction": "received",
+    "authorCharacterId": "char-liushu",
+    "timestamp": "2026-03-13T15:30:00+08:00",
+    "kind": "text",
+    "text": "别去那地方"
+  }
+]

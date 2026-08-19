@@ -1,0 +1,99 @@
+{
+  "$schema": "self-described/writer-phone-story-call-log-v1",
+  "$description": "电话App通话记录（互动设计 §一/§三/§四）。CallRecord 引用 characterId 或电话号码字面；'scriptId' 指向 call-scripts.json 中可回放的通话脚本（仅有人工应答的复杂通话才有）。'relatedChapterId' 标记首次出现章节。文案 agent 不写 registersClueId/triggersEvidenceId，留空由 level-designer phase3 回填。",
+  "records": [
+    {
+      "id": "call-li-missed-mobile",
+      "contactCharacterId": "char-liqiaorui",
+      "displayNumber": "李桥瑞（手机）",
+      "direction": "outgoing",
+      "status": "no-answer",
+      "statusText": "对方手机可能不在身边",
+      "calledAt": "2026-03-13T15:00:00+08:00",
+      "durationSec": 0,
+      "relatedChapterId": "ch-prologue",
+      "scriptId": null,
+      "comment": "序章玩家尝试给李桥瑞打电话，无人接听（互动设计 §三.1）。"
+    },
+    {
+      "id": "call-li-missed-qq",
+      "contactCharacterId": "char-liqiaorui",
+      "displayNumber": "李桥瑞（QQ电话）",
+      "direction": "outgoing",
+      "status": "no-answer",
+      "statusText": "对方不在线",
+      "calledAt": "2026-03-13T15:05:00+08:00",
+      "durationSec": 0,
+      "relatedChapterId": "ch-prologue",
+      "scriptId": null,
+      "comment": "QQ电话也无人接听（互动设计 §三.1，信息架构 §2.6）。"
+    },
+    {
+      "id": "call-yan-missed-qq",
+      "contactCharacterId": "char-yanxinze",
+      "displayNumber": "闫欣泽（QQ电话）",
+      "direction": "outgoing",
+      "status": "no-answer",
+      "statusText": "对方不在线",
+      "calledAt": "2026-03-13T14:30:00+08:00",
+      "durationSec": 0,
+      "relatedChapterId": "ch-1",
+      "scriptId": null,
+      "comment": "玩家可通过李桥瑞QQ联系闫欣泽QQ电话，无人接听，呼应 QQ 聊天 01:58 后失联。"
+    },
+    {
+      "id": "call-wangshufen-answered",
+      "contactCharacterId": "char-wangshufen",
+      "displayNumber": "王老师（班主任）",
+      "direction": "outgoing",
+      "status": "answered",
+      "statusText": "已接通",
+      "calledAt": "2026-03-13T15:10:00+08:00",
+      "durationSec": 42,
+      "relatedChapterId": "ch-prologue",
+      "scriptId": "call-script-wangshufen-lie",
+      "comment": "电话追问李桥瑞去向（互动设计 §一映射表：班主任谎称已回家）。"
+    },
+    {
+      "id": "call-liushu-unanswered",
+      "contactCharacterId": "char-liushu",
+      "displayNumber": "刘叔（宿管）",
+      "direction": "outgoing",
+      "status": "no-answer",
+      "statusText": "无人接听，转短信",
+      "calledAt": "2026-03-13T15:34:00+08:00",
+      "durationSec": 0,
+      "relatedChapterId": "ch-prologue",
+      "scriptId": null,
+      "comment": "宿管刘叔电话无人接听（信息架构 §2.6），玩家转而走短信往返（见 sms.json sms-liushu-exchange-*）。"
+    },
+    {
+      "id": "call-report-police",
+      "contactCharacterId": "char-dispatcher",
+      "displayNumber": "0731-88888888",
+      "rawNumber": "073188888888",
+      "direction": "outgoing",
+      "status": "answered",
+      "statusText": "已接通",
+      "calledAt": "2026-03-13T18:38:00+08:00",
+      "durationSec": 180,
+      "relatedChapterId": "ch-finale",
+      "scriptId": "call-script-dispatcher-report",
+      "comment": "终章拨打举报电话0731-88888888（互动设计 §三.4、剧情大纲 终章、CLAUDE.md §6.5）。号码与88888888红鲱鱼暗合后8位。通话脚本见 call-scripts.json。"
+    },
+    {
+      "id": "call-zhangqiang-threat-incoming",
+      "contactCharacterId": null,
+      "displayNumber": "未知号码",
+      "rawNumber": "private",
+      "direction": "incoming",
+      "status": "declined-auto",
+      "statusText": "已挂断（威胁来电，自动拒接）",
+      "calledAt": "2026-03-13T18:35:00+08:00",
+      "durationSec": 6,
+      "relatedChapterId": "ch-5",
+      "scriptId": "call-script-zhangqiang-threat-incoming",
+      "comment": "倒计时阶段高频来电（风险值满或追问张强后触发），手机自动拒接并震屏红边。仅6秒静默未接，强化压迫感。"
+    }
+  ]
+}

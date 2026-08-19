@@ -1,0 +1,61 @@
+{
+  "id": "page-lvzhong-agreement",
+  "siteId": "site-lvzhong",
+  "url": "https://www.lvzhong-edu.cn/internal/agreement/",
+  "title": "绿草中学 — 合作协议",
+  "accessibility": {
+    "kind": "loginRequired",
+    "puzzleId": "puzzle-lvzhong-internal"
+  },
+  "blocks": [
+    {
+      "type": "callout",
+      "variant": "info",
+      "text": "《绿草中学与新希望成长中心合作协议》"
+    },
+    {
+      "type": "paragraph",
+      "text": "合同编号：XH2026-0312"
+    },
+    {
+      "type": "image",
+      "assetId": "scan-agreement-xh2026-0312",
+      "caption": "合作协议扫描件（含签字盖章）",
+      "zoomable": true
+    },
+    {
+      "type": "paragraph",
+      "text": "协议要点摘录："
+    },
+    {
+      "type": "table",
+      "headers": [
+        "序"
+      ],
+      "rows": [
+        [
+          "1",
+          "合作内容：绿草中学向新希望成长中心推荐“需行为矫正”的学生，每学期招生名额由双方协商。"
+        ],
+        [
+          "2",
+          "费用分成：每推荐一名学生，新希望成长中心向绿草中学返款人民币20万元。"
+        ],
+        [
+          "3",
+          "三方合作：新希望成长中心另与山河医科大学生物能源与疾病控制国家重点实验室开展联合项目，绿草中学知悉并配合。"
+        ],
+        [
+          "4",
+          "本协议自2026年3月12日起生效，有效期三年。"
+        ]
+      ]
+    },
+    {
+      "type": "callout",
+      "variant": "danger",
+      "text": "协议原件扫描件清楚显示“每推荐一人返20万”条款，以及与“实验室”的三方合作表述。"
+    }
+  ],
+  "containsAssetId": "scan-agreement-xh2026-0312"
+}

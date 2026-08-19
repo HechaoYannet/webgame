@@ -1,0 +1,11 @@
+[
+  {
+    "id": "msg-lin-dad-001",
+    "threadId": "thread-lin-dad-wechat",
+    "direction": "received",
+    "authorCharacterId": "char-dad",
+    "timestamp": "2026-03-01T20:00:00+08:00",
+    "kind": "text",
+    "text": "生活费打过去了，省着点花，别乱充游戏"
+  }
+]

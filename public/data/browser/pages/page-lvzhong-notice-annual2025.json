@@ -1,0 +1,20 @@
+{
+  "id": "page-lvzhong-notice-annual2025",
+  "siteId": "site-lvzhong",
+  "url": "https://www.lvzhong-edu.cn/notice/annual2025/",
+  "title": "绿草中学2025年度工作总结",
+  "accessibility": {
+    "kind": "public"
+  },
+  "blocks": [
+    {
+      "type": "callout",
+      "variant": "info",
+      "text": "绿草中学2025年度工作总结"
+    },
+    {
+      "type": "paragraph",
+      "text": "2025年我校获评市级“平安校园”称号，高考升学率稳步提升，校际合作成果丰硕（含与新希望成长中心、山河医科大学等机构的多项合作）。"
+    }
+  ]
+}

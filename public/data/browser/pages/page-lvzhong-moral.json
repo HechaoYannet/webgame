@@ -1,0 +1,33 @@
+{
+  "id": "page-lvzhong-moral",
+  "siteId": "site-lvzhong",
+  "url": "https://www.lvzhong-edu.cn/moral/",
+  "title": "绿草中学 — 德育之窗",
+  "accessibility": {
+    "kind": "public"
+  },
+  "blocks": [
+    {
+      "type": "nav",
+      "links": [
+        {
+          "label": "首页",
+          "pageId": "page-lvzhong-home"
+        }
+      ]
+    },
+    {
+      "type": "callout",
+      "variant": "info",
+      "text": "德育之窗"
+    },
+    {
+      "type": "paragraph",
+      "text": "《关于组织观看警示教育片的通知》"
+    },
+    {
+      "type": "paragraph",
+      "text": "《我校开展“远离手机，健康生活”主题班会》"
+    }
+  ]
+}

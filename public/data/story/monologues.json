@@ -1,0 +1,124 @@
+[
+  {
+    "id": "mono-prologue",
+    "chapterId": "ch-prologue",
+    "title": "失联的周五",
+    "trigger": {
+      "kind": "chapterEntered",
+      "chapterId": "ch-prologue"
+    },
+    "lines": [
+      "周末。爸妈不在家。",
+      "李桥瑞昨晚说“今晚要干件大事”，让我帮他登QQ——密码是“那个日子”。",
+      "今天一天都没看见他，微信不回，电话不接。",
+      "刘叔抓走他之后到底发生了什么？班主任又说“家长接走了”，可他妈根本没去接。",
+      "我得自己查清楚。先从他的QQ开始。"
+    ],
+    "onlyOnce": true,
+    "comment": "序幕开场（剧情大纲 序幕、chapters.json introMonologueId mono-prologue）。"
+  },
+  {
+    "id": "mono-ch1",
+    "chapterId": "ch-1",
+    "title": "QQ里的秘密计划",
+    "trigger": {
+      "kind": "chapterEntered",
+      "chapterId": "ch-1"
+    },
+    "lines": [
+      "原来他们早有计划。",
+      "李桥瑞和闫欣泽从一开始就在查张强——官网里那个隐藏入口、校长办公室的合同、还有思过室那条潜入路线。",
+      "3月13号凌晨一点五十八分，闫欣泽发了最后一条消息——“张强发现我了，快”——然后就没声了。",
+      "两个人，一夜之间，全不见了。",
+      "他们给我留了QQ，是想让我接着查下去。闫欣泽在聊天里提到绿中官网有个隐藏入口，我也去试试。"
+    ],
+    "onlyOnce": true,
+    "comment": "第一章开场（chapters.json introMonologueId mono-ch1）。"
+  },
+  {
+    "id": "mono-ch2",
+    "chapterId": "ch-2",
+    "title": "藏起来的后门",
+    "trigger": {
+      "kind": "chapterEntered",
+      "chapterId": "ch-2"
+    },
+    "lines": [
+      "通知公告的URL后面加上 /qiangzhang，还真有个隐藏登录页。",
+      "账号是 zhangqiang。密码……校长寄语那句“先挣一个亿”一直在脑子里转。",
+      "进去之后，应该能看到他和那家“新希望成长中心”到底签了什么。"
+    ],
+    "onlyOnce": true,
+    "comment": "第二章开场（chapters.json introMonologueId mono-ch2）。"
+  },
+  {
+    "id": "mono-ch3",
+    "chapterId": "ch-3",
+    "title": "张强和陈建国是一伙的",
+    "trigger": {
+      "kind": "chapterEntered",
+      "chapterId": "ch-3"
+    },
+    "lines": [
+      "新希望成长中心——张强开的。合作单位里赫然写着山河医科大那间实验室。",
+      "天眼查一查，陈建国是实验室主任，也是新希望的股东。",
+      "一个开学校，一个搞科研，俩人还合资做生意，输送的“学生”去了哪儿……",
+      "我得看看那家实验室到底在研究什么。"
+    ],
+    "onlyOnce": true,
+    "comment": "第三章开场（chapters.json introMonologueId mono-ch3）。"
+  },
+  {
+    "id": "mono-ch4",
+    "chapterId": "ch-4",
+    "title": "人体实验的真相",
+    "trigger": {
+      "kind": "chapterEntered",
+      "chapterId": "ch-4"
+    },
+    "lines": [
+      "论文写的是从“源石结晶”里提取能源——实验对象，是青少年。",
+      "伦理审批那一栏是空的。",
+      "陈建国和张强，把戒网瘾学校的孩子当成了实验材料。",
+      "现在就差最后一步——闯进实验室后台，看看李桥瑞和闫欣泽到底在不在那份名单上。"
+    ],
+    "onlyOnce": true,
+    "comment": "第四章开场（chapters.json introMonologueId mono-ch4）。"
+  },
+  {
+    "id": "mono-ch5",
+    "chapterId": "ch-5",
+    "title": "经费报告与倒计时",
+    "trigger": {
+      "kind": "chapterEntered",
+      "chapterId": "ch-5"
+    },
+    "lines": [
+      "后台的经费报告里，白纸黑字写着——李桥瑞，男，17岁，3月13日入组；闫欣泽，男，17岁，3月13日入组。",
+      "就在我打开这份报告的瞬间，手机收到一条陌生短信：“教官已经出发了。”",
+      "门铃响了。画面里那个光头壮汉，一直在按我家门铃。",
+      "三分钟。我得在三分钟里把证据整理完，拨通那个举报电话。",
+      "0731-88888888。求求了，一定要打通。"
+    ],
+    "onlyOnce": true,
+    "comment": "第五章开场（chapters.json introMonologueId mono-ch5）——倒计时180秒开始。"
+  },
+  {
+    "id": "mono-finale",
+    "chapterId": "ch-finale",
+    "title": "必须赶在刀哥破门前",
+    "trigger": {
+      "kind": "chapterEntered",
+      "chapterId": "ch-finale"
+    },
+    "lines": [
+      "门铃一直在响，那个光头在砸门。",
+      "不能慌。证据、证据、证据——聊天记录、协议、新闻、论文、那份把李桥瑞和闫欣泽写进受试者名单的报告。",
+      "少了一份都不行。凑齐五项关键证据，就给举报中心发过去。",
+      "必须赶在刀哥破门前，把电话拨出去。",
+      "再晚一步，下一个消失的，就是我。"
+    ],
+    "onlyOnce": true,
+    "comment": "终章开场（chapters.json introMonologueId mono-finale）——3分钟内勾选证据+拨号。"
+  }
+]

@@ -1,0 +1,109 @@
+[
+  {
+    "id": "m-yanlin-sys-1",
+    "threadId": "thread-yan-lin-qq",
+    "direction": "system",
+    "timestamp": "2026-03-12T23:40:00+08:00",
+    "kind": "system",
+    "text": "以下为闫欣泽转存给李桥瑞的“闫欣泽 ↔ 林哲”聊天记录截图，仅供李桥瑞参考：林哲一直被蒙在鼓里。"
+  },
+  {
+    "id": "m-yanlin-0311-1",
+    "threadId": "thread-yan-lin-qq",
+    "direction": "received",
+    "authorCharacterId": "char-linzhe",
+    "timestamp": "2026-03-11T20:10:00+08:00",
+    "kind": "text",
+    "text": "欣泽，你最近在忙啥"
+  },
+  {
+    "id": "m-yanlin-0311-2",
+    "threadId": "thread-yan-lin-qq",
+    "direction": "received",
+    "authorCharacterId": "char-yanxinze",
+    "timestamp": "2026-03-11T20:10:30+08:00",
+    "kind": "text",
+    "text": "没什么"
+  },
+  {
+    "id": "m-yanlin-0311-3",
+    "threadId": "thread-yan-lin-qq",
+    "direction": "received",
+    "authorCharacterId": "char-linzhe",
+    "timestamp": "2026-03-11T20:11:00+08:00",
+    "kind": "text",
+    "text": "李桥瑞最近怪怪的，你知道咋回事吗"
+  },
+  {
+    "id": "m-yanlin-0311-4",
+    "threadId": "thread-yan-lin-qq",
+    "direction": "received",
+    "authorCharacterId": "char-yanxinze",
+    "timestamp": "2026-03-11T20:11:30+08:00",
+    "kind": "text",
+    "text": "可能游戏打多了吧"
+  },
+  {
+    "id": "m-yanlin-0311-5",
+    "threadId": "thread-yan-lin-qq",
+    "direction": "received",
+    "authorCharacterId": "char-linzhe",
+    "timestamp": "2026-03-11T20:12:00+08:00",
+    "kind": "text",
+    "text": "他天天念叨终末地，怕不是魔怔了"
+  },
+  {
+    "id": "m-yanlin-0311-6",
+    "threadId": "thread-yan-lin-qq",
+    "direction": "received",
+    "authorCharacterId": "char-yanxinze",
+    "timestamp": "2026-03-11T20:12:30+08:00",
+    "kind": "text",
+    "text": "也许吧"
+  },
+  {
+    "id": "m-yanlin-0312-1",
+    "threadId": "thread-yan-lin-qq",
+    "direction": "received",
+    "authorCharacterId": "char-linzhe",
+    "timestamp": "2026-03-12T22:50:00+08:00",
+    "kind": "text",
+    "text": "今晚李桥瑞说要干大事，你知道他要干嘛吗"
+  },
+  {
+    "id": "m-yanlin-0312-2",
+    "threadId": "thread-yan-lin-qq",
+    "direction": "received",
+    "authorCharacterId": "char-yanxinze",
+    "timestamp": "2026-03-12T22:50:30+08:00",
+    "kind": "text",
+    "text": "不知道"
+  },
+  {
+    "id": "m-yanlin-0312-3",
+    "threadId": "thread-yan-lin-qq",
+    "direction": "received",
+    "authorCharacterId": "char-linzhe",
+    "timestamp": "2026-03-12T22:51:00+08:00",
+    "kind": "text",
+    "text": "你俩是不是瞒着我什么"
+  },
+  {
+    "id": "m-yanlin-0312-4",
+    "threadId": "thread-yan-lin-qq",
+    "direction": "received",
+    "authorCharacterId": "char-yanxinze",
+    "timestamp": "2026-03-12T22:51:30+08:00",
+    "kind": "text",
+    "text": "没有"
+  },
+  {
+    "id": "m-yanlin-0312-5",
+    "threadId": "thread-yan-lin-qq",
+    "direction": "received",
+    "authorCharacterId": "char-linzhe",
+    "timestamp": "2026-03-12T22:52:00+08:00",
+    "kind": "text",
+    "text": "行吧"
+  }
+]

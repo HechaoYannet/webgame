@@ -1,0 +1,41 @@
+{
+  "id": "page-xinxwang-admission",
+  "siteId": "site-xinxwang",
+  "url": "https://www.xinxwang-center.com/admission/",
+  "title": "新希望成长中心 — 招生信息",
+  "accessibility": {
+    "kind": "public"
+  },
+  "blocks": [
+    {
+      "type": "nav",
+      "links": [
+        {
+          "label": "首页",
+          "pageId": "page-xinxwang-home"
+        }
+      ]
+    },
+    {
+      "type": "callout",
+      "variant": "info",
+      "text": "2026年春季招生简章"
+    },
+    {
+      "type": "paragraph",
+      "text": "招生对象：12-18岁青少年，存在“网瘾”“叛逆”“厌学”等问题，经家长自愿申请入营。"
+    },
+    {
+      "type": "paragraph",
+      "text": "收费标准：一学期人民币20万元（含食宿、训练、心理辅导）。名额有限，先到先得。"
+    },
+    {
+      "type": "paragraph",
+      "text": "训练周期：每期3-6个月，封闭式管理，期间家长可申请探视（须经审批）。"
+    },
+    {
+      "type": "paragraph",
+      "text": "转介通道：与绿草中学等多所学校建立学生转介合作，由校方推荐入营可享优先名额。"
+    }
+  ]
+}

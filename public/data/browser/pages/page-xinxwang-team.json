@@ -1,0 +1,61 @@
+{
+  "id": "page-xinxwang-team",
+  "siteId": "site-xinxwang",
+  "url": "https://www.xinxwang-center.com/team/",
+  "title": "新希望成长中心 — 教师团队",
+  "accessibility": {
+    "kind": "public"
+  },
+  "blocks": [
+    {
+      "type": "nav",
+      "links": [
+        {
+          "label": "首页",
+          "pageId": "page-xinxwang-home"
+        }
+      ]
+    },
+    {
+      "type": "callout",
+      "variant": "info",
+      "text": "教师团队"
+    },
+    {
+      "type": "table",
+      "headers": [
+        "姓名",
+        "职务",
+        "简介"
+      ],
+      "rows": [
+        [
+          "张强",
+          "校长/创始人",
+          "资深教育工作者，绿草中学校长"
+        ],
+        [
+          "李刀（刀哥）",
+          "总教官",
+          "退伍军人，负责学员体能训练与日常管理"
+        ],
+        [
+          "王教官",
+          "教官",
+          "心理行为训练"
+        ],
+        [
+          "陈教官",
+          "教官",
+          "生活管理"
+        ]
+      ]
+    },
+    {
+      "type": "image",
+      "assetId": "photo-dao-bald",
+      "caption": "李刀（刀哥）教官（光头壮汉 · 中心供图）",
+      "zoomable": true
+    }
+  ]
+}

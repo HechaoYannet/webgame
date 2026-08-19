@@ -1,0 +1,337 @@
+[
+  {
+    "id": "msg-yiban-001",
+    "threadId": "thread-gaoer-yiban-wechat",
+    "direction": "received",
+    "authorCharacterId": "char-zhouming",
+    "timestamp": "2026-03-11T20:05:00+08:00",
+    "kind": "text",
+    "text": "明天放假，有人去网吧吗"
+  },
+  {
+    "id": "msg-yiban-002",
+    "threadId": "thread-gaoer-yiban-wechat",
+    "direction": "received",
+    "authorCharacterId": "char-chenyutong",
+    "timestamp": "2026-03-11T20:06:00+08:00",
+    "kind": "text",
+    "text": "我要回家，我妈说给我做红烧肉"
+  },
+  {
+    "id": "msg-yiban-003",
+    "threadId": "thread-gaoer-yiban-wechat",
+    "direction": "received",
+    "authorCharacterId": "char-zhaotianyu",
+    "timestamp": "2026-03-11T20:07:00+08:00",
+    "kind": "text",
+    "text": "@李桥瑞 你终末地资格借我玩一下",
+    "registersClueId": "clue-endfield-game-discussion"
+  },
+  {
+    "id": "msg-yiban-004",
+    "threadId": "thread-gaoer-yiban-wechat",
+    "direction": "received",
+    "authorCharacterId": "char-liqiaorui",
+    "timestamp": "2026-03-11T20:08:00+08:00",
+    "kind": "text",
+    "text": "不行，我自己要玩"
+  },
+  {
+    "id": "msg-yiban-005",
+    "threadId": "thread-gaoer-yiban-wechat",
+    "direction": "received",
+    "authorCharacterId": "char-zhouming",
+    "timestamp": "2026-03-11T20:08:30+08:00",
+    "kind": "text",
+    "text": "小气鬼"
+  },
+  {
+    "id": "msg-yiban-006",
+    "threadId": "thread-gaoer-yiban-wechat",
+    "direction": "received",
+    "authorCharacterId": "char-wangshufen",
+    "timestamp": "2026-03-11T20:30:00+08:00",
+    "kind": "text",
+    "text": "明天放假，大家注意安全，按时完成作业"
+  },
+  {
+    "id": "msg-yiban-007",
+    "threadId": "thread-gaoer-yiban-wechat",
+    "direction": "received",
+    "authorCharacterId": "char-zhaotianyu",
+    "timestamp": "2026-03-11T20:31:00+08:00",
+    "kind": "text",
+    "text": "收到"
+  },
+  {
+    "id": "msg-yiban-008",
+    "threadId": "thread-gaoer-yiban-wechat",
+    "direction": "received",
+    "authorCharacterId": "char-chenyutong",
+    "timestamp": "2026-03-11T20:31:30+08:00",
+    "kind": "text",
+    "text": "收到"
+  },
+  {
+    "id": "msg-yiban-009",
+    "threadId": "thread-gaoer-yiban-wechat",
+    "direction": "received",
+    "authorCharacterId": "char-liqiaorui",
+    "timestamp": "2026-03-12T21:10:00+08:00",
+    "kind": "text",
+    "text": "今晚有没有人一起看终末地直播"
+  },
+  {
+    "id": "msg-yiban-010",
+    "threadId": "thread-gaoer-yiban-wechat",
+    "direction": "received",
+    "authorCharacterId": "char-zhouming",
+    "timestamp": "2026-03-12T21:11:00+08:00",
+    "kind": "text",
+    "text": "你疯了？宿管最近查得严"
+  },
+  {
+    "id": "msg-yiban-011",
+    "threadId": "thread-gaoer-yiban-wechat",
+    "direction": "received",
+    "authorCharacterId": "char-liqiaorui",
+    "timestamp": "2026-03-12T21:12:00+08:00",
+    "kind": "text",
+    "text": "我不信邪"
+  },
+  {
+    "id": "msg-yiban-012",
+    "threadId": "thread-gaoer-yiban-wechat",
+    "direction": "received",
+    "authorCharacterId": "char-zhaotianyu",
+    "timestamp": "2026-03-12T21:13:00+08:00",
+    "kind": "text",
+    "text": "你小心点，刘叔最近心情不好"
+  },
+  {
+    "id": "msg-yiban-013",
+    "threadId": "thread-gaoer-yiban-wechat",
+    "direction": "received",
+    "authorCharacterId": "char-liqiaorui",
+    "timestamp": "2026-03-12T21:14:00+08:00",
+    "kind": "text",
+    "text": "哈哈，我不怕"
+  },
+  {
+    "id": "msg-yiban-014",
+    "threadId": "thread-gaoer-yiban-wechat",
+    "direction": "received",
+    "authorCharacterId": "char-zhouming",
+    "timestamp": "2026-03-12T23:30:00+08:00",
+    "kind": "text",
+    "text": "卧槽，李桥瑞被刘叔抓了"
+  },
+  {
+    "id": "msg-yiban-015",
+    "threadId": "thread-gaoer-yiban-wechat",
+    "direction": "received",
+    "authorCharacterId": "char-chenyutong",
+    "timestamp": "2026-03-12T23:31:00+08:00",
+    "kind": "text",
+    "text": "啊？怎么回事"
+  },
+  {
+    "id": "msg-yiban-016",
+    "threadId": "thread-gaoer-yiban-wechat",
+    "direction": "received",
+    "authorCharacterId": "char-zhouming",
+    "timestamp": "2026-03-12T23:32:00+08:00",
+    "kind": "text",
+    "text": "他在宿舍用华为手表看小说，刘叔正好查寝"
+  },
+  {
+    "id": "msg-yiban-017",
+    "threadId": "thread-gaoer-yiban-wechat",
+    "direction": "received",
+    "authorCharacterId": "char-zhaotianyu",
+    "timestamp": "2026-03-12T23:33:00+08:00",
+    "kind": "text",
+    "text": "惨"
+  },
+  {
+    "id": "msg-yiban-018",
+    "threadId": "thread-gaoer-yiban-wechat",
+    "direction": "received",
+    "authorCharacterId": "char-zhouming",
+    "timestamp": "2026-03-12T23:34:00+08:00",
+    "kind": "text",
+    "text": "刘叔说要带他去思过室"
+  },
+  {
+    "id": "msg-yiban-019",
+    "threadId": "thread-gaoer-yiban-wechat",
+    "direction": "received",
+    "authorCharacterId": "char-chenyutong",
+    "timestamp": "2026-03-12T23:35:00+08:00",
+    "kind": "text",
+    "text": "李桥瑞胆子真大"
+  },
+  {
+    "id": "msg-yiban-020",
+    "threadId": "thread-gaoer-yiban-wechat",
+    "direction": "received",
+    "authorCharacterId": "char-wangshufen",
+    "timestamp": "2026-03-12T23:40:00+08:00",
+    "kind": "text",
+    "text": "都别讨论了，睡觉！"
+  },
+  {
+    "id": "msg-yiban-021",
+    "threadId": "thread-gaoer-yiban-wechat",
+    "direction": "received",
+    "authorCharacterId": "char-zhouming",
+    "timestamp": "2026-03-12T23:41:00+08:00",
+    "kind": "text",
+    "text": "好的老师"
+  },
+  {
+    "id": "msg-yiban-022",
+    "threadId": "thread-gaoer-yiban-wechat",
+    "direction": "received",
+    "authorCharacterId": "char-chenyutong",
+    "timestamp": "2026-03-13T08:00:00+08:00",
+    "kind": "text",
+    "text": "今天谁看到李桥瑞了？"
+  },
+  {
+    "id": "msg-yiban-023",
+    "threadId": "thread-gaoer-yiban-wechat",
+    "direction": "received",
+    "authorCharacterId": "char-zhouming",
+    "timestamp": "2026-03-13T08:01:00+08:00",
+    "kind": "text",
+    "text": "没有啊，他昨晚被刘叔带走后就没回来"
+  },
+  {
+    "id": "msg-yiban-024",
+    "threadId": "thread-gaoer-yiban-wechat",
+    "direction": "received",
+    "authorCharacterId": "char-zhaotianyu",
+    "timestamp": "2026-03-13T08:02:00+08:00",
+    "kind": "text",
+    "text": "是不是被直接叫家长了？"
+  },
+  {
+    "id": "msg-yiban-025",
+    "threadId": "thread-gaoer-yiban-wechat",
+    "direction": "received",
+    "authorCharacterId": "char-wangshufen",
+    "timestamp": "2026-03-13T08:30:00+08:00",
+    "kind": "text",
+    "text": "李桥瑞昨晚已经被家长接回家，大家别猜了"
+  },
+  {
+    "id": "msg-yiban-026",
+    "threadId": "thread-gaoer-yiban-wechat",
+    "direction": "received",
+    "authorCharacterId": "char-zhouming",
+    "timestamp": "2026-03-13T08:31:00+08:00",
+    "kind": "text",
+    "text": "好的"
+  },
+  {
+    "id": "msg-yiban-027",
+    "threadId": "thread-gaoer-yiban-wechat",
+    "direction": "received",
+    "authorCharacterId": "char-chenyutong",
+    "timestamp": "2026-03-13T09:15:00+08:00",
+    "kind": "text",
+    "text": "我早上好像看到一辆黑色面包车从学校后门开出去",
+    "registersClueId": "clue-class-group-panelvan"
+  },
+  {
+    "id": "msg-yiban-028",
+    "threadId": "thread-gaoer-yiban-wechat",
+    "direction": "received",
+    "authorCharacterId": "char-zhaotianyu",
+    "timestamp": "2026-03-13T09:16:00+08:00",
+    "kind": "text",
+    "text": "面包车？什么面包车？"
+  },
+  {
+    "id": "msg-yiban-029",
+    "threadId": "thread-gaoer-yiban-wechat",
+    "direction": "received",
+    "authorCharacterId": "char-chenyutong",
+    "timestamp": "2026-03-13T09:17:00+08:00",
+    "kind": "text",
+    "text": "就一辆黑色面包车，车窗全黑，没看清楚"
+  },
+  {
+    "id": "msg-yiban-030",
+    "threadId": "thread-gaoer-yiban-wechat",
+    "direction": "received",
+    "authorCharacterId": "char-zhouming",
+    "timestamp": "2026-03-13T09:18:00+08:00",
+    "kind": "text",
+    "text": "可能学校买啥东西吧"
+  },
+  {
+    "id": "msg-yiban-031",
+    "threadId": "thread-gaoer-yiban-wechat",
+    "direction": "received",
+    "authorCharacterId": "char-chenyutong",
+    "timestamp": "2026-03-13T09:30:00+08:00",
+    "kind": "text",
+    "text": "@王老师 老师，闫欣泽今天也没来拿行李，我联系不上他"
+  },
+  {
+    "id": "msg-yiban-032",
+    "threadId": "thread-gaoer-yiban-wechat",
+    "direction": "received",
+    "authorCharacterId": "char-wangshufen",
+    "timestamp": "2026-03-13T09:40:00+08:00",
+    "kind": "text",
+    "text": "@陈雨桐 别担心，闫欣泽家里有事，已经请假了"
+  },
+  {
+    "id": "msg-yiban-033",
+    "threadId": "thread-gaoer-yiban-wechat",
+    "direction": "received",
+    "authorCharacterId": "char-chenyutong",
+    "timestamp": "2026-03-13T09:41:00+08:00",
+    "kind": "text",
+    "text": "哦好"
+  },
+  {
+    "id": "msg-yiban-034",
+    "threadId": "thread-gaoer-yiban-wechat",
+    "direction": "received",
+    "authorCharacterId": "char-zhouming",
+    "timestamp": "2026-03-13T14:20:00+08:00",
+    "kind": "text",
+    "text": "有人知道李桥瑞家在哪吗？我想去找他"
+  },
+  {
+    "id": "msg-yiban-035",
+    "threadId": "thread-gaoer-yiban-wechat",
+    "direction": "received",
+    "authorCharacterId": "char-chenyutong",
+    "timestamp": "2026-03-13T14:21:00+08:00",
+    "kind": "text",
+    "text": "不知道，他没说过"
+  },
+  {
+    "id": "msg-yiban-036",
+    "threadId": "thread-gaoer-yiban-wechat",
+    "direction": "received",
+    "authorCharacterId": "char-zhaotianyu",
+    "timestamp": "2026-03-13T14:22:00+08:00",
+    "kind": "text",
+    "text": "你找他有啥事？"
+  },
+  {
+    "id": "msg-yiban-037",
+    "threadId": "thread-gaoer-yiban-wechat",
+    "direction": "received",
+    "authorCharacterId": "char-zhouming",
+    "timestamp": "2026-03-13T14:30:00+08:00",
+    "kind": "text",
+    "text": "他借我50块钱没还"
+  }
+]

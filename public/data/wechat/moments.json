@@ -1,0 +1,151 @@
+[
+  {
+    "id": "moment-li-0311-endfield",
+    "authorCharacterId": "char-liqiaorui",
+    "createdAt": "2026-03-11T20:15:00+08:00",
+    "text": "兄弟们，终末地见！",
+    "assetIds": ["moments-li-0311-endfield-screenshot"],
+    "link": {
+      "title": "明日方舟：终末地 全面测试资格公告",
+      "url": "https://endfield.hypergryph.com/news/1181",
+      "pageId": "page-endfield-news"
+    },
+    "likes": ["char-yanxinze", "char-zhaotianyu", "char-zhouming"],
+    "comments": [
+      {
+        "authorCharacterId": "char-zhaotianyu",
+        "text": "借我玩玩呗",
+        "createdAt": "2026-03-11T20:20:00+08:00"
+      },
+      {
+        "authorCharacterId": "char-yanxinze",
+        "text": "3.28见",
+        "createdAt": "2026-03-11T20:25:00+08:00"
+      }
+    ],
+    "starValue": 5,
+    "registersClueId": "clue-li-moments-endfield"
+  },
+  {
+    "id": "moment-li-0310-article",
+    "authorCharacterId": "char-liqiaorui",
+    "createdAt": "2026-03-10T12:00:00+08:00",
+    "text": "",
+    "link": {
+      "title": "湖南某中学被曝将学生送入戒网瘾学校",
+      "pageId": "page-news-3-missing"
+    },
+    "likes": ["char-yanxinze"],
+    "comments": [],
+    "starValue": 4
+  },
+  {
+    "id": "moment-li-0309-wall",
+    "authorCharacterId": "char-liqiaorui",
+    "createdAt": "2026-03-09T21:30:00+08:00",
+    "text": "这地方晚上真安静",
+    "assetIds": ["moments-li-0309-wall-key"],
+    "likes": ["char-yanxinze"],
+    "comments": [
+      {
+        "authorCharacterId": "char-yanxinze",
+        "text": "左下角那串钥匙是我的",
+        "createdAt": "2026-03-09T21:35:00+08:00"
+      }
+    ],
+    "starValue": 3
+  },
+  {
+    "id": "moment-li-0305-gacha",
+    "authorCharacterId": "char-liqiaorui",
+    "createdAt": "2026-03-05T19:00:00+08:00",
+    "text": "十连出货，欧气满满",
+    "assetIds": ["moments-li-0305-gacha"],
+    "likes": ["char-zhaotianyu"],
+    "comments": [],
+    "starValue": 0
+  },
+  {
+    "id": "moment-li-0301-certificate",
+    "authorCharacterId": "char-liqiaorui",
+    "createdAt": "2026-03-01T18:20:00+08:00",
+    "text": "今天在校长办公室看到一张很奇怪的证书",
+    "assetIds": ["moments-li-0301-certificate-blur"],
+    "likes": [],
+    "comments": [],
+    "starValue": 3
+  },
+  {
+    "id": "moment-li-0225-game",
+    "authorCharacterId": "char-liqiaorui",
+    "createdAt": "2026-02-25T22:00:00+08:00",
+    "text": "今晚上分",
+    "assetIds": ["moments-li-0225-game"],
+    "likes": ["char-zhaotianyu"],
+    "comments": [],
+    "starValue": 0
+  },
+  {
+    "id": "moment-li-0214-joke",
+    "authorCharacterId": "char-liqiaorui",
+    "createdAt": "2026-02-14T13:00:00+08:00",
+    "text": "情人节？不存在的，只有明日方舟爱我",
+    "assetIds": [],
+    "likes": ["char-zhouming"],
+    "comments": [],
+    "starValue": 0
+  },
+  {
+    "id": "moment-li-0120-exam",
+    "authorCharacterId": "char-liqiaorui",
+    "createdAt": "2026-01-20T17:00:00+08:00",
+    "text": "期末考试结束，解放！",
+    "assetIds": [],
+    "likes": ["char-yanxinze", "char-zhouming"],
+    "comments": [],
+    "starValue": 0
+  },
+  {
+    "id": "moment-li-0101-newyear",
+    "authorCharacterId": "char-liqiaorui",
+    "createdAt": "2026-01-01T00:05:00+08:00",
+    "text": "新年愿望：希望今年能考上好大学，兄弟们都平平安安",
+    "assetIds": [],
+    "likes": ["char-yanxinze", "char-linzhe"],
+    "comments": [],
+    "starValue": 0
+  },
+  {
+    "id": "moment-yan-0312-law",
+    "authorCharacterId": "char-yanxinze",
+    "createdAt": "2026-03-12T22:00:00+08:00",
+    "text": "有些事，总要有人去做",
+    "link": {
+      "title": "如何收集证据维权",
+      "pageId": "page-news-3-missing"
+    },
+    "likes": ["char-liqiaorui"],
+    "comments": [],
+    "starValue": 4
+  },
+  {
+    "id": "moment-yan-0308-map",
+    "authorCharacterId": "char-yanxinze",
+    "createdAt": "2026-03-08T16:00:00+08:00",
+    "text": "踩点完成",
+    "assetIds": ["moments-yan-0308-campus-map"],
+    "likes": ["char-liqiaorui"],
+    "comments": [],
+    "starValue": 3
+  },
+  {
+    "id": "moment-yan-0220-shanhe",
+    "authorCharacterId": "char-yanxinze",
+    "createdAt": "2026-02-20T15:30:00+08:00",
+    "text": "来这里查点东西",
+    "assetIds": ["moments-yan-0220-shanhe-gate"],
+    "likes": [],
+    "comments": [],
+    "starValue": 3
+  }
+]

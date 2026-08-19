@@ -1,0 +1,20 @@
+[
+  {
+    "id": "msg-lin-lim-001",
+    "threadId": "thread-lin-liqiaorui-mom-wechat",
+    "direction": "sent",
+    "authorCharacterId": "char-linzhe",
+    "timestamp": "2026-03-13T15:40:00+08:00",
+    "kind": "text",
+    "text": "阿姨，我是李桥瑞的同学林哲，您联系上桥瑞了吗？"
+  },
+  {
+    "id": "msg-lin-lim-002",
+    "threadId": "thread-lin-liqiaorui-mom-wechat",
+    "direction": "received",
+    "authorCharacterId": "char-liqiaorui-mom",
+    "timestamp": "2026-03-13T15:45:00+08:00",
+    "kind": "text",
+    "text": "没有，我打了一早上电话都关机。王老师非说被家长接走了，可我人在外地，根本没去接他！张校长让我私聊，到现在也没说出个所以然。"
+  }
+]

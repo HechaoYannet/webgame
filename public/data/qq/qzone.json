@@ -1,0 +1,122 @@
+[
+  {
+    "id": "qzone-li-0311-endfield",
+    "authorCharacterId": "char-liqiaorui",
+    "createdAt": "2026-03-11T16:35:00+08:00",
+    "text": "兄弟们，终末地见！",
+    "assetIds": ["qzone-li-0311-endfield-img"],
+    "link": {
+      "title": "明日方舟：终末地 全面测试资格",
+      "url": "https://endfield.hypergryph.com/news/1181",
+      "pageId": "page-lvzhong-notice"
+    },
+    "likes": ["char-yanxinze", "char-zhaotianyu", "char-zhouming"],
+    "comments": [
+      {
+        "authorCharacterId": "char-zhaotianyu",
+        "text": "借我玩玩",
+        "createdAt": "2026-03-11T17:00:00+08:00"
+      },
+      {
+        "authorCharacterId": "char-chenyutong",
+        "text": "328公测见",
+        "createdAt": "2026-03-11T17:05:00+08:00"
+      }
+    ],
+    "starValue": 5
+  },
+  {
+    "id": "qzone-li-0309-backwall",
+    "authorCharacterId": "char-liqiaorui",
+    "createdAt": "2026-03-09T19:15:00+08:00",
+    "text": "这地方晚上真安静",
+    "assetIds": ["qzone-li-0309-backwall-img"],
+    "likes": ["char-yanxinze"],
+    "comments": [
+      {
+        "authorCharacterId": "char-yanxinze",
+        "text": "左下角那串钥匙是我的，捡回来了",
+        "createdAt": "2026-03-09T19:21:00+08:00"
+      }
+    ],
+    "starValue": 3
+  },
+  {
+    "id": "qzone-li-0220-article",
+    "authorCharacterId": "char-liqiaorui",
+    "createdAt": "2026-02-20T21:00:00+08:00",
+    "text": "细思极恐，这描述和咱学校也太像了",
+    "link": {
+      "title": "湖南某中学被曝将学生送入戒网瘾学校",
+      "pageId": "page-news-3-missing"
+    },
+    "likes": [],
+    "comments": [],
+    "starValue": 4
+  },
+  {
+    "id": "qzone-li-0101-newyear",
+    "authorCharacterId": "char-liqiaorui",
+    "createdAt": "2026-01-01T00:05:00+08:00",
+    "text": "新的一年，希望我和兄弟们都平平安安",
+    "likes": ["char-yanxinze", "char-linzhe"],
+    "comments": [],
+    "starValue": 0
+  },
+  {
+    "id": "qzone-li-202512-screenshot",
+    "authorCharacterId": "char-liqiaorui",
+    "createdAt": "2025-12-20T22:30:00+08:00",
+    "text": "终于抽出这个角色了",
+    "assetIds": ["qzone-li-202512-screenshot-img"],
+    "likes": ["char-zhaotianyu"],
+    "comments": [],
+    "starValue": 0
+  },
+  {
+    "id": "qzone-yan-0312-stand",
+    "authorCharacterId": "char-yanxinze",
+    "createdAt": "2026-03-12T22:00:00+08:00",
+    "text": "有些事，总要有人去做。",
+    "link": {
+      "title": "如何收集证据维权",
+      "pageId": "page-lvzhong-notice"
+    },
+    "likes": ["char-liqiaorui"],
+    "comments": [],
+    "starValue": 4
+  },
+  {
+    "id": "qzone-yan-0308-map",
+    "authorCharacterId": "char-yanxinze",
+    "createdAt": "2026-03-08T18:00:00+08:00",
+    "text": "手绘了一张校内路线图，记一下死角",
+    "assetIds": ["qzone-yan-0308-map-img"],
+    "likes": ["char-liqiaorui"],
+    "comments": [],
+    "starValue": 4
+  },
+  {
+    "id": "qzone-yan-0225-shanhe",
+    "authorCharacterId": "char-yanxinze",
+    "createdAt": "2026-02-25T15:00:00+08:00",
+    "text": "来这里查点东西",
+    "assetIds": ["qzone-yan-0225-shanhe-img"],
+    "likes": [],
+    "comments": [],
+    "starValue": 4
+  },
+  {
+    "id": "qzone-yan-0115-law",
+    "authorCharacterId": "char-yanxinze",
+    "createdAt": "2026-01-15T20:00:00+08:00",
+    "text": "普及点法律常识，年轻人得懂法",
+    "link": {
+      "title": "未成年人保护法常识问答",
+      "pageId": "page-lvzhong-notice"
+    },
+    "likes": ["char-liqiaorui"],
+    "comments": [],
+    "starValue": 1
+  }
+]

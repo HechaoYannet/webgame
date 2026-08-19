@@ -1,0 +1,24 @@
+{
+  "id": "page-shanhe-contact",
+  "siteId": "site-shanhe-med",
+  "url": "https://www.shanhe-med.cn/contact/",
+  "title": "山河医科大学 — 联系方式",
+  "accessibility": {
+    "kind": "public"
+  },
+  "blocks": [
+    {
+      "type": "callout",
+      "variant": "info",
+      "text": "联系方式"
+    },
+    {
+      "type": "paragraph",
+      "text": "实验室邮箱：lab@shanhe-med.cn"
+    },
+    {
+      "type": "paragraph",
+      "text": "地址：某省某市某区山河医科大学"
+    }
+  ]
+}

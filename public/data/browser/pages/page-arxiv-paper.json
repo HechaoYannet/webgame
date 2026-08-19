@@ -1,0 +1,74 @@
+{
+  "id": "page-arxiv-paper",
+  "siteId": "site-arxiv",
+  "url": "https://arxiv.shanhe-med.cn/abs/2026.0228.001",
+  "title": "[Preprint] Source Crystal Bioenergy Extraction and In Vivo Crystal Formation Mechanisms",
+  "accessibility": {
+    "kind": "public"
+  },
+  "blocks": [
+    {
+      "type": "nav",
+      "links": [
+        {
+          "label": "列表",
+          "pageId": "page-arxiv-list"
+        }
+      ]
+    },
+    {
+      "type": "callout",
+      "variant": "info",
+      "text": "Source Crystal Bioenergy Extraction and In Vivo Crystal Formation Mechanisms"
+    },
+    {
+      "type": "paragraph",
+      "text": "Authors: Chen Jianguo, et al. (Shanhe Medical University)"
+    },
+    {
+      "type": "paragraph",
+      "text": "基金号 / Funding: 2025YFC0123456（国家自然科学基金重大项目）"
+    },
+    {
+      "type": "paragraph",
+      "text": "发布时间 / Submitted: 2026-02-28"
+    },
+    {
+      "type": "paragraph",
+      "text": "关键词 / Keywords: bioenergy, crystal, adolescent, extraction"
+    },
+    {
+      "type": "paragraph",
+      "text": "▌ Abstract"
+    },
+    {
+      "type": "paragraph",
+      "text": "本研究探讨源石结晶在生物体内的生成机制及其能源提取可行性。我们设计了一套结晶诱导与能量采集协议，并在青少年受试者（adolescent subjects）群体中验证了体内结晶生成的可重复性。实验结果表明，经特定诱导后，受试者体内可生成可提取的源石结晶，单次提取能量达到预期量级。伦理审批栏暂留空，待补充。"
+    },
+    {
+      "type": "pdfViewer",
+      "assetId": "paper-source-crystal.pdf"
+    },
+    {
+      "type": "callout",
+      "variant": "info",
+      "text": "PDF下载后内容极为专业，难以直接阅读。可将PDF上传至微信“论文AI翻译解读”公众号获取通俗解读（触发 AI 解读，揭示实验室后台地址与密码线索）。"
+    },
+    {
+      "type": "paragraph",
+      "text": "▌ 评论区"
+    },
+    {
+      "type": "callout",
+      "variant": "info",
+      "text": "““这个实验伦理审查呢？为什么伦理审批栏是空的？受试者是青少年？”——匿名评论者 A”"
+    },
+    {
+      "type": "callout",
+      "variant": "info",
+      "text": "““样本量好小，不太可信，而且受试者来源没说清楚。”——匿名评论者 B”"
+    }
+  ],
+  "containsAssetId": "paper-source-crystal.pdf",
+  "registersClueId": "clue-paper-pdf"
+}

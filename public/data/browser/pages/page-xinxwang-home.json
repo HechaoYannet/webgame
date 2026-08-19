@@ -1,0 +1,62 @@
+{
+  "id": "page-xinxwang-home",
+  "siteId": "site-xinxwang",
+  "url": "https://www.xinxwang-center.com/",
+  "title": "新希望成长中心 — 改变孩子，从这里开始",
+  "accessibility": {
+    "kind": "public"
+  },
+  "blocks": [
+    {
+      "type": "hero",
+      "heading": "新希望成长中心",
+      "subheading": "改变孩子，从这里开始 · 长沙专业青少年行为矫正机构",
+      "imageAssetId": "xw-home-banner"
+    },
+    {
+      "type": "nav",
+      "links": [
+        {
+          "label": "首页",
+          "pageId": "page-xinxwang-home"
+        },
+        {
+          "label": "关于我们",
+          "pageId": "page-xinxwang-about"
+        },
+        {
+          "label": "招生信息",
+          "pageId": "page-xinxwang-admission"
+        },
+        {
+          "label": "成功案例",
+          "pageId": "page-xinxwang-cases"
+        },
+        {
+          "label": "合作单位",
+          "pageId": "page-xinxwang-cooperation"
+        },
+        {
+          "label": "新闻动态",
+          "pageId": "page-xinxwang-news"
+        },
+        {
+          "label": "教师团队",
+          "pageId": "page-xinxwang-team"
+        },
+        {
+          "label": "家长心声",
+          "pageId": "page-xinxwang-voices"
+        },
+        {
+          "label": "联系我们",
+          "pageId": "page-xinxwang-contact"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "text": "2005年成立于长沙，专注青少年行为矫正20年，帮助上千名“网瘾”“叛逆”少年重返正轨。"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "id": "page-shanhe-news-award",
+  "siteId": "site-shanhe-med",
+  "url": "https://www.shanhe-med.cn/news/energy-award/",
+  "title": "实验室获“能源创新奖”",
+  "accessibility": {
+    "kind": "linkedOnly",
+    "fromPageId": "page-shanhe-research"
+  },
+  "blocks": [
+    {
+      "type": "paragraph",
+      "text": "2026-02-10  来源：校报"
+    },
+    {
+      "type": "paragraph",
+      "text": "陈建国教授代表实验室领奖时表示：“我们利用特殊晶体材料解决能源问题，这项技术将为人类社会带来全新可能。”（报道未涉及实验对象来源与伦理审查）"
+    }
+  ]
+}

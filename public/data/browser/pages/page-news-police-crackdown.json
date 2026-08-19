@@ -1,0 +1,15 @@
+{
+  "id": "page-news-police-crackdown",
+  "siteId": "site-news",
+  "url": "https://news.hunan-news.cn/2026/01/20/police-crackdown.html",
+  "title": "湖南警方捣毁一非法人体实验窝点",
+  "accessibility": {
+    "kind": "public"
+  },
+  "blocks": [
+    {
+      "type": "paragraph",
+      "text": "2026-01-20 来源：社会新闻　湖南警方捣毁一处非法人体实验窝点，抓获嫌疑人若干。该案与本案无直接关联，但暗示此类犯罪客观存在。"
+    }
+  ]
+}

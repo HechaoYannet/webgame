@@ -1,0 +1,124 @@
+[
+  {
+    "id": "m-gameqq-0309-1",
+    "threadId": "thread-game-qq",
+    "direction": "received",
+    "authorCharacterId": "char-zhaotianyu",
+    "timestamp": "2026-03-09T19:40:00+08:00",
+    "kind": "text",
+    "text": "终末地3月28号公测！都预约了吗"
+  },
+  {
+    "id": "m-gameqq-0309-2",
+    "threadId": "thread-game-qq",
+    "direction": "received",
+    "authorCharacterId": "char-zhouming",
+    "timestamp": "2026-03-09T19:40:30+08:00",
+    "kind": "text",
+    "text": "早预约了，就等公测那天肝"
+  },
+  {
+    "id": "m-gameqq-0309-3",
+    "threadId": "thread-game-qq",
+    "direction": "sent",
+    "authorCharacterId": "char-liqiaorui",
+    "timestamp": "2026-03-09T19:41:00+08:00",
+    "kind": "text",
+    "text": "328 328 重要的事说两遍"
+  },
+  {
+    "id": "m-gameqq-0309-4",
+    "threadId": "thread-game-qq",
+    "direction": "received",
+    "authorCharacterId": "char-zhaotianyu",
+    "timestamp": "2026-03-09T19:41:30+08:00",
+    "kind": "text",
+    "text": "@李桥瑞 你有资格了，到时候开荒带带我"
+  },
+  {
+    "id": "m-gameqq-0309-5",
+    "threadId": "thread-game-qq",
+    "direction": "sent",
+    "authorCharacterId": "char-liqiaorui",
+    "timestamp": "2026-03-09T19:42:00+08:00",
+    "kind": "text",
+    "text": "没问题，到时候群里喊"
+  },
+  {
+    "id": "m-gameqq-0311-1",
+    "threadId": "thread-game-qq",
+    "direction": "received",
+    "authorCharacterId": "char-zhaotianyu",
+    "timestamp": "2026-03-11T17:00:00+08:00",
+    "kind": "text",
+    "text": "发了张新角色十连抽，欧皇附体"
+  },
+  {
+    "id": "m-gameqq-0311-2",
+    "threadId": "thread-game-qq",
+    "direction": "received",
+    "authorCharacterId": "char-zhouming",
+    "timestamp": "2026-03-11T17:00:30+08:00",
+    "kind": "text",
+    "text": "截图看看"
+  },
+  {
+    "id": "m-gameqq-0311-3",
+    "threadId": "thread-game-qq",
+    "direction": "received",
+    "authorCharacterId": "char-yanxinze",
+    "timestamp": "2026-03-11T17:01:00+08:00",
+    "kind": "text",
+    "text": "328见"
+  },
+  {
+    "id": "m-gameqq-0312-1",
+    "threadId": "thread-game-qq",
+    "direction": "received",
+    "authorCharacterId": "char-zhaotianyu",
+    "timestamp": "2026-03-12T13:50:00+08:00",
+    "kind": "file",
+    "link": {
+      "title": "终末地公测预约链接",
+      "url": "https://endfield.hypergryph.com/news/1181",
+      "pageId": "page-lvzhong-notice"
+    },
+    "text": "公测预约链接，没约的赶紧"
+  },
+  {
+    "id": "m-gameqq-0312-2",
+    "threadId": "thread-game-qq",
+    "direction": "received",
+    "authorCharacterId": "char-zhouming",
+    "timestamp": "2026-03-12T13:51:00+08:00",
+    "kind": "text",
+    "text": "已约，328一起肝"
+  },
+  {
+    "id": "m-gameqq-0313-1",
+    "threadId": "thread-game-qq",
+    "direction": "received",
+    "authorCharacterId": "char-zhaotianyu",
+    "timestamp": "2026-03-13T13:50:00+08:00",
+    "kind": "text",
+    "text": "听说高二一班昨晚抓人了？群里有人说李桥瑞"
+  },
+  {
+    "id": "m-gameqq-0313-2",
+    "threadId": "thread-game-qq",
+    "direction": "received",
+    "authorCharacterId": "char-zhouming",
+    "timestamp": "2026-03-13T13:51:00+08:00",
+    "kind": "text",
+    "text": "别打听了，老师说被家长接走了"
+  },
+  {
+    "id": "m-gameqq-0313-3",
+    "threadId": "thread-game-qq",
+    "direction": "received",
+    "authorCharacterId": "char-zhaotianyu",
+    "timestamp": "2026-03-13T13:52:00+08:00",
+    "kind": "text",
+    "text": "那他公测还能上吗……"
+  }
+]

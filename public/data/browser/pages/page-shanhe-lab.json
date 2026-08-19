@@ -1,0 +1,101 @@
+{
+  "id": "page-shanhe-lab",
+  "siteId": "site-shanhe-med",
+  "url": "https://www.shanhe-med.cn/lab/",
+  "title": "生物能源与疾病控制国家重点实验室",
+  "accessibility": {
+    "kind": "public"
+  },
+  "blocks": [
+    {
+      "type": "nav",
+      "links": [
+        {
+          "label": "首页",
+          "pageId": "page-shanhe-home"
+        },
+        {
+          "label": "机构设置",
+          "pageId": "page-shanhe-structure"
+        }
+      ]
+    },
+    {
+      "type": "hero",
+      "heading": "生物能源与疾病控制国家重点实验室",
+      "subheading": "主任：陈建国 教授",
+      "imageAssetId": "shanhe-lab-building"
+    },
+    {
+      "type": "paragraph",
+      "text": "▌ 研究方向"
+    },
+    {
+      "type": "table",
+      "headers": [
+        "项目"
+      ],
+      "rows": [
+        [
+          "生物能源提取与转化"
+        ],
+        [
+          "疾病控制与晶体机制"
+        ],
+        [
+          "源石结晶体内生成机制"
+        ]
+      ]
+    },
+    {
+      "type": "paragraph",
+      "text": "▌ 在研项目"
+    },
+    {
+      "type": "table",
+      "headers": [
+        "项目名称",
+        "基金号",
+        "类型"
+      ],
+      "rows": [
+        [
+          "源石结晶生物能源提取与人体内结晶生成机制研究",
+          "2025YFC0123456",
+          "国家自然科学基金重大项目"
+        ],
+        [
+          "湖南省生物能源重点研发计划",
+          "2024ZD-SH-007",
+          "湖南省重点研发"
+        ],
+        [
+          "企业横向合作（生物能源方向）",
+          "HX-2025-088",
+          "企业横向"
+        ]
+      ]
+    },
+    {
+      "type": "paragraph",
+      "text": "▌ 代表性论文"
+    },
+    {
+      "type": "paragraph",
+      "text": "Source Crystal Bioenergy Extraction and In Vivo Crystal Formation Mechanisms（Chen Jianguo, et al., 2026）—— 详见“论文发表/预印本”或仿arXiv详情页。"
+    },
+    {
+      "type": "paragraph",
+      "text": "▌ 招募信息"
+    },
+    {
+      "type": "callout",
+      "variant": "warning",
+      "text": "【实验志愿者招募】招募12-18岁青少年志愿者参与生物能源相关研究，详情见“志愿者招募”。"
+    },
+    {
+      "type": "sourceComment",
+      "comment": "<!-- 实验室管理系统后台：lab.shanhe-med.cn/admin（测试账号 admin，密码见项目基金号后6位，仅限内部） -->"
+    }
+  ]
+}

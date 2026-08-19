@@ -1,0 +1,37 @@
+{
+  "id": "page-tianyancha-chen",
+  "siteId": "site-tianyancha",
+  "url": "https://www.tianyancha.com/search/key=陈建国",
+  "title": "天眼查 — 陈建国 关联企业",
+  "accessibility": {
+    "kind": "linkedOnly",
+    "fromPageId": "page-tianyancha"
+  },
+  "blocks": [
+    {
+      "type": "callout",
+      "variant": "info",
+      "text": "陈建国 — 关联企业"
+    },
+    {
+      "type": "table",
+      "headers": [
+        "企业名称",
+        "角色",
+        "持股"
+      ],
+      "rows": [
+        [
+          "山河医科大学生物能源与疾病控制国家重点实验室",
+          "法定代表人/主任",
+          "—"
+        ],
+        [
+          "长沙新希望成长中心",
+          "股东",
+          "40%"
+        ]
+      ]
+    }
+  ]
+}

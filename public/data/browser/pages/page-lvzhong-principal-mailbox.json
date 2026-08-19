@@ -1,0 +1,46 @@
+{
+  "id": "page-lvzhong-principal-mailbox",
+  "siteId": "site-lvzhong",
+  "url": "https://www.lvzhong-edu.cn/mailbox/",
+  "title": "绿草中学 — 校长信箱",
+  "accessibility": {
+    "kind": "public"
+  },
+  "blocks": [
+    {
+      "type": "nav",
+      "links": [
+        {
+          "label": "首页",
+          "pageId": "page-lvzhong-home"
+        }
+      ]
+    },
+    {
+      "type": "callout",
+      "variant": "info",
+      "text": "校长信箱"
+    },
+    {
+      "type": "paragraph",
+      "text": "欢迎同学、家长通过校长信箱留言，张校长会亲自查阅。"
+    },
+    {
+      "type": "form",
+      "formId": "form-principal-mailbox",
+      "onSubmitMessage": "留言成功，感谢反馈！"
+    },
+    {
+      "type": "sourceComment",
+      "comment": "<!-- 历史后台维护地址迁移：原 xw.zhangqiang.com.cn/admin（新希望成长中心财务后台，密码须为8位数字）现已停用，仅作记录。 -->"
+    }
+  ],
+  "discoverableBy": [
+    {
+      "type": "sourceCodeComment",
+      "onPageId": "page-lvzhong-principal-mailbox",
+      "commentText": "xw.zhangqiang.com.cn/admin"
+    }
+  ],
+  "registersClueId": "clue-principal-mailbox"
+}

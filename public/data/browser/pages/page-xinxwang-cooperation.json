@@ -1,0 +1,63 @@
+{
+  "id": "page-xinxwang-cooperation",
+  "siteId": "site-xinxwang",
+  "url": "https://www.xinxwang-center.com/cooperation/",
+  "title": "新希望成长中心 — 合作单位",
+  "accessibility": {
+    "kind": "public"
+  },
+  "blocks": [
+    {
+      "type": "nav",
+      "links": [
+        {
+          "label": "首页",
+          "pageId": "page-xinxwang-home"
+        },
+        {
+          "label": "新闻动态",
+          "pageId": "page-xinxwang-news"
+        }
+      ]
+    },
+    {
+      "type": "callout",
+      "variant": "info",
+      "text": "合作单位"
+    },
+    {
+      "type": "paragraph",
+      "text": "▌ 山河医科大学生物能源与疾病控制国家重点实验室"
+    },
+    {
+      "type": "paragraph",
+      "text": "2026年1月，我中心与山河医科大学生物能源与疾病控制国家重点实验室签署战略合作协议，在青少年身心健康干预、行为科学纵向研究等领域开展联合项目。"
+    },
+    {
+      "type": "paragraph",
+      "text": "相关新闻：《我中心与山河医科大实验室签署合作协议》"
+    },
+    {
+      "type": "table",
+      "headers": [
+        "项目"
+      ],
+      "rows": [
+        [
+          "山河医科大学生物能源与疾病控制国家重点实验室"
+        ],
+        [
+          "湖南省青少年心理研究中心"
+        ],
+        [
+          "长沙市某保安服务有限公司"
+        ],
+        [
+          "绿草中学（学生转介合作校）"
+        ]
+      ]
+    }
+  ],
+  "registersClueId": "clue-xinxwang-lab-coop",
+  "triggersEvidenceId": "ev-xinxwang-lab-news"
+}

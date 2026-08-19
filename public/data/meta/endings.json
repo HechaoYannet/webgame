@@ -1,0 +1,112 @@
+[
+  {
+    "id": "good",
+    "title": "真结局：成功举报",
+    "trigger": {
+      "kind": "evidenceSufficient",
+      "puzzleId": "puzzle-evidence-finale"
+    },
+    "epilogueBlocks": [
+      {
+        "type": "heading",
+        "level": 1,
+        "text": "湖南警方破获非法人体实验案"
+      },
+      {
+        "type": "paragraph",
+        "text": "2026年3月13日晚，湖南警方接到举报后迅速行动，突击搜查新希望成长中心与山河医科大学生物能源与疾病控制国家重点实验室，成功解救李桥瑞、闫欣泽等多名被非法拘禁的青少年。"
+      },
+      {
+        "type": "paragraph",
+        "text": "经查，绿草中学校长张强伙同山河医科大学实验室主任陈建国，利用戒网瘾学校向青少年实施非法人体实验，从“源石结晶”中提取能源牟利。张强、陈建国及教官李刀（刀哥）等人被依法刑事拘留。"
+      },
+      {
+        "type": "callout",
+        "variant": "info",
+        "text": "多名学生被成功解救，案件正在进一步侦办中。"
+      },
+      {
+        "type": "quote",
+        "text": "“如果不是这名高中生在3分钟内整理完整证据并报警，这群孩子恐怕就真的回不来了。”——办案民警"
+      }
+    ],
+    "postEndingWechatMessage": {
+      "threadId": "thread-li-lin-wechat",
+      "messages": [
+        {
+          "id": "msg-good-ending-li-thanks",
+          "threadId": "thread-li-lin-wechat",
+          "direction": "received",
+          "authorCharacterId": "char-liqiaorui",
+          "timestamp": "2026-03-13T22:30:00+08:00",
+          "kind": "text",
+          "text": "兄弟，谢谢你。我欠你一条命。"
+        }
+      ]
+    }
+  },
+  {
+    "id": "normal",
+    "title": "普通结局：证据不足",
+    "trigger": {
+      "kind": "evidenceInsufficient",
+      "puzzleId": "puzzle-evidence-finale"
+    },
+    "epilogueBlocks": [
+      {
+        "type": "heading",
+        "level": 1,
+        "text": "证据不足，调查中断"
+      },
+      {
+        "type": "paragraph",
+        "text": "你拨通了举报电话，但提交的证据不足以让警方立即立案。接线员表示会“进一步核实”，然而你知道，时间正在流逝。"
+      },
+      {
+        "type": "paragraph",
+        "text": "几小时后，你再次登录实验室后台时，所有数据已被清空；新希望成长中心连夜转移了学员。李桥瑞、闫欣泽下落不明。"
+      },
+      {
+        "type": "callout",
+        "variant": "warning",
+        "text": "你离真相只差几份关键证据。如果你当时整理得更完整些……"
+      },
+      {
+        "type": "quote",
+        "text": "“再等等，也许还会有线索的。”你对自己说。但那个号码，再也没有人接通过。"
+      }
+    ]
+  },
+  {
+    "id": "bad",
+    "title": "坏结局：被抓",
+    "trigger": {
+      "kind": "countdownExpired",
+      "countdownId": "countdown-finale"
+    },
+    "epilogueBlocks": [
+      {
+        "type": "heading",
+        "level": 1,
+        "text": "设备已离线"
+      },
+      {
+        "type": "callout",
+        "variant": "danger",
+        "text": "3分钟倒计时归零。门铃画面中，刀哥一脚踹开了门。"
+      },
+      {
+        "type": "paragraph",
+        "text": "手机屏幕剧烈闪烁了一下，然后彻底黑了下去。通话未能拨出，证据未能提交。"
+      },
+      {
+        "type": "quote",
+        "text": "林哲也消失了。"
+      },
+      {
+        "type": "paragraph",
+        "text": "第二天，高二三班多了一个空座位。没有人提起他去了哪里。"
+      }
+    ]
+  }
+]

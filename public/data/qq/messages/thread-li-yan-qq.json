@@ -1,0 +1,749 @@
+[
+  {
+    "id": "m-liyan-0305-1",
+    "threadId": "thread-li-yan-qq",
+    "direction": "received",
+    "authorCharacterId": "char-yanxinze",
+    "timestamp": "2026-03-05T19:12:00+08:00",
+    "kind": "text",
+    "text": "你注意到学校官网的通知没"
+  },
+  {
+    "id": "m-liyan-0305-2",
+    "threadId": "thread-li-yan-qq",
+    "direction": "sent",
+    "authorCharacterId": "char-liqiaorui",
+    "timestamp": "2026-03-05T19:12:30+08:00",
+    "kind": "text",
+    "text": "咋了"
+  },
+  {
+    "id": "m-liyan-0305-3",
+    "threadId": "thread-li-yan-qq",
+    "direction": "received",
+    "authorCharacterId": "char-yanxinze",
+    "timestamp": "2026-03-05T19:13:00+08:00",
+    "kind": "text",
+    "text": "通知公告里有一条心理筛查通知，链接有点奇怪"
+  },
+  {
+    "id": "m-liyan-0305-4",
+    "threadId": "thread-li-yan-qq",
+    "direction": "sent",
+    "authorCharacterId": "char-liqiaorui",
+    "timestamp": "2026-03-05T19:13:20+08:00",
+    "kind": "text",
+    "text": "哪里奇怪？"
+  },
+  {
+    "id": "m-liyan-0305-5",
+    "threadId": "thread-li-yan-qq",
+    "direction": "received",
+    "authorCharacterId": "char-yanxinze",
+    "timestamp": "2026-03-05T19:15:00+08:00",
+    "kind": "text",
+    "text": "URL最后有一串随机字符，我试了一下，那是个隐藏入口"
+  },
+  {
+    "id": "m-liyan-0305-6",
+    "threadId": "thread-li-yan-qq",
+    "direction": "sent",
+    "authorCharacterId": "char-liqiaorui",
+    "timestamp": "2026-03-05T19:15:30+08:00",
+    "kind": "text",
+    "text": "卧槽，你怎么发现的"
+  },
+  {
+    "id": "m-liyan-0305-7",
+    "threadId": "thread-li-yan-qq",
+    "direction": "received",
+    "authorCharacterId": "char-yanxinze",
+    "timestamp": "2026-03-05T19:16:00+08:00",
+    "kind": "text",
+    "text": "我在看网页源代码"
+  },
+  {
+    "id": "m-liyan-0305-8",
+    "threadId": "thread-li-yan-qq",
+    "direction": "sent",
+    "authorCharacterId": "char-liqiaorui",
+    "timestamp": "2026-03-05T19:16:40+08:00",
+    "kind": "text",
+    "text": "……你什么时候学的"
+  },
+  {
+    "id": "m-liyan-0305-9",
+    "threadId": "thread-li-yan-qq",
+    "direction": "received",
+    "authorCharacterId": "char-yanxinze",
+    "timestamp": "2026-03-05T19:17:00+08:00",
+    "kind": "text",
+    "text": "别管，我想再深挖一下"
+  },
+  {
+    "id": "m-liyan-0305-10",
+    "threadId": "thread-li-yan-qq",
+    "direction": "sent",
+    "authorCharacterId": "char-liqiaorui",
+    "timestamp": "2026-03-05T19:17:30+08:00",
+    "kind": "text",
+    "text": "小心点"
+  },
+  {
+    "id": "m-liyan-0306-1",
+    "threadId": "thread-li-yan-qq",
+    "direction": "received",
+    "authorCharacterId": "char-yanxinze",
+    "timestamp": "2026-03-06T20:30:00+08:00",
+    "kind": "text",
+    "text": "那个隐藏入口需要账号密码"
+  },
+  {
+    "id": "m-liyan-0306-2",
+    "threadId": "thread-li-yan-qq",
+    "direction": "sent",
+    "authorCharacterId": "char-liqiaorui",
+    "timestamp": "2026-03-06T20:30:30+08:00",
+    "kind": "text",
+    "text": "那怎么办"
+  },
+  {
+    "id": "m-liyan-0306-3",
+    "threadId": "thread-li-yan-qq",
+    "direction": "received",
+    "authorCharacterId": "char-yanxinze",
+    "timestamp": "2026-03-06T20:32:00+08:00",
+    "kind": "text",
+    "text": "我试了张强的名字、他手机号，都不行"
+  },
+  {
+    "id": "m-liyan-0306-4",
+    "threadId": "thread-li-yan-qq",
+    "direction": "sent",
+    "authorCharacterId": "char-liqiaorui",
+    "timestamp": "2026-03-06T20:32:40+08:00",
+    "kind": "text",
+    "text": "密码会不会是他生日？"
+  },
+  {
+    "id": "m-liyan-0306-5",
+    "threadId": "thread-li-yan-qq",
+    "direction": "received",
+    "authorCharacterId": "char-yanxinze",
+    "timestamp": "2026-03-06T20:34:00+08:00",
+    "kind": "text",
+    "text": "试了，123456也试了，都不对"
+  },
+  {
+    "id": "m-liyan-0306-6",
+    "threadId": "thread-li-yan-qq",
+    "direction": "sent",
+    "authorCharacterId": "char-liqiaorui",
+    "timestamp": "2026-03-06T20:34:30+08:00",
+    "kind": "text",
+    "text": "那估计不好搞"
+  },
+  {
+    "id": "m-liyan-0306-7",
+    "threadId": "thread-li-yan-qq",
+    "direction": "received",
+    "authorCharacterId": "char-yanxinze",
+    "timestamp": "2026-03-06T20:35:00+08:00",
+    "kind": "text",
+    "text": "没事，我再找找别的路"
+  },
+  {
+    "id": "m-liyan-0307-1",
+    "threadId": "thread-li-yan-qq",
+    "direction": "sent",
+    "authorCharacterId": "char-liqiaorui",
+    "timestamp": "2026-03-07T18:50:00+08:00",
+    "kind": "text",
+    "text": "我查了一下新希望成长中心"
+  },
+  {
+    "id": "m-liyan-0307-2",
+    "threadId": "thread-li-yan-qq",
+    "direction": "sent",
+    "authorCharacterId": "char-liqiaorui",
+    "timestamp": "2026-03-07T18:50:30+08:00",
+    "kind": "text",
+    "text": "好恐怖，网上好多负面新闻"
+  },
+  {
+    "id": "m-liyan-0307-3",
+    "threadId": "thread-li-yan-qq",
+    "direction": "received",
+    "authorCharacterId": "char-yanxinze",
+    "timestamp": "2026-03-07T18:51:00+08:00",
+    "kind": "text",
+    "text": "而且这个机构和学校有合作"
+  },
+  {
+    "id": "m-liyan-0307-4",
+    "threadId": "thread-li-yan-qq",
+    "direction": "sent",
+    "authorCharacterId": "char-liqiaorui",
+    "timestamp": "2026-03-07T18:51:30+08:00",
+    "kind": "text",
+    "text": "张强是不是有股份？"
+  },
+  {
+    "id": "m-liyan-0307-5",
+    "threadId": "thread-li-yan-qq",
+    "direction": "received",
+    "authorCharacterId": "char-yanxinze",
+    "timestamp": "2026-03-07T18:52:00+08:00",
+    "kind": "text",
+    "text": "很有可能"
+  },
+  {
+    "id": "m-liyan-0307-6",
+    "threadId": "thread-li-yan-qq",
+    "direction": "sent",
+    "authorCharacterId": "char-liqiaorui",
+    "timestamp": "2026-03-07T18:55:00+08:00",
+    "kind": "text",
+    "text": "我今天路过校长室，看到一份合同"
+  },
+  {
+    "id": "m-liyan-0307-7",
+    "threadId": "thread-li-yan-qq",
+    "direction": "received",
+    "authorCharacterId": "char-yanxinze",
+    "timestamp": "2026-03-07T18:55:30+08:00",
+    "kind": "text",
+    "text": "门没关？"
+  },
+  {
+    "id": "m-liyan-0307-8",
+    "threadId": "thread-li-yan-qq",
+    "direction": "sent",
+    "authorCharacterId": "char-liqiaorui",
+    "timestamp": "2026-03-07T18:56:00+08:00",
+    "kind": "text",
+    "text": "半掩着，上面写什么“每推荐一人，返20万”"
+  },
+  {
+    "id": "m-liyan-0307-9",
+    "threadId": "thread-li-yan-qq",
+    "direction": "received",
+    "authorCharacterId": "char-yanxinze",
+    "timestamp": "2026-03-07T18:56:30+08:00",
+    "kind": "text",
+    "text": "你确定？"
+  },
+  {
+    "id": "m-liyan-0307-10",
+    "threadId": "thread-li-yan-qq",
+    "direction": "sent",
+    "authorCharacterId": "char-liqiaorui",
+    "timestamp": "2026-03-07T18:57:00+08:00",
+    "kind": "text",
+    "text": "没看太清楚，但那个数和字不会认错"
+  },
+  {
+    "id": "m-liyan-0307-11",
+    "threadId": "thread-li-yan-qq",
+    "direction": "received",
+    "authorCharacterId": "char-yanxinze",
+    "timestamp": "2026-03-07T18:57:30+08:00",
+    "kind": "text",
+    "text": "下次别冒险了"
+  },
+  {
+    "id": "m-liyan-0307-12",
+    "threadId": "thread-li-yan-qq",
+    "direction": "sent",
+    "authorCharacterId": "char-liqiaorui",
+    "timestamp": "2026-03-07T18:58:00+08:00",
+    "kind": "text",
+    "text": "知道了"
+  },
+  {
+    "id": "m-liyan-0308-1",
+    "threadId": "thread-li-yan-qq",
+    "direction": "received",
+    "authorCharacterId": "char-yanxinze",
+    "timestamp": "2026-03-08T21:10:00+08:00",
+    "kind": "text",
+    "text": "我找到校长办公室的钥匙了"
+  },
+  {
+    "id": "m-liyan-0308-2",
+    "threadId": "thread-li-yan-qq",
+    "direction": "sent",
+    "authorCharacterId": "char-liqiaorui",
+    "timestamp": "2026-03-08T21:10:30+08:00",
+    "kind": "text",
+    "text": "从哪弄的？"
+  },
+  {
+    "id": "m-liyan-0308-3",
+    "threadId": "thread-li-yan-qq",
+    "direction": "received",
+    "authorCharacterId": "char-yanxinze",
+    "timestamp": "2026-03-08T21:11:00+08:00",
+    "kind": "text",
+    "text": "校工室，上次去修东西看见墙上挂着，模子对的上的"
+  },
+  {
+    "id": "m-liyan-0308-4",
+    "threadId": "thread-li-yan-qq",
+    "direction": "sent",
+    "authorCharacterId": "char-liqiaorui",
+    "timestamp": "2026-03-08T21:11:30+08:00",
+    "kind": "text",
+    "text": "你想干嘛"
+  },
+  {
+    "id": "m-liyan-0308-5",
+    "threadId": "thread-li-yan-qq",
+    "direction": "received",
+    "authorCharacterId": "char-yanxinze",
+    "timestamp": "2026-03-08T21:12:30+08:00",
+    "kind": "text",
+    "text": "张强办公室的后窗正对着思过室。要是我们配合",
+    "registersClueId": "clue-qq-plan"
+  },
+  {
+    "id": "m-liyan-0308-6",
+    "threadId": "thread-li-yan-qq",
+    "direction": "sent",
+    "authorCharacterId": "char-liqiaorui",
+    "timestamp": "2026-03-08T21:13:00+08:00",
+    "kind": "text",
+    "text": "你意思是？"
+  },
+  {
+    "id": "m-liyan-0308-7",
+    "threadId": "thread-li-yan-qq",
+    "direction": "received",
+    "authorCharacterId": "char-yanxinze",
+    "timestamp": "2026-03-08T21:14:00+08:00",
+    "kind": "text",
+    "text": "你故意被宿管抓，进思过室，然后从窗户翻出去，到校长室后窗进去"
+  },
+  {
+    "id": "m-liyan-0308-8",
+    "threadId": "thread-li-yan-qq",
+    "direction": "sent",
+    "authorCharacterId": "char-liqiaorui",
+    "timestamp": "2026-03-08T21:14:30+08:00",
+    "kind": "text",
+    "text": "那你呢"
+  },
+  {
+    "id": "m-liyan-0308-9",
+    "threadId": "thread-li-yan-qq",
+    "direction": "received",
+    "authorCharacterId": "char-yanxinze",
+    "timestamp": "2026-03-08T21:15:00+08:00",
+    "kind": "text",
+    "text": "我在校外后门接应，帮你望风，你要是出不来我从外面接你"
+  },
+  {
+    "id": "m-liyan-0308-10",
+    "threadId": "thread-li-yan-qq",
+    "direction": "sent",
+    "authorCharacterId": "char-liqiaorui",
+    "timestamp": "2026-03-08T21:15:30+08:00",
+    "kind": "text",
+    "text": "太危险了吧"
+  },
+  {
+    "id": "m-liyan-0308-11",
+    "threadId": "thread-li-yan-qq",
+    "direction": "received",
+    "authorCharacterId": "char-yanxinze",
+    "timestamp": "2026-03-08T21:16:00+08:00",
+    "kind": "text",
+    "text": "你不想知道张强在搞什么？名单上会不会就是我们同学"
+  },
+  {
+    "id": "m-liyan-0308-12",
+    "threadId": "thread-li-yan-qq",
+    "direction": "sent",
+    "authorCharacterId": "char-liqiaorui",
+    "timestamp": "2026-03-08T21:16:30+08:00",
+    "kind": "text",
+    "text": "想"
+  },
+  {
+    "id": "m-liyan-0308-13",
+    "threadId": "thread-li-yan-qq",
+    "direction": "received",
+    "authorCharacterId": "char-yanxinze",
+    "timestamp": "2026-03-08T21:17:00+08:00",
+    "kind": "text",
+    "text": "那就这么定，时间我选，等放假前学校人少"
+  },
+  {
+    "id": "m-liyan-0309-1",
+    "threadId": "thread-li-yan-qq",
+    "direction": "sent",
+    "authorCharacterId": "char-liqiaorui",
+    "timestamp": "2026-03-09T19:20:00+08:00",
+    "kind": "text",
+    "text": "我拍了张校园后墙照片发空间了"
+  },
+  {
+    "id": "m-liyan-0309-2",
+    "threadId": "thread-li-yan-qq",
+    "direction": "received",
+    "authorCharacterId": "char-yanxinze",
+    "timestamp": "2026-03-09T19:21:00+08:00",
+    "kind": "text",
+    "text": "看到了，左下角那串钥匙是我的"
+  },
+  {
+    "id": "m-liyan-0309-3",
+    "threadId": "thread-li-yan-qq",
+    "direction": "sent",
+    "authorCharacterId": "char-liqiaorui",
+    "timestamp": "2026-03-09T19:21:30+08:00",
+    "kind": "text",
+    "text": "靠，你怎么把钥匙掉那了"
+  },
+  {
+    "id": "m-liyan-0309-4",
+    "threadId": "thread-li-yan-qq",
+    "direction": "received",
+    "authorCharacterId": "char-yanxinze",
+    "timestamp": "2026-03-09T19:22:00+08:00",
+    "kind": "text",
+    "text": "晚上去踩点顺手掉地上了，没事，我捡回来了"
+  },
+  {
+    "id": "m-liyan-0309-5",
+    "threadId": "thread-li-yan-qq",
+    "direction": "sent",
+    "authorCharacterId": "char-liqiaorui",
+    "timestamp": "2026-03-09T19:22:30+08:00",
+    "kind": "text",
+    "text": "小心点，照片我都设了仅好友可见"
+  },
+  {
+    "id": "m-liyan-0309-6",
+    "threadId": "thread-li-yan-qq",
+    "direction": "received",
+    "authorCharacterId": "char-yanxinze",
+    "timestamp": "2026-03-09T19:23:00+08:00",
+    "kind": "text",
+    "text": "你别担心我"
+  },
+  {
+    "id": "m-liyan-0309-7",
+    "threadId": "thread-li-yan-qq",
+    "direction": "sent",
+    "authorCharacterId": "char-liqiaorui",
+    "timestamp": "2026-03-09T19:25:00+08:00",
+    "kind": "text",
+    "text": "对了，终末地3月28日公测，我把QQ密码改成0328了"
+  },
+  {
+    "id": "m-liyan-0309-8",
+    "threadId": "thread-li-yan-qq",
+    "direction": "received",
+    "authorCharacterId": "char-yanxinze",
+    "timestamp": "2026-03-09T19:25:30+08:00",
+    "kind": "text",
+    "text": "干嘛告诉我"
+  },
+  {
+    "id": "m-liyan-0309-9",
+    "threadId": "thread-li-yan-qq",
+    "direction": "sent",
+    "authorCharacterId": "char-liqiaorui",
+    "timestamp": "2026-03-09T19:26:00+08:00",
+    "kind": "text",
+    "text": "如果出事，我让林哲登我QQ，里面留的东西得有人在，到时候你要和他配合"
+  },
+  {
+    "id": "m-liyan-0309-10",
+    "threadId": "thread-li-yan-qq",
+    "direction": "received",
+    "authorCharacterId": "char-yanxinze",
+    "timestamp": "2026-03-09T19:26:30+08:00",
+    "kind": "text",
+    "text": "林哲？他能行吗"
+  },
+  {
+    "id": "m-liyan-0309-11",
+    "threadId": "thread-li-yan-qq",
+    "direction": "sent",
+    "authorCharacterId": "char-liqiaorui",
+    "timestamp": "2026-03-09T19:27:00+08:00",
+    "kind": "text",
+    "text": "他聪明，就是不爱表现。信不信得过他，我比你清楚"
+  },
+  {
+    "id": "m-liyan-0309-12",
+    "threadId": "thread-li-yan-qq",
+    "direction": "received",
+    "authorCharacterId": "char-yanxinze",
+    "timestamp": "2026-03-09T19:27:30+08:00",
+    "kind": "text",
+    "text": "行，你定"
+  },
+  {
+    "id": "m-liyan-0310-1",
+    "threadId": "thread-li-yan-qq",
+    "direction": "received",
+    "authorCharacterId": "char-yanxinze",
+    "timestamp": "2026-03-10T20:40:00+08:00",
+    "kind": "text",
+    "text": "绿中官网那个隐藏目录我又扫了一遍，确认需要校长账号才能进"
+  },
+  {
+    "id": "m-liyan-0310-2",
+    "threadId": "thread-li-yan-qq",
+    "direction": "sent",
+    "authorCharacterId": "char-liqiaorui",
+    "timestamp": "2026-03-10T20:40:30+08:00",
+    "kind": "text",
+    "text": "密码能从外面找出来吗"
+  },
+  {
+    "id": "m-liyan-0310-3",
+    "threadId": "thread-li-yan-qq",
+    "direction": "received",
+    "authorCharacterId": "char-yanxinze",
+    "timestamp": "2026-03-10T20:41:00+08:00",
+    "kind": "text",
+    "text": "常用的几个我都试了，名字手机号生日都不行，123456也不对。进校长室后我直接开他电脑看"
+  },
+  {
+    "id": "m-liyan-0310-4",
+    "threadId": "thread-li-yan-qq",
+    "direction": "sent",
+    "authorCharacterId": "char-liqiaorui",
+    "timestamp": "2026-03-10T20:41:30+08:00",
+    "kind": "text",
+    "text": "靠，你计划得挺全"
+  },
+  {
+    "id": "m-liyan-0310-5",
+    "threadId": "thread-li-yan-qq",
+    "direction": "received",
+    "authorCharacterId": "char-yanxinze",
+    "timestamp": "2026-03-10T20:42:00+08:00",
+    "kind": "text",
+    "text": "12号晚上动手，那天放假前最后一天，晚自习后人少"
+  },
+  {
+    "id": "m-liyan-0310-6",
+    "threadId": "thread-li-yan-qq",
+    "direction": "sent",
+    "authorCharacterId": "char-liqiaorui",
+    "timestamp": "2026-03-10T20:42:30+08:00",
+    "kind": "text",
+    "text": "今晚？太急了吧"
+  },
+  {
+    "id": "m-liyan-0310-7",
+    "threadId": "thread-li-yan-qq",
+    "direction": "received",
+    "authorCharacterId": "char-yanxinze",
+    "timestamp": "2026-03-10T20:43:00+08:00",
+    "kind": "text",
+    "text": "越拖越危险，名单拖一天可能就多一个人。就12号晚2点，我在后门等你"
+  },
+  {
+    "id": "m-liyan-0310-8",
+    "threadId": "thread-li-yan-qq",
+    "direction": "sent",
+    "authorCharacterId": "char-liqiaorui",
+    "timestamp": "2026-03-10T20:43:30+08:00",
+    "kind": "text",
+    "text": "行，就12号"
+  },
+  {
+    "id": "m-liyan-0310-9",
+    "threadId": "thread-li-yan-qq",
+    "direction": "sent",
+    "authorCharacterId": "char-liqiaorui",
+    "timestamp": "2026-03-10T20:44:00+08:00",
+    "kind": "text",
+    "text": "还有件事——如果我失联，你打这个电话 0731-88888888"
+  },
+  {
+    "id": "m-liyan-0310-10",
+    "threadId": "thread-li-yan-qq",
+    "direction": "received",
+    "authorCharacterId": "char-yanxinze",
+    "timestamp": "2026-03-10T20:44:30+08:00",
+    "kind": "text",
+    "text": "别乱说"
+  },
+  {
+    "id": "m-liyan-0310-11",
+    "threadId": "thread-li-yan-qq",
+    "direction": "sent",
+    "authorCharacterId": "char-liqiaorui",
+    "timestamp": "2026-03-10T20:45:00+08:00",
+    "kind": "text",
+    "text": "答应我，这是省公安厅的举报电话，万一我俩都出不去，得留个出口"
+  },
+  {
+    "id": "m-liyan-0310-12",
+    "threadId": "thread-li-yan-qq",
+    "direction": "received",
+    "authorCharacterId": "char-yanxinze",
+    "timestamp": "2026-03-10T20:45:30+08:00",
+    "kind": "text",
+    "text": "……行"
+  },
+  {
+    "id": "m-liyan-0311-1",
+    "threadId": "thread-li-yan-qq",
+    "direction": "sent",
+    "authorCharacterId": "char-liqiaorui",
+    "timestamp": "2026-03-11T16:30:00+08:00",
+    "kind": "text",
+    "text": "我拿到终末地公测资格了"
+  },
+  {
+    "id": "m-liyan-0311-2",
+    "threadId": "thread-li-yan-qq",
+    "direction": "received",
+    "authorCharacterId": "char-yanxinze",
+    "timestamp": "2026-03-11T16:30:30+08:00",
+    "kind": "text",
+    "text": "恭喜，公测见"
+  },
+  {
+    "id": "m-liyan-0311-3",
+    "threadId": "thread-li-yan-qq",
+    "direction": "sent",
+    "authorCharacterId": "char-liqiaorui",
+    "timestamp": "2026-03-11T16:31:00+08:00",
+    "kind": "text",
+    "text": "明天就是12号了。再说一遍：万一我没回来，林哲会登我QQ，密码我已经改成公测那天 0328，你通过一下他的好友验证"
+  },
+  {
+    "id": "m-liyan-0311-4",
+    "threadId": "thread-li-yan-qq",
+    "direction": "received",
+    "authorCharacterId": "char-yanxinze",
+    "timestamp": "2026-03-11T16:31:30+08:00",
+    "kind": "text",
+    "text": "你都说多少遍了"
+  },
+  {
+    "id": "m-liyan-0311-5",
+    "threadId": "thread-li-yan-qq",
+    "direction": "sent",
+    "authorCharacterId": "char-liqiaorui",
+    "timestamp": "2026-03-11T16:32:00+08:00",
+    "kind": "text",
+    "text": "就当我啰嗦。林哲这家伙脾气犟但靠得住，到时候别瞒着他，该说的都告诉他"
+  },
+  {
+    "id": "m-liyan-0311-6",
+    "threadId": "thread-li-yan-qq",
+    "direction": "received",
+    "authorCharacterId": "char-yanxinze",
+    "timestamp": "2026-03-11T16:32:30+08:00",
+    "kind": "text",
+    "text": "知道了"
+  },
+  {
+    "id": "m-liyan-0312-1",
+    "threadId": "thread-li-yan-qq",
+    "direction": "received",
+    "authorCharacterId": "char-yanxinze",
+    "timestamp": "2026-03-12T19:00:00+08:00",
+    "kind": "text",
+    "text": "今晚行动，都准备好了吧"
+  },
+  {
+    "id": "m-liyan-0312-2",
+    "threadId": "thread-li-yan-qq",
+    "direction": "sent",
+    "authorCharacterId": "char-liqiaorui",
+    "timestamp": "2026-03-12T19:00:30+08:00",
+    "kind": "text",
+    "text": "OK，我会故意被刘叔抓，进思过室"
+  },
+  {
+    "id": "m-liyan-0312-3",
+    "threadId": "thread-li-yan-qq",
+    "direction": "received",
+    "authorCharacterId": "char-yanxinze",
+    "timestamp": "2026-03-12T19:01:00+08:00",
+    "kind": "text",
+    "text": "2点我在后门等你，进去之后轻点"
+  },
+  {
+    "id": "m-liyan-0312-4",
+    "threadId": "thread-li-yan-qq",
+    "direction": "sent",
+    "authorCharacterId": "char-liqiaorui",
+    "timestamp": "2026-03-12T19:01:30+08:00",
+    "kind": "text",
+    "text": "好"
+  },
+  {
+    "id": "m-liyan-0312-5",
+    "threadId": "thread-li-yan-qq",
+    "direction": "sent",
+    "authorCharacterId": "char-liqiaorui",
+    "timestamp": "2026-03-12T23:18:00+08:00",
+    "kind": "text",
+    "text": "被抓了，计划成功，进了思过室。准备动手"
+  },
+  {
+    "id": "m-liyan-0312-6",
+    "threadId": "thread-li-yan-qq",
+    "direction": "received",
+    "authorCharacterId": "char-yanxinze",
+    "timestamp": "2026-03-12T23:19:00+08:00",
+    "kind": "text",
+    "text": "收到，2点见，注意安全"
+  },
+  {
+    "id": "m-liyan-0313-1",
+    "threadId": "thread-li-yan-qq",
+    "direction": "received",
+    "authorCharacterId": "char-yanxinze",
+    "timestamp": "2026-03-13T00:58:00+08:00",
+    "kind": "text",
+    "text": "桥瑞？你出来没？"
+  },
+  {
+    "id": "m-liyan-0313-2",
+    "threadId": "thread-li-yan-qq",
+    "direction": "received",
+    "authorCharacterId": "char-yanxinze",
+    "timestamp": "2026-03-13T01:20:00+08:00",
+    "kind": "text",
+    "text": "我在后门等了一小时，没人"
+  },
+  {
+    "id": "m-liyan-0313-3",
+    "threadId": "thread-li-yan-qq",
+    "direction": "received",
+    "authorCharacterId": "char-yanxinze",
+    "timestamp": "2026-03-13T01:45:00+08:00",
+    "kind": "text",
+    "text": "我进去看看"
+  },
+  {
+    "id": "m-liyan-0313-4",
+    "threadId": "thread-li-yan-qq",
+    "direction": "received",
+    "authorCharacterId": "char-yanxinze",
+    "timestamp": "2026-03-13T01:58:00+08:00",
+    "kind": "text",
+    "text": "张强……他发现我了……快……"
+  },
+  {
+    "id": "m-liyan-0313-5",
+    "threadId": "thread-li-yan-qq",
+    "direction": "system",
+    "timestamp": "2026-03-13T01:58:30+08:00",
+    "kind": "system",
+    "text": "对方已离线，消息未能送达。"
+  }
+]

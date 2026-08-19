@@ -1,0 +1,25 @@
+{
+  "id": "page-hnedu",
+  "siteId": "site-hnedu",
+  "url": "https://jyt.hunan.gov.cn/",
+  "title": "湖南省教育厅 — 民办教育黑名单",
+  "accessibility": {
+    "kind": "public"
+  },
+  "blocks": [
+    {
+      "type": "callout",
+      "variant": "info",
+      "text": "湖南省民办教育机构专项检查通报"
+    },
+    {
+      "type": "paragraph",
+      "text": "2025年度湖南民办学校黑名单（共7家），其中：长沙新希望成长中心因“违规办学”被警告处罚，限期整改。"
+    },
+    {
+      "type": "callout",
+      "variant": "info",
+      "text": "公开监管信息侧面印证新希望成长中心存在问题，但未涉核心人体实验。"
+    }
+  ]
+}

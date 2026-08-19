@@ -1,0 +1,30 @@
+{
+  "id": "page-arxiv-list",
+  "siteId": "site-arxiv",
+  "url": "https://arxiv.shanhe-med.cn/list/",
+  "title": "预印本论文库 — 列表",
+  "accessibility": {
+    "kind": "public"
+  },
+  "blocks": [
+    {
+      "type": "nav",
+      "links": [
+        {
+          "label": "列表",
+          "pageId": "page-arxiv-list"
+        }
+      ]
+    },
+    {
+      "type": "articleList",
+      "items": [
+        {
+          "title": "Source Crystal Bioenergy Extraction and In Vivo Crystal Formation Mechanisms",
+          "pageId": "page-arxiv-paper",
+          "date": "2026-02-28"
+        }
+      ]
+    }
+  ]
+}

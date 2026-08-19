@@ -1,0 +1,20 @@
+[
+  {
+    "id": "msg-lin-zty-001",
+    "threadId": "thread-lin-zhaotianyu-wechat",
+    "direction": "received",
+    "authorCharacterId": "char-zhaotianyu",
+    "timestamp": "2026-03-11T21:05:00+08:00",
+    "kind": "text",
+    "text": "终末地公测不是定在3月28吗，桥瑞那资格借我氪一单呗"
+  },
+  {
+    "id": "msg-lin-zty-002",
+    "threadId": "thread-lin-zhaotianyu-wechat",
+    "direction": "sent",
+    "authorCharacterId": "char-linzhe",
+    "timestamp": "2026-03-11T21:10:00+08:00",
+    "kind": "text",
+    "text": "你找他自己说去，我可不敢动他号"
+  }
+]

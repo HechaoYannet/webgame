@@ -1,0 +1,86 @@
+{
+  "id": "page-lab-funding-report",
+  "siteId": "site-shanhe-med",
+  "url": "https://lab.shanhe-med.cn/admin/funding-report",
+  "title": "实验室后台 — 经费申请报告",
+  "accessibility": {
+    "kind": "loginRequired",
+    "puzzleId": "puzzle-lab-backend"
+  },
+  "blocks": [
+    {
+      "type": "callout",
+      "variant": "info",
+      "text": "2026年3月经费申请报告"
+    },
+    {
+      "type": "paragraph",
+      "text": "申请金额：人民币200万元"
+    },
+    {
+      "type": "paragraph",
+      "text": "申请事由：源石结晶生物能源提取项目（基金号 2025YFC0123456）受试者扩组与样本采集。"
+    },
+    {
+      "type": "paragraph",
+      "text": "▌ 本期受试者名单"
+    },
+    {
+      "type": "table",
+      "headers": [
+        "编号",
+        "姓名",
+        "性别",
+        "年龄",
+        "来源",
+        "入组日期"
+      ],
+      "rows": [
+        [
+          "S-2026-007",
+          "李桥瑞",
+          "男",
+          "17",
+          "绿草中学高二一班（新希望成长中心转介）",
+          "2026-03-13"
+        ],
+        [
+          "S-2026-008",
+          "闫欣泽",
+          "男",
+          "17",
+          "绿草中学高二一班（新希望成长中心转介）",
+          "2026-03-13"
+        ],
+        [
+          "S-2026-005",
+          "匿名A",
+          "男",
+          "15",
+          "新希望成长中心",
+          "2026-02-20"
+        ],
+        [
+          "S-2026-006",
+          "匿名B",
+          "男",
+          "16",
+          "新希望成长中心",
+          "2026-02-25"
+        ]
+      ]
+    },
+    {
+      "type": "callout",
+      "variant": "danger",
+      "text": "受试者名单明确列出李桥瑞、闫欣泽，来源为绿草中学高二一班（经新希望成长中心转介），3月13日入组——与二人失联时间完全吻合。打开此报告触发3分钟倒计时+威胁短信+刀哥上门。"
+    }
+  ],
+  "registersClueId": "clue-lab-funding-report",
+  "onViewEffects": [
+    { "type": "startCountdown", "durationSec": 180, "id": "countdown-finale" },
+    { "type": "pushSms", "smsEventId": "sms-zhangqiang-threat" },
+    { "type": "pushDoorbell", "doorbellEventId": "doorbell-dao-visit" },
+    { "type": "playAudio", "assetId": "audio-heartbeat", "loop": true }
+  ]
+}

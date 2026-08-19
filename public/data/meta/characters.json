@@ -1,0 +1,152 @@
+[
+  {
+    "id": "char-linzhe",
+    "name": "林哲",
+    "displayName": "林哲",
+    "role": "protagonist",
+    "avatarAssetId": "avatar-linzhe",
+    "intro": "高二一班学生，17岁。普通高中生，重情义。与李桥瑞、闫欣泽关系极好。父母在外打工，周末独自在家，有足够时间进行调查。玩家扮演的角色。",
+    "age": 17,
+    "schoolClass": "绿草中学高二一班"
+  },
+  {
+    "id": "char-liqiaorui",
+    "name": "李桥瑞",
+    "displayName": "李桥瑞",
+    "role": "key-student",
+    "avatarAssetId": "avatar-liqiaorui",
+    "intro": "高二一班学生，17岁。技术宅，明日方舟/终末地玩家。正义感强，发现绿中校长张强与校外机构勾结，和闫欣泽秘密策划潜入校长办公室。是本次“宿舍大逃杀”行动的执行者。",
+    "age": 17,
+    "schoolClass": "绿草中学高二一班"
+  },
+  {
+    "id": "char-yanxinze",
+    "name": "闫欣泽",
+    "displayName": "闫欣泽",
+    "role": "key-student",
+    "avatarAssetId": "avatar-yanxinze",
+    "intro": "高二一班学生，17岁。冷静、擅长推理，有一定法律意识，平时用华为手表看小说。负责实地侦察和接应。与李桥瑞共同策划潜入校长办公室，失联前最后发出求救信息。",
+    "age": 17,
+    "schoolClass": "绿草中学高二一班"
+  },
+  {
+    "id": "char-zhangqiang",
+    "name": "张强",
+    "displayName": "张强",
+    "role": "staff",
+    "avatarAssetId": "avatar-zhangqiang",
+    "intro": "绿草中学（绿中）校长，50岁。表面威严，私下贪财，经营“新希望成长中心”戒网瘾学校，并与山河医科大学实验室合作，将学生作为实验对象，非法获取高额利益。口头禅是“先挣一个亿”。",
+    "age": 50,
+    "schoolClass": "绿草中学（校长）"
+  },
+  {
+    "id": "char-wangshufen",
+    "name": "王淑芬",
+    "displayName": "王老师",
+    "role": "staff",
+    "avatarAssetId": "avatar-wangshufen",
+    "intro": "高二一班班主任，40岁左右。胆小怕事，知道一些异常但被张强威胁。主角询问时起初撒谎说李桥瑞直接回家，后在追问下露出破绽。",
+    "age": 40,
+    "schoolClass": "绿草中学高二一班（班主任）"
+  },
+  {
+    "id": "char-liushu",
+    "name": "刘叔",
+    "displayName": "刘叔",
+    "role": "staff",
+    "avatarAssetId": "avatar-liushu",
+    "intro": "宿管，50多岁。被张强收买，负责抓违规学生。不知道张强的真实目的，以为只是严肃校纪。若玩家提到“新希望成长中心”，刘叔回复“别去那地方”。",
+    "age": 53,
+    "schoolClass": "绿草中学（宿管）"
+  },
+  {
+    "id": "char-chenjianguo",
+    "name": "陈建国",
+    "displayName": "陈建国",
+    "role": "external",
+    "avatarAssetId": "avatar-chenjianguo",
+    "intro": "山河医科大学生物能源与疾病控制国家重点实验室主任，教授，论文通讯作者。与张强勾结，利用戒网瘾学校的青少年做非法人体实验，从“源石结晶”中提取能源。",
+    "age": 52,
+    "schoolClass": "山河医科大学（实验室主任）"
+  },
+  {
+    "id": "char-dao",
+    "name": "刀哥",
+    "displayName": "刀哥",
+    "role": "external",
+    "avatarAssetId": "avatar-dao",
+    "intro": "新希望成长中心教官，本名李刀，张强心腹，负责看管学生和抓回“不听话”的人。光头壮汉。最后阶段上门威胁主角。",
+    "age": 38,
+    "schoolClass": "新希望成长中心（教官）"
+  },
+  {
+    "id": "char-liqiaorui-mom",
+    "name": "李桥瑞妈妈",
+    "displayName": "瑞妈妈",
+    "role": "external",
+    "avatarAssetId": "avatar-liqiaorui-mom",
+    "intro": "李桥瑞的母亲，在外地打工。在绿中家长群中出现，明确否认去学校接李桥瑞，与班主任王淑芬的说法矛盾，是玩家识破班主任谎言的关键。",
+    "age": 44,
+    "schoolClass": "（学生家长）"
+  },
+  {
+    "id": "char-dispatcher",
+    "name": "省公安厅接线员",
+    "displayName": "省公安厅举报中心",
+    "role": "external",
+    "avatarAssetId": "avatar-dispatcher",
+    "intro": "湖南省公安厅举报中心接线员。终章举报电话 0731-88888888 的接听者。",
+    "age": null,
+    "schoolClass": "湖南省公安厅"
+  },
+  {
+    "id": "char-zhouming",
+    "name": "周明",
+    "displayName": "周明",
+    "role": "npc",
+    "avatarAssetId": "avatar-zhouming",
+    "intro": "高二一班同学。在班级群中闲聊，提及李桥瑞被宿管抓走。",
+    "age": 17,
+    "schoolClass": "绿草中学高二一班"
+  },
+  {
+    "id": "char-chenyutong",
+    "name": "陈雨桐",
+    "displayName": "陈雨桐",
+    "role": "npc",
+    "avatarAssetId": "avatar-chenyutong",
+    "intro": "高二一班同学。提供黑色面包车线索，提及联系不上闫欣泽。",
+    "age": 17,
+    "schoolClass": "绿草中学高二一班"
+  },
+  {
+    "id": "char-zhaotianyu",
+    "name": "赵天宇",
+    "displayName": "赵天宇",
+    "role": "npc",
+    "avatarAssetId": "avatar-zhaotianyu",
+    "intro": "高二一班同学，游戏群群主。在班级群中讨论终末地等游戏话题。",
+    "age": 17,
+    "schoolClass": "绿草中学高二一班"
+  },
+  {
+    "id": "char-mom",
+    "name": "妈妈",
+    "displayName": "妈妈",
+    "role": "npc",
+    "avatarAssetId": "avatar-mom",
+    "intro": "林哲的母亲，在外地打工。可微信联系获取安慰与模糊提示。",
+    "age": 45,
+    "schoolClass": "（主角家人）"
+  },
+  {
+    "id": "char-dad",
+    "name": "爸爸",
+    "displayName": "爸爸",
+    "role": "npc",
+    "avatarAssetId": "avatar-dad",
+    "intro": "林哲的父亲，在外地打工。",
+    "age": 47,
+    "schoolClass": "（主角家人）"
+  }
+]

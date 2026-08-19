@@ -1,0 +1,835 @@
+/* WechatApp/WechatApp.css — 微信 App 样式（wc- 前缀命名空间，避免与他 App 冲突） */
+
+.wc-app {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: #ededed;
+  color: #181818;
+  font-size: 14px;
+  overflow: hidden;
+}
+
+.wc-app-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.wc-app-warn {
+  padding: 6px 12px;
+  background: #fff3cd;
+  color: #856404;
+  font-size: 12px;
+}
+
+/* 底部 Tab */
+.wc-tabbar {
+  display: flex;
+  background: #f7f7f7;
+  border-top: 1px solid #d9d9d9;
+  padding: 4px 0 calc(4px + env(safe-area-inset-bottom, 0px));
+  flex-shrink: 0;
+}
+.wc-tabbar-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 4px 0;
+  background: transparent;
+  border: 0;
+  color: #7a7a7a;
+  cursor: pointer;
+  font-family: inherit;
+}
+.wc-tabbar-item.is-active {
+  color: #07c160;
+}
+.wc-tabbar-icon {
+  font-size: 20px;
+  line-height: 1;
+}
+.wc-tabbar-label {
+  font-size: 11px;
+}
+
+/* 头部 */
+.wc-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  background: #ededed;
+  border-bottom: 1px solid #d9d9d9;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+.wc-header-back {
+  background: transparent;
+  border: 0;
+  font-size: 24px;
+  line-height: 1;
+  color: #181818;
+  cursor: pointer;
+  padding: 0 4px;
+}
+.wc-header-titles {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+.wc-header-title {
+  font-size: 16px;
+  font-weight: 600;
+}
+.wc-header-sub {
+  font-size: 11px;
+  color: #888;
+}
+
+/* 通用空态/错误 */
+.wc-empty {
+  padding: 24px;
+  text-align: center;
+  color: #999;
+  font-size: 13px;
+}
+.wc-empty.wc-error {
+  color: #c0392b;
+}
+
+/* 头像 */
+.wc-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  color: #fff;
+  font-weight: 600;
+  user-select: none;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+.wc-avatar-grey {
+  filter: grayscale(1) opacity(0.7);
+}
+
+/* 会话列表 */
+.wc-thread-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  background: #fff;
+}
+.wc-thread-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-bottom: 1px solid #f0f0f0;
+  cursor: pointer;
+}
+.wc-thread-row:hover {
+  background: #f7f7f7;
+}
+.wc-thread-info {
+  flex: 1;
+  min-width: 0;
+}
+.wc-thread-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+}
+.wc-thread-title {
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.wc-thread-time {
+  font-size: 11px;
+  color: #b0b0b0;
+  flex-shrink: 0;
+}
+.wc-thread-snippet {
+  font-size: 12px;
+  color: #999;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.wc-unread-badge {
+  background: #fa5151;
+  color: #fff;
+  font-size: 11px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 9px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* 骨架屏 */
+.wc-skeleton-list {
+  background: #fff;
+  padding: 8px 12px;
+}
+.wc-skeleton-row {
+  display: flex;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid #f4f4f4;
+}
+.wc-skeleton-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 6px;
+  background: #eee;
+  flex-shrink: 0;
+}
+.wc-skeleton-lines {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  justify-content: center;
+}
+.wc-skeleton-line {
+  height: 12px;
+  background: #eee;
+  border-radius: 4px;
+}
+.wc-skeleton-line.short {
+  width: 50%;
+}
+
+/* 会话页 */
+.wc-thread-view {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+.wc-thread-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: #ededed;
+}
+.wc-msg-system {
+  align-self: center;
+  background: rgba(0, 0, 0, 0.08);
+  color: #666;
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 4px;
+  max-width: 80%;
+  text-align: center;
+}
+.wc-msg-row {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+.wc-msg-sent {
+  flex-direction: row-reverse;
+}
+.wc-msg-avatar {
+  flex-shrink: 0;
+}
+.wc-msg-body {
+  max-width: 72%;
+  display: flex;
+  flex-direction: column;
+}
+.wc-msg-sent .wc-msg-body {
+  align-items: flex-end;
+}
+.wc-msg-author {
+  font-size: 11px;
+  color: #888;
+  margin-bottom: 2px;
+  padding: 0 4px;
+}
+.wc-msg-bubble {
+  background: #fff;
+  padding: 8px 10px;
+  border-radius: 6px;
+  font-size: 14px;
+  line-height: 1.5;
+  word-break: break-word;
+  position: relative;
+}
+.wc-msg-bubble-sent {
+  background: #95ec69;
+}
+.wc-msg-time {
+  font-size: 10px;
+  color: #b0b0b0;
+  margin-top: 3px;
+  padding: 0 4px;
+}
+.wc-msg-text {
+  white-space: pre-wrap;
+}
+
+/* 语音 */
+.wc-msg-voice {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 140px;
+  flex-wrap: wrap;
+}
+.wc-voice-play {
+  background: rgba(0, 0, 0, 0.05);
+  border: 0;
+  border-radius: 50%;
+  width: 26px;
+  height: 26px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.wc-voice-wave {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  height: 24px;
+  flex: 1;
+}
+.wc-voice-bar {
+  display: inline-block;
+  width: 3px;
+  background: #888;
+  border-radius: 2px;
+  height: 30%;
+}
+.wc-voice-wave.is-playing .wc-voice-bar {
+  animation: wc-voice-bar 1s ease-in-out infinite alternate;
+}
+.wc-msg-bubble-sent .wc-voice-bar {
+  background: #2e7d32;
+}
+@keyframes wc-voice-bar {
+  0% { height: 20%; }
+  100% { height: 100%; }
+}
+.wc-voice-duration {
+  font-size: 12px;
+  color: #666;
+  flex-shrink: 0;
+}
+.wc-voice-transcript-toggle {
+  background: transparent;
+  border: 0;
+  color: #576b95;
+  font-size: 11px;
+  cursor: pointer;
+  padding: 0;
+}
+.wc-msg-bubble-sent .wc-voice-transcript-toggle {
+  color: #2e7d32;
+}
+.wc-voice-transcript {
+  width: 100%;
+  margin-top: 6px;
+  padding-top: 6px;
+  border-top: 1px dashed rgba(0, 0, 0, 0.1);
+  font-size: 12px;
+  color: #444;
+  line-height: 1.5;
+}
+
+/* 图片/文件/红包占位 */
+.wc-msg-image {
+  font-size: 12px;
+  color: #888;
+  padding: 16px;
+  background: #f5f5f5;
+  border-radius: 4px;
+  min-width: 120px;
+  text-align: center;
+}
+.wc-msg-file,
+.wc-msg-redpacket {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* 链接卡片 */
+.wc-link-card {
+  display: block;
+  background: #f7f7f7;
+  border: 1px solid #eaeaea;
+  border-radius: 4px;
+  padding: 8px 10px;
+  text-align: left;
+  cursor: pointer;
+  min-width: 180px;
+}
+.wc-link-card-external {
+  cursor: default;
+}
+.wc-link-title {
+  font-size: 13px;
+  font-weight: 500;
+  color: #181818;
+}
+.wc-link-hint {
+  font-size: 11px;
+  color: #576b95;
+  margin-top: 2px;
+}
+.wc-link-url {
+  font-size: 11px;
+  color: #999;
+  margin-top: 2px;
+  word-break: break-all;
+}
+
+/* 输入栏 */
+.wc-thread-input {
+  display: flex;
+  gap: 8px;
+  padding: 8px 12px calc(8px + env(safe-area-inset-bottom, 0px));
+  background: #f7f7f7;
+  border-top: 1px solid #d9d9d9;
+  flex-shrink: 0;
+}
+.wc-thread-input input {
+  flex: 1;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 6px 10px;
+  font-size: 14px;
+  background: #fff;
+  font-family: inherit;
+}
+.wc-thread-input button {
+  background: #07c160;
+  color: #fff;
+  border: 0;
+  border-radius: 4px;
+  padding: 0 14px;
+  font-size: 13px;
+  cursor: pointer;
+  font-family: inherit;
+}
+.wc-thread-input button:disabled {
+  background: #9ad8b6;
+  cursor: not-allowed;
+}
+
+/* 朋友圈 */
+.wc-moments-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  background: #fff;
+}
+.wc-moment {
+  padding: 12px;
+  border-bottom: 1px solid #f0f0f0;
+}
+.wc-moment-head {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.wc-moment-meta {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.3;
+}
+.wc-moment-author {
+  font-weight: 600;
+  color: #576b95;
+  font-size: 14px;
+}
+.wc-moment-time {
+  font-size: 11px;
+  color: #b0b0b0;
+}
+.wc-moment-text {
+  font-size: 14px;
+  line-height: 1.5;
+  margin-bottom: 8px;
+  white-space: pre-wrap;
+}
+.wc-moment-images {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  gap: 6px;
+  margin-bottom: 8px;
+}
+.wc-moment-image {
+  background: #f0f0f0;
+  border: 0;
+  border-radius: 4px;
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: zoom-in;
+  padding: 0;
+  overflow: hidden;
+}
+.wc-moment-image-ph {
+  font-size: 10px;
+  color: #888;
+  text-align: center;
+}
+.wc-moment-link {
+  display: block;
+  background: #f5f5f5;
+  border: 0;
+  border-radius: 4px;
+  padding: 8px 10px;
+  text-align: left;
+  cursor: pointer;
+  width: 100%;
+  margin-bottom: 8px;
+}
+.wc-moment-interactions {
+  background: #f7f7f7;
+  border-radius: 4px;
+  padding: 6px 10px;
+  font-size: 12px;
+  color: #576b95;
+}
+.wc-moment-likes {
+  margin-bottom: 4px;
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.wc-like-icon {
+  color: #fa5151;
+}
+.wc-moment-comments {
+  list-style: none;
+  margin: 4px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.wc-comment-author {
+  color: #576b95;
+}
+.wc-moment-comment-deleted {
+  opacity: 0.6;
+}
+.wc-comment-deleted-text {
+  color: #b0b0b0;
+  font-style: italic;
+}
+
+/* 图片查看器 */
+.wc-image-viewer-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+.wc-image-viewer-content {
+  position: relative;
+  max-width: 92vw;
+  max-height: 92vh;
+}
+.wc-image-viewer-img {
+  background: #222;
+  border-radius: 6px;
+  padding: 40px;
+  min-width: 260px;
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: scale(1.3);
+}
+.wc-image-viewer-placeholder {
+  color: #aaa;
+  font-size: 14px;
+}
+.wc-image-viewer-caption {
+  margin-top: 12px;
+  color: #ddd;
+  font-size: 13px;
+  text-align: center;
+}
+.wc-image-viewer-close {
+  position: absolute;
+  top: -40px;
+  right: 0;
+  background: rgba(255, 255, 255, 0.15);
+  border: 0;
+  color: #fff;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+/* 公众号 */
+.wc-upload-card {
+  margin: 12px;
+  padding: 12px;
+  background: #fff;
+  border-radius: 8px;
+  border: 1px solid #eee;
+}
+.wc-upload-done {
+  border-color: #95ec69;
+  background: #f6fff2;
+}
+.wc-upload-title {
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+.wc-upload-desc {
+  font-size: 12px;
+  color: #888;
+  margin-bottom: 8px;
+}
+.wc-upload-button {
+  background: #07c160;
+  color: #fff;
+  border: 0;
+  border-radius: 4px;
+  padding: 6px 14px;
+  font-size: 13px;
+  cursor: pointer;
+  font-family: inherit;
+}
+.wc-upload-button:disabled {
+  background: #9ad8b6;
+}
+.wc-upload-result-link {
+  display: inline-block;
+  margin-top: 6px;
+  background: #fff;
+  border: 1px solid #07c160;
+  color: #07c160;
+  border-radius: 4px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 13px;
+}
+
+.wc-official-groups {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 0 0 12px;
+}
+.wc-account-group {
+  background: #fff;
+}
+.wc-account-name {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #576b95;
+  padding: 10px 12px 4px;
+  margin: 0;
+}
+.wc-article-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.wc-article-row {
+  padding: 10px 12px;
+  border-top: 1px solid #f5f5f5;
+  cursor: pointer;
+}
+.wc-article-row:hover {
+  background: #f7f7f7;
+}
+.wc-article-row-title {
+  font-size: 14px;
+  line-height: 1.4;
+}
+.wc-article-row-meta {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-top: 4px;
+  font-size: 11px;
+  color: #b0b0b0;
+}
+.wc-tag-gen {
+  background: #07c160;
+  color: #fff;
+  padding: 1px 6px;
+  border-radius: 8px;
+  font-size: 10px;
+}
+.wc-tag-puzzle {
+  background: #faad14;
+  color: #fff;
+  padding: 1px 6px;
+  border-radius: 8px;
+  font-size: 10px;
+}
+
+/* 文章详情 */
+.wc-article-detail {
+  background: #fff;
+  min-height: 100%;
+}
+.wc-article {
+  padding: 16px;
+}
+.wc-article-h1 {
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.4;
+  margin: 0 0 8px;
+}
+.wc-article-meta {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  flex-wrap: wrap;
+  font-size: 12px;
+  color: #999;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #f0f0f0;
+}
+.wc-article-body {
+  font-size: 15px;
+  line-height: 1.75;
+  color: #333;
+}
+.wc-article-h {
+  font-weight: 600;
+  margin: 18px 0 8px;
+}
+.wc-article-h-1 { font-size: 19px; }
+.wc-article-h-2 { font-size: 17px; }
+.wc-article-h-3 { font-size: 15px; }
+.wc-article-p {
+  margin: 8px 0;
+}
+.wc-article-quote {
+  border-left: 3px solid #07c160;
+  padding: 4px 12px;
+  margin: 12px 0;
+  color: #555;
+  background: #f6fff2;
+  border-radius: 0 4px 4px 0;
+}
+.wc-article-list {
+  padding-left: 22px;
+  margin: 8px 0;
+}
+.wc-article-figure {
+  margin: 12px 0;
+  text-align: center;
+}
+.wc-article-img-placeholder {
+  background: #f0f0f0;
+  padding: 24px;
+  border-radius: 4px;
+  font-size: 12px;
+  color: #888;
+}
+.wc-callout {
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 13px;
+  margin: 10px 0;
+}
+.wc-callout-info {
+  background: #e6f7ff;
+  border-left: 3px solid #1890ff;
+  color: #0b5394;
+}
+.wc-callout-warning {
+  background: #fff7e6;
+  border-left: 3px solid #faad14;
+  color: #8a6d00;
+}
+.wc-callout-danger {
+  background: #fff1f0;
+  border-left: 3px solid #ff4d4f;
+  color: #a8071a;
+}
+.wc-article-url {
+  margin-top: 20px;
+  padding-top: 12px;
+  border-top: 1px dashed #eee;
+  font-size: 12px;
+  color: #b0b0b0;
+  word-break: break-all;
+}
+
+/* 通讯录 */
+.wc-contacts-body {
+  background: #fff;
+}
+.wc-contact-section {
+  padding: 8px 0;
+}
+.wc-contact-section-title {
+  font-size: 12px;
+  color: #888;
+  padding: 6px 12px;
+  margin: 0;
+  background: #f7f7f7;
+  font-weight: 500;
+}
+.wc-contact-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.wc-contact-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border-bottom: 1px solid #f5f5f5;
+}
+.wc-contact-label {
+  flex: 1;
+  font-size: 14px;
+}
+.wc-contact-row.wc-contact-lost .wc-contact-label {
+  color: #999;
+}
+.wc-contact-status,
+.wc-contact-star {
+  font-size: 11px;
+  color: #b0b0b0;
+}
+.wc-contact-star {
+  color: #faad14;
+}

@@ -1,0 +1,16 @@
+{
+  "id": "page-xinxwang-news-spring",
+  "siteId": "site-xinxwang",
+  "url": "https://www.xinxwang-center.com/news/spring2026/",
+  "title": "我中心2026年春季招生火热进行中",
+  "accessibility": {
+    "kind": "linkedOnly",
+    "fromPageId": "page-xinxwang-news"
+  },
+  "blocks": [
+    {
+      "type": "paragraph",
+      "text": "2026-03-05 来源：中心宣传部　春季招生名额有限，针对12-18岁“网瘾”“叛逆”“厌学”青少年。"
+    }
+  ]
+}

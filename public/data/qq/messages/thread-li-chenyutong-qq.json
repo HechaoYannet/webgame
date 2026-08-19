@@ -1,0 +1,38 @@
+[
+  {
+    "id": "m-lichen-0312-1",
+    "threadId": "thread-li-chenyutong-qq",
+    "direction": "received",
+    "authorCharacterId": "char-chenyutong",
+    "timestamp": "2026-03-12T12:00:00+08:00",
+    "kind": "text",
+    "text": "听说你拿到终末地资格了，羡慕"
+  },
+  {
+    "id": "m-lichen-0312-2",
+    "threadId": "thread-li-chenyutong-qq",
+    "direction": "sent",
+    "authorCharacterId": "char-liqiaorui",
+    "timestamp": "2026-03-12T12:05:00+08:00",
+    "kind": "text",
+    "text": "运气好"
+  },
+  {
+    "id": "m-lichen-0313-1",
+    "threadId": "thread-li-chenyutong-qq",
+    "direction": "received",
+    "authorCharacterId": "char-chenyutong",
+    "timestamp": "2026-03-13T12:40:00+08:00",
+    "kind": "text",
+    "text": "桥瑞你今早真回来了？老师说你被家长接走了"
+  },
+  {
+    "id": "m-lichen-0313-2",
+    "threadId": "thread-li-chenyutong-qq",
+    "direction": "received",
+    "authorCharacterId": "char-chenyutong",
+    "timestamp": "2026-03-13T12:41:00+08:00",
+    "kind": "text",
+    "text": "我在后门那边看见一辆黑色面包车开走了，还以为是接你的"
+  }
+]

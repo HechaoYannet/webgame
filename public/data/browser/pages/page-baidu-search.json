@@ -1,0 +1,41 @@
+{
+  "id": "page-baidu-search",
+  "siteId": "site-baidu",
+  "url": "https://www.baidu.com/s?wd=绿草中学",
+  "title": "百度搜索 — 绿草中学",
+  "accessibility": {
+    "kind": "public"
+  },
+  "blocks": [
+    {
+      "type": "callout",
+      "variant": "info",
+      "text": "百度搜索结果：绿草中学"
+    },
+    {
+      "type": "articleList",
+      "items": [
+        {
+          "title": "湖南绿草中学官网",
+          "pageId": "page-lvzhong-home"
+        },
+        {
+          "title": "新希望成长中心官网",
+          "pageId": "page-xinxwang-home"
+        },
+        {
+          "title": "山河医科大学官网",
+          "pageId": "page-shanhe-home"
+        },
+        {
+          "title": "长沙3名青少年失联，家属急寻 — 湖南新闻网",
+          "pageId": "page-news-3-missing"
+        },
+        {
+          "title": "天眼查 — 新希望成长中心工商信息",
+          "pageId": "page-tianyancha"
+        }
+      ]
+    }
+  ]
+}

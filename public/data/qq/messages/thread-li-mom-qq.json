@@ -1,0 +1,65 @@
+[
+  {
+    "id": "m-limom-0310-1",
+    "threadId": "thread-li-mom-qq",
+    "direction": "received",
+    "authorCharacterId": "char-liqiaorui-mom",
+    "timestamp": "2026-03-10T20:00:00+08:00",
+    "kind": "text",
+    "text": "桥瑞，放假记得早点回家，妈给你转了生活费"
+  },
+  {
+    "id": "m-limom-0310-2",
+    "threadId": "thread-li-mom-qq",
+    "direction": "received",
+    "authorCharacterId": "char-liqiaorui-mom",
+    "timestamp": "2026-03-10T20:00:30+08:00",
+    "kind": "redpacket",
+    "text": "微信红包"
+  },
+  {
+    "id": "m-limom-0310-3",
+    "threadId": "thread-li-mom-qq",
+    "direction": "sent",
+    "authorCharacterId": "char-liqiaorui",
+    "timestamp": "2026-03-10T20:05:00+08:00",
+    "kind": "text",
+    "text": "收到，妈"
+  },
+  {
+    "id": "m-limom-0312-1",
+    "threadId": "thread-li-mom-qq",
+    "direction": "received",
+    "authorCharacterId": "char-liqiaorui-mom",
+    "timestamp": "2026-03-12T18:30:00+08:00",
+    "kind": "text",
+    "text": "明天放假来接你吗？我在外地回不去，你爸也忙"
+  },
+  {
+    "id": "m-limom-0312-2",
+    "threadId": "thread-li-mom-qq",
+    "direction": "sent",
+    "authorCharacterId": "char-liqiaorui",
+    "timestamp": "2026-03-12T18:35:00+08:00",
+    "kind": "text",
+    "text": "不用，我自己回，你们忙你们的"
+  },
+  {
+    "id": "m-limom-0313-1",
+    "threadId": "thread-li-mom-qq",
+    "direction": "received",
+    "authorCharacterId": "char-liqiaorui-mom",
+    "timestamp": "2026-03-13T13:30:00+08:00",
+    "kind": "text",
+    "text": "桥瑞你到家没？老师群里说昨晚有人来接你，可妈没让人去接啊"
+  },
+  {
+    "id": "m-limom-0313-2",
+    "threadId": "thread-li-mom-qq",
+    "direction": "received",
+    "authorCharacterId": "char-liqiaorui-mom",
+    "timestamp": "2026-03-13T13:31:00+08:00",
+    "kind": "text",
+    "text": "你到底在哪？给妈回个话"
+  }
+]

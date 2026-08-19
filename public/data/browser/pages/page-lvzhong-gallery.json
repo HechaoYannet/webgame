@@ -1,0 +1,42 @@
+{
+  "id": "page-lvzhong-gallery",
+  "siteId": "site-lvzhong",
+  "url": "https://www.lvzhong-edu.cn/gallery/",
+  "title": "绿草中学 — 校园风光",
+  "accessibility": {
+    "kind": "public"
+  },
+  "blocks": [
+    {
+      "type": "nav",
+      "links": [
+        {
+          "label": "首页",
+          "pageId": "page-lvzhong-home"
+        }
+      ]
+    },
+    {
+      "type": "callout",
+      "variant": "info",
+      "text": "校园风光"
+    },
+    {
+      "type": "image",
+      "assetId": "photo-campus-backwall",
+      "caption": "校园后墙（夜）",
+      "zoomable": true
+    },
+    {
+      "type": "image",
+      "assetId": "photo-principal-office",
+      "caption": "校长办公室一瞥（右下角可见文件袋）",
+      "zoomable": true
+    },
+    {
+      "type": "callout",
+      "variant": "info",
+      "text": "放大校长办公室照片右下角，文件袋上隐约可见“新希望”字样。"
+    }
+  ]
+}

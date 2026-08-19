@@ -1,0 +1,20 @@
+{
+  "id": "page-shanhe-news-funding",
+  "siteId": "site-shanhe-med",
+  "url": "https://www.shanhe-med.cn/news/funding-2025yfc/",
+  "title": "陈建国教授团队获国家自然科学基金重大项目",
+  "accessibility": {
+    "kind": "linkedOnly",
+    "fromPageId": "page-shanhe-research"
+  },
+  "blocks": [
+    {
+      "type": "paragraph",
+      "text": "2026-01-15  来源：科研处"
+    },
+    {
+      "type": "paragraph",
+      "text": "陈建国教授团队申报的“源石结晶生物能源提取与人体内结晶生成机制研究”获国家自然科学基金重大项目资助，基金号 2025YFC0123456，资助强度位列全校前列。"
+    }
+  ]
+}

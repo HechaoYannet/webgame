@@ -1,0 +1,34 @@
+{
+  "id": "page-shanhe-recruit",
+  "siteId": "site-shanhe-med",
+  "url": "https://www.shanhe-med.cn/lab/recruit/",
+  "title": "实验室 — 实验志愿者招募",
+  "accessibility": {
+    "kind": "linkedOnly",
+    "fromPageId": "page-shanhe-lab"
+  },
+  "blocks": [
+    {
+      "type": "callout",
+      "variant": "info",
+      "text": "实验志愿者招募"
+    },
+    {
+      "type": "paragraph",
+      "text": "招募对象：12-18岁青少年，身体健康，无重大疾病史。"
+    },
+    {
+      "type": "paragraph",
+      "text": "项目：源石结晶生物能源提取研究（基金号 2025YFC0123456）。"
+    },
+    {
+      "type": "paragraph",
+      "text": "志愿者经合作机构（新希望成长中心）统一推荐入组，本实验室提供营养补贴与全程医疗保障。"
+    },
+    {
+      "type": "callout",
+      "variant": "danger",
+      "text": "招募对象为12-18岁青少年、经“新希望成长中心”推荐入组——与该戒网瘾学校的招生对象完全重合，疑为利用未成年人进行人体实验。"
+    }
+  ]
+}

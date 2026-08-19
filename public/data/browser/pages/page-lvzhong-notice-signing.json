@@ -1,0 +1,24 @@
+{
+  "id": "page-lvzhong-notice-signing",
+  "siteId": "site-lvzhong",
+  "url": "https://www.lvzhong-edu.cn/notice/signing-xinxwang/",
+  "title": "绿草中学与新希望成长中心合作签约仪式公告",
+  "accessibility": {
+    "kind": "public"
+  },
+  "blocks": [
+    {
+      "type": "callout",
+      "variant": "info",
+      "text": "绿草中学与新希望成长中心合作签约仪式公告"
+    },
+    {
+      "type": "paragraph",
+      "text": "发布时间：2026-01-10"
+    },
+    {
+      "type": "paragraph",
+      "text": "2026年1月8日，绿草中学与新希望成长中心在多功能厅举行合作签约仪式。张强校长出席。双方将在学生行为矫正、心理健康教育等领域深度合作。详细内容见校园新闻。"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "id": "page-news-school-addiction",
+  "siteId": "site-news",
+  "url": "https://news.hunan-news.cn/2026/03/08/school-addiction.html",
+  "title": "湖南某中学被曝将学生送入戒网瘾学校",
+  "accessibility": {
+    "kind": "public"
+  },
+  "blocks": [
+    {
+      "type": "paragraph",
+      "text": "2026-03-08 来源：教育新闻　暗访报道未点名学校，但描述的“封闭管理、教官体罚、家长交费20万一学期”等细节与绿草中学/新希望成长中心高度吻合。"
+    }
+  ]
+}

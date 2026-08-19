@@ -1,0 +1,76 @@
+{
+  "id": "page-shanhe-home",
+  "siteId": "site-shanhe-med",
+  "url": "https://www.shanhe-med.cn/",
+  "title": "山河医科大学 — 首页",
+  "accessibility": {
+    "kind": "public"
+  },
+  "blocks": [
+    {
+      "type": "hero",
+      "heading": "山河医科大学",
+      "subheading": "科研立校 · 服务社会",
+      "imageAssetId": "shanhe-campus"
+    },
+    {
+      "type": "nav",
+      "links": [
+        {
+          "label": "首页",
+          "pageId": "page-shanhe-home"
+        },
+        {
+          "label": "科研动态",
+          "pageId": "page-shanhe-research"
+        },
+        {
+          "label": "机构设置",
+          "pageId": "page-shanhe-structure"
+        },
+        {
+          "label": "师资队伍",
+          "pageId": "page-shanhe-faculty"
+        },
+        {
+          "label": "论文发表",
+          "pageId": "page-shanhe-publications"
+        },
+        {
+          "label": "联系方式",
+          "pageId": "page-shanhe-contact"
+        }
+      ]
+    },
+    {
+      "type": "callout",
+      "variant": "info",
+      "text": "头条：我校陈建国教授团队获国家自然科学基金重大项目资助（基金号 2025YFC0123456）。"
+    },
+    {
+      "type": "articleList",
+      "items": [
+        {
+          "title": "我校生物能源实验室在清洁能源领域取得重大突破",
+          "pageId": "page-shanhe-research-breakthrough",
+          "date": "2026-02-28"
+        },
+        {
+          "title": "实验室发表预印本论文：从人体结晶中提取能源",
+          "pageId": "page-shanhe-research-crystal",
+          "date": "2026-02-28"
+        },
+        {
+          "title": "陈建国教授团队获国家自然科学基金重大项目",
+          "pageId": "page-shanhe-news-funding",
+          "date": "2026-01-15"
+        },
+        {
+          "title": "实验室获“能源创新奖”",
+          "pageId": "page-shanhe-news-award",
+          "date": "2026-02-10"
+        }
+      ]
+    }
+  ]
+}

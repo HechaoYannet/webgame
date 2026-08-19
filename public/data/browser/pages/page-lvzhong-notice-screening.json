@@ -1,0 +1,44 @@
+{
+  "id": "page-lvzhong-notice-screening",
+  "siteId": "site-lvzhong",
+  "url": "https://www.lvzhong-edu.cn/notice/screening/",
+  "title": "关于开展学生心理健康筛查的通知",
+  "accessibility": {
+    "kind": "public"
+  },
+  "blocks": [
+    {
+      "type": "callout",
+      "variant": "info",
+      "text": "关于开展学生心理健康筛查的通知"
+    },
+    {
+      "type": "paragraph",
+      "text": "发布时间：2026-03-12  来源：学生处"
+    },
+    {
+      "type": "paragraph",
+      "text": "各班主任、各位家长："
+    },
+    {
+      "type": "paragraph",
+      "text": "为全面掌握学生心理健康状况，做到早发现、早干预，我校联合专业心理机构于2026年3月15日—3月20日对全校学生开展心理健康筛查工作。筛查采用问卷与访谈相结合的方式，结果严格保密。"
+    },
+    {
+      "type": "paragraph",
+      "text": "请各班主任组织本班学生按时参加，名单以附件《学生心理筛查名单》为准（内部系统查阅，需校长账号登录）。"
+    },
+    {
+      "type": "paragraph",
+      "text": "特此通知。"
+    },
+    {
+      "type": "paragraph",
+      "text": "绿草中学学生处"
+    },
+    {
+      "type": "sourceComment",
+      "comment": "<!-- 测试地址 /notice/screening/qiangzhang（后台维护：仅 zhangqiang 账号可登录校务内部系统） -->"
+    }
+  ]
+}

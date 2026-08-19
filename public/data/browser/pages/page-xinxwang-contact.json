@@ -1,0 +1,38 @@
+{
+  "id": "page-xinxwang-contact",
+  "siteId": "site-xinxwang",
+  "url": "https://www.xinxwang-center.com/contact/",
+  "title": "新希望成长中心 — 联系我们",
+  "accessibility": {
+    "kind": "public"
+  },
+  "blocks": [
+    {
+      "type": "nav",
+      "links": [
+        {
+          "label": "首页",
+          "pageId": "page-xinxwang-home"
+        }
+      ]
+    },
+    {
+      "type": "callout",
+      "variant": "info",
+      "text": "联系我们"
+    },
+    {
+      "type": "paragraph",
+      "text": "地址：长沙市某区某路168号"
+    },
+    {
+      "type": "paragraph",
+      "text": "电话：0731-8XXXXXXX"
+    },
+    {
+      "type": "form",
+      "formId": "form-xinxwang-apply",
+      "onSubmitMessage": "报名申请已提交，我们将尽快与您联系。"
+    }
+  ]
+}

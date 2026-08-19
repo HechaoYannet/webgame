@@ -1,0 +1,138 @@
+[
+  {
+    "id": "site-lvzhong",
+    "name": "湖南绿草中学官网",
+    "baseUrl": "https://www.lvzhong-edu.cn/",
+    "pages": [
+      "page-lvzhong-home",
+      "page-lvzhong-notice",
+      "page-lvzhong-notice-screening",
+      "page-lvzhong-notice-vacation",
+      "page-lvzhong-notice-phone",
+      "page-lvzhong-notice-signing",
+      "page-lvzhong-notice-annual2025",
+      "page-lvzhong-intro",
+      "page-lvzhong-news",
+      "page-lvzhong-news-psych",
+      "page-lvzhong-news-coop",
+      "page-lvzhong-news-visit",
+      "page-lvzhong-teaching",
+      "page-lvzhong-moral",
+      "page-lvzhong-gallery",
+      "page-lvzhong-principal-mailbox",
+      "page-lvzhong-qiangzhang",
+      "page-lvzhong-agreement",
+      "page-lvzhong-screening-pdf",
+      "page-lvzhong-contact",
+      "page-lvzhong-patrol"
+    ]
+  },
+  {
+    "id": "site-xinxwang",
+    "name": "新希望成长中心官网",
+    "baseUrl": "https://www.xinxwang-center.com/",
+    "pages": [
+      "page-xinxwang-home",
+      "page-xinxwang-about",
+      "page-xinxwang-admission",
+      "page-xinxwang-cases",
+      "page-xinxwang-cooperation",
+      "page-xinxwang-news",
+      "page-xinxwang-news-lab",
+      "page-xinxwang-news-spring",
+      "page-xinxwang-news-newyear",
+      "page-xinxwang-team",
+      "page-xinxwang-voices",
+      "page-xinxwang-contact",
+      "page-xinxwang-admin",
+      "page-xinxwang-financial"
+    ]
+  },
+  {
+    "id": "site-shanhe-med",
+    "name": "山河医科大学官网",
+    "baseUrl": "https://www.shanhe-med.cn/",
+    "pages": [
+      "page-shanhe-home",
+      "page-shanhe-research",
+      "page-shanhe-research-breakthrough",
+      "page-shanhe-research-crystal",
+      "page-shanhe-structure",
+      "page-shanhe-faculty",
+      "page-shanhe-lab",
+      "page-shanhe-recruit",
+      "page-shanhe-publications",
+      "page-shanhe-news-funding",
+      "page-shanhe-news-award",
+      "page-shanhe-contact",
+      "page-shanhe-lab-admin",
+      "page-lab-funding-report",
+      "page-lab-subject-list"
+    ]
+  },
+  {
+    "id": "site-arxiv",
+    "name": "预印本论文库（仿arXiv）",
+    "baseUrl": "https://arxiv.shanhe-med.cn/",
+    "pages": [
+      "page-arxiv-list",
+      "page-arxiv-paper"
+    ]
+  },
+  {
+    "id": "site-news",
+    "name": "湖南新闻网",
+    "baseUrl": "https://news.hunan-news.cn/",
+    "pages": [
+      "page-news-home",
+      "page-news-3-missing",
+      "page-news-school-addiction",
+      "page-news-addiction-school",
+      "page-news-energy-award",
+      "page-news-health-notice",
+      "page-news-police-crackdown",
+      "page-news-edu-inspection"
+    ]
+  },
+  {
+    "id": "site-tianyancha",
+    "name": "天眼查",
+    "baseUrl": "https://www.tianyancha.com/",
+    "pages": [
+      "page-tianyancha",
+      "page-tianyancha-chen"
+    ]
+  },
+  {
+    "id": "site-baidu",
+    "name": "百度搜索",
+    "baseUrl": "https://www.baidu.com/",
+    "pages": [
+      "page-baidu-search"
+    ]
+  },
+  {
+    "id": "site-hnedu",
+    "name": "湖南省教育厅",
+    "baseUrl": "https://jyt.hunan.gov.cn/",
+    "pages": [
+      "page-hnedu"
+    ]
+  },
+  {
+    "id": "site-hnga",
+    "name": "湖南省公安厅",
+    "baseUrl": "https://gat.hunan.gov.cn/",
+    "pages": [
+      "page-hnga"
+    ]
+  },
+  {
+    "id": "site-endfield",
+    "name": "明日方舟：终末地 官网",
+    "baseUrl": "https://endfield.hypergryph.com/",
+    "pages": [
+      "page-endfield-news"
+    ]
+  }
+]

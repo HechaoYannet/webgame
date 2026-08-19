@@ -1,0 +1,54 @@
+[
+  {
+    "characterId": "char-yanxinze",
+    "qqNumber": "3175482960",
+    "qqNickname": "欣泽",
+    "qqRemark": "你同桌",
+    "status": "lost"
+  },
+  {
+    "characterId": "char-linzhe",
+    "qqNumber": "2869104753",
+    "qqNickname": "林哲",
+    "qqRemark": "林哲",
+    "status": "offline"
+  },
+  {
+    "characterId": "char-yanxinze",
+    "qqNumber": "10001",
+    "qqNickname": "高二一班级群",
+    "isGroup": true,
+    "memberCount": 47,
+    "status": "online"
+  },
+  {
+    "characterId": "char-zhaotianyu",
+    "qqNumber": "10002",
+    "qqNickname": "绿中游戏群",
+    "qqRemark": "终末地交流",
+    "isGroup": true,
+    "memberCount": 89,
+    "status": "online"
+  },
+  {
+    "characterId": "char-liqiaorui-mom",
+    "qqNumber": "2657419038",
+    "qqNickname": "瑞妈妈",
+    "qqRemark": "瑞妈妈",
+    "status": "offline"
+  },
+  {
+    "characterId": "char-chenyutong",
+    "qqNumber": "3398271645",
+    "qqNickname": "雨桐",
+    "qqRemark": "陈雨桐",
+    "status": "offline"
+  },
+  {
+    "characterId": "char-zhouming",
+    "qqNumber": "1920384756",
+    "qqNickname": "周明",
+    "qqRemark": "周明",
+    "status": "offline"
+  }
+]

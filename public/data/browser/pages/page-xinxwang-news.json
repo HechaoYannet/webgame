@@ -1,0 +1,45 @@
+{
+  "id": "page-xinxwang-news",
+  "siteId": "site-xinxwang",
+  "url": "https://www.xinxwang-center.com/news/",
+  "title": "新希望成长中心 — 新闻动态",
+  "accessibility": {
+    "kind": "public"
+  },
+  "blocks": [
+    {
+      "type": "nav",
+      "links": [
+        {
+          "label": "首页",
+          "pageId": "page-xinxwang-home"
+        }
+      ]
+    },
+    {
+      "type": "callout",
+      "variant": "info",
+      "text": "新闻动态"
+    },
+    {
+      "type": "articleList",
+      "items": [
+        {
+          "title": "我中心与山河医科大实验室签署合作协议",
+          "pageId": "page-xinxwang-news-lab",
+          "date": "2026-01-28"
+        },
+        {
+          "title": "我中心2026年春季招生火热进行中",
+          "pageId": "page-xinxwang-news-spring",
+          "date": "2026-03-05"
+        },
+        {
+          "title": "张校长新春致辞",
+          "pageId": "page-xinxwang-news-newyear",
+          "date": "2026-01-01"
+        }
+      ]
+    }
+  ]
+}

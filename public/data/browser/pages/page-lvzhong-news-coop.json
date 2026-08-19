@@ -1,0 +1,25 @@
+{
+  "id": "page-lvzhong-news-coop",
+  "siteId": "site-lvzhong",
+  "url": "https://www.lvzhong-edu.cn/news/coop-xinxwang/",
+  "title": "我校与新希望成长中心开展合作，助力学生健康成长",
+  "accessibility": {
+    "kind": "linkedOnly",
+    "fromPageId": "page-lvzhong-news"
+  },
+  "blocks": [
+    {
+      "type": "callout",
+      "variant": "info",
+      "text": "我校与新希望成长中心开展合作，助力学生健康成长"
+    },
+    {
+      "type": "paragraph",
+      "text": "2026-01-10  来源：校办"
+    },
+    {
+      "type": "paragraph",
+      "text": "1月8日，我校与新希望成长中心签署合作协议，在学生心理健康教育、行为矫正等方面开展深度合作。张强校长表示，此举将为有“网瘾”“叛逆”困扰的学生提供专业转介渠道。"
+    }
+  ]
+}

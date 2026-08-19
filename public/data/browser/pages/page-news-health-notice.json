@@ -1,0 +1,15 @@
+{
+  "id": "page-news-health-notice",
+  "siteId": "site-news",
+  "url": "https://news.hunan-news.cn/2026/02/05/health-notice.html",
+  "title": "国家卫健委发文：严禁利用未成年人进行人体实验",
+  "accessibility": {
+    "kind": "public"
+  },
+  "blocks": [
+    {
+      "type": "paragraph",
+      "text": "2026-02-05 来源：政策新闻　国家卫健委重申，严禁任何机构利用未成年人进行人体实验，违者将依法追究刑事责任。相关法规背景。"
+    }
+  ]
+}

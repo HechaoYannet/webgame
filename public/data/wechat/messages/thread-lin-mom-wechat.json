@@ -1,0 +1,29 @@
+[
+  {
+    "id": "msg-lin-mom-001",
+    "threadId": "thread-lin-mom-wechat",
+    "direction": "received",
+    "authorCharacterId": "char-mom",
+    "timestamp": "2026-03-13T08:00:00+08:00",
+    "kind": "text",
+    "text": "放假了记得写作业，别光顾着玩游戏"
+  },
+  {
+    "id": "msg-lin-mom-002",
+    "threadId": "thread-lin-mom-wechat",
+    "direction": "sent",
+    "authorCharacterId": "char-linzhe",
+    "timestamp": "2026-03-13T17:50:00+08:00",
+    "kind": "text",
+    "text": "妈，我同学李桥瑞好像出事了，联系不上他"
+  },
+  {
+    "id": "msg-lin-mom-003",
+    "threadId": "thread-lin-mom-wechat",
+    "direction": "received",
+    "authorCharacterId": "char-mom",
+    "timestamp": "2026-03-13T18:00:00+08:00",
+    "kind": "text",
+    "text": "别瞎想，孩子可能就是贪玩没看手机。你们老师不是说放假了吗，先看看老师群里咋说的。要是真担心，就找他常去的地方问问。"
+  }
+]

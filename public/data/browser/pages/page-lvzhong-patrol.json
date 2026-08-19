@@ -1,0 +1,46 @@
+{
+  "id": "page-lvzhong-patrol",
+  "siteId": "site-lvzhong",
+  "url": "https://www.lvzhong-edu.cn/internal/patrol/",
+  "title": "绿草中学 — 学生宿舍巡查记录",
+  "accessibility": {
+    "kind": "loginRequired",
+    "puzzleId": "puzzle-lvzhong-internal"
+  },
+  "blocks": [
+    {
+      "type": "callout",
+      "variant": "info",
+      "text": "学生宿舍巡查记录"
+    },
+    {
+      "type": "table",
+      "headers": [
+        "日期",
+        "班级",
+        "处理",
+        "备注"
+      ],
+      "rows": [
+        [
+          "2026-03-12 23:00",
+          "高二一班",
+          "李桥瑞（说话违纪）送思过室",
+          ""
+        ],
+        [
+          "2026-03-12 23:00",
+          "高二一班",
+          "闫欣泽（使用电子设备）送思过室",
+          ""
+        ],
+        [
+          "2026-03-13 01:50",
+          "高二一班",
+          "李桥瑞已由家长接走",
+          "经张校长确认"
+        ]
+      ]
+    }
+  ]
+}

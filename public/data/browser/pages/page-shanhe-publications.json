@@ -1,0 +1,35 @@
+{
+  "id": "page-shanhe-publications",
+  "siteId": "site-shanhe-med",
+  "url": "https://www.shanhe-med.cn/publications/",
+  "title": "山河医科大学 — 论文发表",
+  "accessibility": {
+    "kind": "public"
+  },
+  "blocks": [
+    {
+      "type": "nav",
+      "links": [
+        {
+          "label": "首页",
+          "pageId": "page-shanhe-home"
+        }
+      ]
+    },
+    {
+      "type": "callout",
+      "variant": "info",
+      "text": "论文发表"
+    },
+    {
+      "type": "articleList",
+      "items": [
+        {
+          "title": "Source Crystal Bioenergy Extraction and In Vivo Crystal Formation Mechanisms",
+          "pageId": "page-arxiv-paper",
+          "date": "2026-02-28"
+        }
+      ]
+    }
+  ]
+}

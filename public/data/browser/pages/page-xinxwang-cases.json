@@ -1,0 +1,50 @@
+{
+  "id": "page-xinxwang-cases",
+  "siteId": "site-xinxwang",
+  "url": "https://www.xinxwang-center.com/cases/",
+  "title": "新希望成长中心 — 成功案例",
+  "accessibility": {
+    "kind": "public"
+  },
+  "blocks": [
+    {
+      "type": "nav",
+      "links": [
+        {
+          "label": "首页",
+          "pageId": "page-xinxwang-home"
+        }
+      ]
+    },
+    {
+      "type": "callout",
+      "variant": "info",
+      "text": "成功案例"
+    },
+    {
+      "type": "paragraph",
+      "text": "学员小李的转变：从网瘾少年到三好学生。"
+    },
+    {
+      "type": "image",
+      "assetId": "photo-case-li-back",
+      "caption": "学员小李（背影 · 中心供图）",
+      "zoomable": true
+    },
+    {
+      "type": "paragraph",
+      "text": "学员小王的成长故事。"
+    },
+    {
+      "type": "image",
+      "assetId": "photo-case-wang-back",
+      "caption": "学员小王（背影 · 中心供图）",
+      "zoomable": true
+    },
+    {
+      "type": "callout",
+      "variant": "warning",
+      "text": "所有案例学员均无正面照片，仅展示背影。保护学员隐私，亦引发外界对学员真实处境的质疑。"
+    }
+  ]
+}

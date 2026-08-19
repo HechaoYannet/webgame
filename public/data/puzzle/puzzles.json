@@ -1,0 +1,159 @@
+[
+  {
+    "id": "puzzle-qq-login",
+    "type": "password",
+    "title": "登录李桥瑞的QQ",
+    "chapterId": "ch-prologue",
+    "answer": "0328",
+    "matchStrategy": {
+      "kind": "oneOf",
+      "accepted": ["0328", "20260328"]
+    },
+    "attemptsToHint": 3,
+    "riskPerWrongAttempt": 5,
+    "hintIds": ["hint-qq-password"],
+    "onSuccess": [
+      { "type": "collectEvidence", "evidenceId": "ev-qq-chat-plan" },
+      { "type": "advanceChapter", "toChapterId": "ch-1" }
+    ],
+    "onFailure": [
+      { "type": "addRisk", "amount": 5 }
+    ],
+    "unlocksThreadIds": ["thread-li-yan-qq", "thread-yan-lin-qq"]
+  },
+  {
+    "id": "puzzle-lvzhong-internal",
+    "type": "password",
+    "title": "登录绿中内部系统",
+    "chapterId": "ch-2",
+    "answer": "yigeyi",
+    "matchStrategy": {
+      "kind": "exact",
+      "trim": true
+    },
+    "attemptsToHint": 3,
+    "riskPerWrongAttempt": 5,
+    "hintIds": ["hint-lvzhong-password"],
+    "onSuccess": [
+      { "type": "collectEvidence", "evidenceId": "ev-lvzhong-agreement" },
+      { "type": "registerClue", "clueId": "clue-lvzhong-internal-contact" },
+      { "type": "collectEvidence", "evidenceId": "ev-xinxwang-lab-news" },
+      { "type": "advanceChapter", "toChapterId": "ch-3" }
+    ],
+    "onFailure": [
+      { "type": "addRisk", "amount": 5 }
+    ],
+    "unlocksPageIds": [
+      "page-lvzhong-agreement",
+      "page-lvzhong-screening-pdf",
+      "page-lvzhong-contact"
+    ]
+  },
+  {
+    "id": "puzzle-pdf-screening",
+    "type": "pdfPassword",
+    "title": "解密心理筛查名单PDF",
+    "chapterId": "ch-2",
+    "answer": "0312",
+    "matchStrategy": {
+      "kind": "exact"
+    },
+    "hintIds": [],
+    "onSuccess": [
+      { "type": "registerClue", "clueId": "clue-screening-list" }
+    ],
+    "onFailure": [
+      { "type": "addRisk", "amount": 3 }
+    ]
+  },
+  {
+    "id": "puzzle-xinxwang-backend",
+    "type": "password",
+    "title": "登录新希望成长中心后台（红鲱鱼）",
+    "chapterId": "ch-3",
+    "answer": "88888888",
+    "matchStrategy": {
+      "kind": "exact"
+    },
+    "attemptsToHint": 3,
+    "riskPerWrongAttempt": 3,
+    "hintIds": ["hint-xinxwang-password"],
+    "onSuccess": [
+      { "type": "registerClue", "clueId": "clue-xinxwang-financial" }
+    ],
+    "onFailure": [
+      { "type": "addRisk", "amount": 3 }
+    ],
+    "unlocksPageIds": ["page-xinxwang-financial"]
+  },
+  {
+    "id": "puzzle-upload-paper",
+    "type": "uploadAndInterpret",
+    "title": "上传论文PDF获取AI解读",
+    "chapterId": "ch-4",
+    "answer": "paper-source-crystal.pdf",
+    "matchStrategy": {
+      "kind": "exact"
+    },
+    "hintIds": [],
+    "onSuccess": [
+      { "type": "collectEvidence", "evidenceId": "ev-paper-pdf" },
+      { "type": "registerClue", "clueId": "clue-lab-backend-address" },
+      { "type": "advanceChapter", "toChapterId": "ch-5" }
+    ],
+    "unlocksAssetIds": ["paper-source-crystal.pdf"]
+  },
+  {
+    "id": "puzzle-lab-backend",
+    "type": "password",
+    "title": "登录山河医科大实验室后台",
+    "chapterId": "ch-5",
+    "answer": "123456",
+    "matchStrategy": {
+      "kind": "exact"
+    },
+    "attemptsToHint": 3,
+    "riskPerWrongAttempt": 10,
+    "hintIds": ["hint-lab-password"],
+    "onSuccess": [
+      { "type": "collectEvidence", "evidenceId": "ev-lab-funding-report" },
+      { "type": "collectEvidence", "evidenceId": "ev-lab-upload-log" },
+      { "type": "advanceChapter", "toChapterId": "ch-finale" }
+    ],
+    "onFailure": [
+      { "type": "addRisk", "amount": 10 }
+    ],
+    "unlocksPageIds": [
+      "page-lab-funding-report",
+      "page-lab-subject-list"
+    ]
+  },
+  {
+    "id": "puzzle-evidence-finale",
+    "type": "evidenceSelection",
+    "title": "终章：整理证据并举报",
+    "chapterId": "ch-finale",
+    "answer": [
+      "ev-qq-chat-plan",
+      "ev-lvzhong-agreement",
+      "ev-xinxwang-lab-news",
+      "ev-paper-pdf",
+      "ev-lab-funding-report"
+    ],
+    "matchStrategy": {
+      "kind": "evidenceSet",
+      "requiredEvidenceIds": [
+        "ev-qq-chat-plan",
+        "ev-lvzhong-agreement",
+        "ev-xinxwang-lab-news",
+        "ev-paper-pdf",
+        "ev-lab-funding-report"
+      ],
+      "minLength": 5
+    },
+    "hintIds": [],
+    "onSuccess": [
+      { "type": "advanceChapter", "toChapterId": "ch-finale" }
+    ]
+  }
+]

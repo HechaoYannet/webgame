@@ -1,0 +1,16 @@
+{
+  "id": "page-xinxwang-news-newyear",
+  "siteId": "site-xinxwang",
+  "url": "https://www.xinxwang-center.com/news/newyear2026/",
+  "title": "张校长新春致辞",
+  "accessibility": {
+    "kind": "linkedOnly",
+    "fromPageId": "page-xinxwang-news"
+  },
+  "blocks": [
+    {
+      "type": "paragraph",
+      "text": "2026-01-01 来源：中心宣传部　张强校长新年寄语：“新希望，新起点，我们一起为孩子的明天努力。”"
+    }
+  ]
+}

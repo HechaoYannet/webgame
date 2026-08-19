@@ -1,0 +1,29 @@
+{
+  "id": "page-shanhe-faculty",
+  "siteId": "site-shanhe-med",
+  "url": "https://www.shanhe-med.cn/faculty/",
+  "title": "山河医科大学 — 师资队伍",
+  "accessibility": {
+    "kind": "public"
+  },
+  "blocks": [
+    {
+      "type": "nav",
+      "links": [
+        {
+          "label": "首页",
+          "pageId": "page-shanhe-home"
+        }
+      ]
+    },
+    {
+      "type": "callout",
+      "variant": "info",
+      "text": "师资队伍"
+    },
+    {
+      "type": "paragraph",
+      "text": "陈建国，教授，博士生导师，生物能源与疾病控制国家重点实验室主任。研究方向：生物能源、晶体提取、疾病控制。主持国家自然科学基金重大项目（基金号 2025YFC0123456）。"
+    }
+  ]
+}

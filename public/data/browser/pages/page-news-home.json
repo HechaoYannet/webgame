@@ -1,0 +1,56 @@
+{
+  "id": "page-news-home",
+  "siteId": "site-news",
+  "url": "https://news.hunan-news.cn/",
+  "title": "湖南新闻网 — 首页",
+  "accessibility": {
+    "kind": "public"
+  },
+  "blocks": [
+    {
+      "type": "hero",
+      "heading": "湖南新闻网",
+      "subheading": "聚焦三湘 · 服务民生"
+    },
+    {
+      "type": "articleList",
+      "items": [
+        {
+          "title": "长沙3名青少年失联，家属急寻",
+          "pageId": "page-news-3-missing",
+          "date": "2026-03-10"
+        },
+        {
+          "title": "湖南某中学被曝将学生送入戒网瘾学校",
+          "pageId": "page-news-school-addiction",
+          "date": "2026-03-08"
+        },
+        {
+          "title": "戒网瘾学校乱象调查（深度报道）",
+          "pageId": "page-news-addiction-school",
+          "date": "2026-02-22"
+        },
+        {
+          "title": "山河医科大实验室获“能源创新奖”",
+          "pageId": "page-news-energy-award",
+          "date": "2026-02-10"
+        },
+        {
+          "title": "国家卫健委发文：严禁利用未成年人进行人体实验",
+          "pageId": "page-news-health-notice",
+          "date": "2026-02-05"
+        },
+        {
+          "title": "湖南警方捣毁一非法人体实验窝点",
+          "pageId": "page-news-police-crackdown",
+          "date": "2026-01-20"
+        },
+        {
+          "title": "市教育局将开展民办教育机构专项检查",
+          "pageId": "page-news-edu-inspection",
+          "date": "2026-02-25"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,230 @@
+{
+  "$schema": "self-described/writer-phone-story-call-scripts-v1",
+  "$description": "复杂通话脚本（互动设计 §三.4）。CallScript 为可回放的字幕化通话。接线员举报电话 call-script-dispatcher-report 是真/普通结局分支点：玩家勾选证据触发 puzzle-evidence-finale，脚本根据 evidenceSet 校验结果分 good/normal 两支。'evidenceSelection' 节点交由前端 PuzzleEffect 执行器消费（puzzleId=puzzle-evidence-finale, matchStrategy=evidenceSet）。脚本结束后 pushEffect 链触发结局与 openNewsApp（good）/ openRetryPage（normal）。文案 agent 不写 registersClueId/triggersEvidenceId，留空由 level-designer phase3 回填。",
+  "scripts": [
+    {
+      "id": "call-script-wangshufen-lie",
+      "title": "与王老师通话：李桥瑞去向",
+      "callee": "char-wangshufen",
+      "calleeDisplay": "王老师（班主任）",
+      "blocks": [
+        {
+          "type": "line",
+          "speaker": "char-wangshufen",
+          "text": "喂？林哲啊。",
+          "timestampSec": 0
+        },
+        {
+          "type": "line",
+          "speaker": "char-linzhe",
+          "text": "王老师，李桥瑞回家了吗？我联系不上他。",
+          "timestampSec": 3
+        },
+        {
+          "type": "line",
+          "speaker": "char-wangshufen",
+          "text": "他昨晚就被家长接走了。已经直接回家了，你放心。",
+          "timestampSec": 8,
+          "characterBehavior": "pause-then-answer"
+        },
+        {
+          "type": "line",
+          "speaker": "char-linzhe",
+          "text": "哪个家长？他爸妈都在外地啊。",
+          "timestampSec": 14
+        },
+        {
+          "type": "line",
+          "speaker": "char-wangshufen",
+          "text": "……林哲，别问了，学校会处理的。你先安心学习。",
+          "timestampSec": 20,
+          "characterBehavior": "stutter"
+        },
+        {
+          "type": "line",
+          "speaker": "char-linzhe",
+          "text": "可李桥瑞妈妈刚在群里说没去接他。",
+          "timestampSec": 26
+        },
+        {
+          "type": "line",
+          "speaker": "char-wangshufen",
+          "text": "……（沉默挂断）",
+          "timestampSec": 32,
+          "characterBehavior": "hangup"
+        }
+      ],
+      "endEffect": null,
+      "comment": "电话追班主任谎言（互动设计 §三.1，信息架构 §2.6），呼应班级群李桥瑞妈妈矛盾说辞。班主任被张强威胁，知道皮毛，闪烁其词。"
+    },
+    {
+      "id": "call-script-zhangqiang-threat-incoming",
+      "title": "未知号码威胁来电",
+      "callee": null,
+      "calleeDisplay": "未知号码",
+      "blocks": [
+        {
+          "type": "line",
+          "speaker": null,
+          "text": "（接通后6秒静默，背景有粗重呼吸声，随后挂断）",
+          "timestampSec": 0,
+          "audioAssetId": "audio-heartbeat"
+        }
+      ],
+      "endEffect": {
+        "type": "addRisk",
+        "amount": 10
+      },
+      "comment": "倒计时阶段威胁来电（风险值高时触发），无台词仅静默+心跳音频，+10 风险。手机边缘红边震屏。"
+    },
+    {
+      "id": "call-script-dispatcher-report",
+      "title": "湖南省公安厅举报中心——举报非法人体验案",
+      "callee": "char-dispatcher",
+      "calleeDisplay": "省公安厅举报中心（0731-88888888）",
+      "blocks": [
+        {
+          "type": "system",
+          "text": "正在呼叫 0731-88888888……",
+          "timestampSec": 0
+        },
+        {
+          "type": "system",
+          "text": "接通",
+          "timestampSec": 4
+        },
+        {
+          "type": "line",
+          "speaker": "char-dispatcher",
+          "text": "您好，湖南省公安厅举报中心，请问有什么可以帮您？",
+          "timestampSec": 5
+        },
+        {
+          "type": "line",
+          "speaker": "char-linzhe",
+          "text": "我要举报！有人利用戒网瘾学校对青少年做非法人体实验！我同学失踪了，可能就是被他们抓去的！",
+          "timestampSec": 10
+        },
+        {
+          "type": "line",
+          "speaker": "char-dispatcher",
+          "text": "请您冷静。请问您手上有相关证据吗？可以把证据提交给我们，我们会立刻核实。",
+          "timestampSec": 18
+        },
+        {
+          "type": "evidenceSelection",
+          "puzzleId": "puzzle-evidence-finale",
+          "prompt": "从证据库勾选关键证据，点击\"发送证据\"",
+          "minLength": 5,
+          "requiredEvidenceIds": [
+            "ev-qq-chat-plan",
+            "ev-lvzhong-agreement",
+            "ev-xinxwang-lab-news",
+            "ev-paper-pdf",
+            "ev-lab-funding-report"
+          ],
+          "optionalEvidenceIds": [
+            "ev-lab-upload-log"
+          ],
+          "timestampSec": 24
+        },
+        {
+          "type": "branch",
+          "condition": {
+            "kind": "puzzleSucceeded",
+            "puzzleId": "puzzle-evidence-finale"
+          },
+          "branchId": "good",
+          "timestampSec": 60
+        },
+        {
+          "type": "branch",
+          "condition": {
+            "kind": "puzzleFailed",
+            "puzzleId": "puzzle-evidence-finale"
+          },
+          "branchId": "normal",
+          "timestampSec": 60
+        }
+      ],
+      "branches": {
+        "good": {
+          "blocks": [
+            {
+              "type": "line",
+              "speaker": "char-linzhe",
+              "text": "证据我发过去了：聊天记录、合作协议、实验室和戒网瘾学校的勾结、还有论文和经费报告……我同学李桥瑞和闫欣泽就在受试者名单里！",
+              "timestampSec": 62
+            },
+            {
+              "type": "line",
+              "speaker": "char-dispatcher",
+              "text": "我们已收到您提交的证据。情况非常严重，我立刻通知长沙警方。请您保持电话畅通，注意自身安全，我们会在第一时间保护您和被举报人。",
+              "timestampSec": 72
+            },
+            {
+              "type": "line",
+              "speaker": "char-dispatcher",
+              "text": "请勿挂断，不要单独外出。我们马上派人过去。",
+              "timestampSec": 82
+            },
+            {
+              "type": "line",
+              "speaker": "char-linzhe",
+              "text": "……谢谢您。请快一点。",
+              "timestampSec": 88
+            },
+            {
+              "type": "system",
+              "text": "通话结束",
+              "timestampSec": 92
+            }
+          ],
+          "endEffects": [
+            { "type": "advanceChapter", "toChapterId": "ch-finale" },
+            { "type": "openNewsApp", "endingId": "good" },
+            { "type": "pushEnding", "endingId": "good" }
+          ]
+        },
+        "normal": {
+          "blocks": [
+            {
+              "type": "line",
+              "speaker": "char-linzhe",
+              "text": "我……我把能找到的都发过去了。但我好像漏了什么。",
+              "timestampSec": 62
+            },
+            {
+              "type": "line",
+              "speaker": "char-dispatcher",
+              "text": "证据我们收到了，但还不够立案的标准。我们会进一步核实，请您保持电话畅通，情况紧急请再联系我们。",
+              "timestampSec": 72
+            },
+            {
+              "type": "line",
+              "speaker": "char-linzhe",
+              "text": "可是……他们人还在那地方，来不及了……",
+              "timestampSec": 82
+            },
+            {
+              "type": "line",
+              "speaker": "char-dispatcher",
+              "text": "我们尽力。您先确保自己安全。",
+              "timestampSec": 88
+            },
+            {
+              "type": "system",
+              "text": "通话结束",
+              "timestampSec": 92
+            }
+          ],
+          "endEffects": [
+            { "type": "advanceChapter", "toChapterId": "ch-finale" },
+            { "type": "pushEnding", "endingId": "normal" }
+          ]
+        }
+      },
+      "comment": "终章举报电话脚本（互动设计 §三.4、剧情大纲 终章、CLAUDE.md §6.4）。evidenceSelection 节点驱动 puzzle-evidence-finale 校验（evidenceSet, requiredEvidenceIds 5项, minLength 5）。good 分支：接线员确认收到证据（'我们已收到您提交的证据'，交互设计原话）、通话结束后 openNewsApp(endingId=good) 自动打开新闻App播放破案播报——真结局新闻播报正文单一真源在 endings.json good.epilogueBlocks（'湖南警方破获非法人体实验案'），本脚本只触发不重复；pushEnding good 后微信收到李桥瑞'兄弟，谢谢你。我欠你一条命。'（endings.json postEndingWechatMessage）。normal 分支：证据不足，接线员仅说'进一步核实'，推 normal 结局。openNewsApp/pushEnding 为本作家自定义 PuzzleEffect 变体，非 types/index.ts 内 PuzzleEffect union 成员——交前端 PhoneApp 执行器实现，不冲突 src/types。"
+    }
+  ]
+}

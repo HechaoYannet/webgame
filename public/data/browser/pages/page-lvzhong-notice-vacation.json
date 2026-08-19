@@ -1,0 +1,24 @@
+{
+  "id": "page-lvzhong-notice-vacation",
+  "siteId": "site-lvzhong",
+  "url": "https://www.lvzhong-edu.cn/notice/vacation-2026spring/",
+  "title": "绿草中学2026年春季放假安排",
+  "accessibility": {
+    "kind": "public"
+  },
+  "blocks": [
+    {
+      "type": "callout",
+      "variant": "info",
+      "text": "绿草中学2026年春季放假安排"
+    },
+    {
+      "type": "paragraph",
+      "text": "发布时间：2026-03-11"
+    },
+    {
+      "type": "paragraph",
+      "text": "2026年3月13日下午2:00放假，3月16日晚19:00前返校。请同学注意假期安全，按时完成作业，远离网络游戏。"
+    }
+  ]
+}

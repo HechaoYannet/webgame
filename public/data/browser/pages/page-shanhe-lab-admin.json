@@ -1,0 +1,33 @@
+{
+  "id": "page-shanhe-lab-admin",
+  "siteId": "site-shanhe-med",
+  "url": "https://lab.shanhe-med.cn/admin",
+  "title": "山河医科大实验室 — 管理系统登录",
+  "accessibility": {
+    "kind": "hidden",
+    "discoverFrom": "page-shanhe-lab",
+    "hint": "实验室官网“实验室专属页”源码注释提示后台地址 lab.shanhe-med.cn/admin；AI解读也揭示此地址"
+  },
+  "blocks": [
+    {
+      "type": "callout",
+      "variant": "info",
+      "text": "生物能源实验室 管理系统"
+    },
+    {
+      "type": "paragraph",
+      "text": "管理员登录。测试账号：admin。密码提示：基金号 2025YFC0123456 的后6位。"
+    },
+    {
+      "type": "loginForm",
+      "puzzleId": "puzzle-lab-backend"
+    }
+  ],
+  "discoverableBy": [
+    {
+      "type": "sourceCodeComment",
+      "onPageId": "page-shanhe-lab",
+      "commentText": "lab.shanhe-med.cn/admin"
+    }
+  ]
+}

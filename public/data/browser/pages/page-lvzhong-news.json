@@ -1,0 +1,45 @@
+{
+  "id": "page-lvzhong-news",
+  "siteId": "site-lvzhong",
+  "url": "https://www.lvzhong-edu.cn/news/",
+  "title": "绿草中学 — 校园新闻",
+  "accessibility": {
+    "kind": "public"
+  },
+  "blocks": [
+    {
+      "type": "nav",
+      "links": [
+        {
+          "label": "首页",
+          "pageId": "page-lvzhong-home"
+        }
+      ]
+    },
+    {
+      "type": "callout",
+      "variant": "info",
+      "text": "校园新闻"
+    },
+    {
+      "type": "articleList",
+      "items": [
+        {
+          "title": "我校举行心理健康教育讲座（主讲：陈建国教授）",
+          "pageId": "page-lvzhong-news-psych",
+          "date": "2026-03-08"
+        },
+        {
+          "title": "我校与新希望成长中心开展合作，助力学生健康成长",
+          "pageId": "page-lvzhong-news-coop",
+          "date": "2026-01-10"
+        },
+        {
+          "title": "张强校长带队参观山河医科大学实验室",
+          "pageId": "page-lvzhong-news-visit",
+          "date": "2025-12-20"
+        }
+      ]
+    }
+  ]
+}

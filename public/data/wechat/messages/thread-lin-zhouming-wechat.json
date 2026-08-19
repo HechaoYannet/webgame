@@ -1,0 +1,20 @@
+[
+  {
+    "id": "msg-lin-zm-001",
+    "threadId": "thread-lin-zhouming-wechat",
+    "direction": "sent",
+    "authorCharacterId": "char-linzhe",
+    "timestamp": "2026-03-13T16:15:00+08:00",
+    "kind": "text",
+    "text": "周明，李桥瑞昨晚到底咋回事，你当时在场不"
+  },
+  {
+    "id": "msg-lin-zm-002",
+    "threadId": "thread-lin-zhouming-wechat",
+    "direction": "received",
+    "authorCharacterId": "char-zhouming",
+    "timestamp": "2026-03-13T16:20:00+08:00",
+    "kind": "text",
+    "text": "刘叔直接把他从宿舍拽走了，说带去思过室。后来就没见他回来。今早王老师非说被家长接走了，鬼才信。哦对了，他说他欠我50，你见了他让他还钱"
+  }
+]

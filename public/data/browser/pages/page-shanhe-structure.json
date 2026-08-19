@@ -1,0 +1,45 @@
+{
+  "id": "page-shanhe-structure",
+  "siteId": "site-shanhe-med",
+  "url": "https://www.shanhe-med.cn/structure/",
+  "title": "山河医科大学 — 机构设置",
+  "accessibility": {
+    "kind": "public"
+  },
+  "blocks": [
+    {
+      "type": "nav",
+      "links": [
+        {
+          "label": "首页",
+          "pageId": "page-shanhe-home"
+        }
+      ]
+    },
+    {
+      "type": "callout",
+      "variant": "info",
+      "text": "机构设置"
+    },
+    {
+      "type": "table",
+      "headers": [
+        "项目"
+      ],
+      "rows": [
+        [
+          "基础医学院"
+        ],
+        [
+          "临床医学院"
+        ],
+        [
+          "生物能源与疾病控制国家重点实验室（主任：陈建国）"
+        ],
+        [
+          "公共卫生学院"
+        ]
+      ]
+    }
+  ]
+}

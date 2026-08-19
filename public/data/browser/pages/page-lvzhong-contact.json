@@ -1,0 +1,67 @@
+{
+  "id": "page-lvzhong-contact",
+  "siteId": "site-lvzhong",
+  "url": "https://www.lvzhong-edu.cn/internal/contact/",
+  "title": "绿草中学 — 张强校长通讯录",
+  "accessibility": {
+    "kind": "loginRequired",
+    "puzzleId": "puzzle-lvzhong-internal"
+  },
+  "blocks": [
+    {
+      "type": "callout",
+      "variant": "info",
+      "text": "张强校长通讯录"
+    },
+    {
+      "type": "table",
+      "headers": [
+        "姓名",
+        "身份",
+        "备注"
+      ],
+      "rows": [
+        [
+          "陈建国",
+          "山河医科大学 实验室主任",
+          "项目合作（实验室）"
+        ],
+        [
+          "李刀（刀哥）",
+          "新希望成长中心 教官",
+          "学员管理/接送"
+        ],
+        [
+          "王淑芬",
+          "绿草中学 班主任",
+          "配合筛查"
+        ],
+        [
+          "刘叔",
+          "绿草中学 宿管",
+          "学员转送"
+        ],
+        [
+          "李桥瑞妈妈",
+          "学生家长",
+          "意向客户"
+        ]
+      ]
+    },
+    {
+      "type": "paragraph",
+      "text": "▌ 内部对话记录摘录"
+    },
+    {
+      "type": "callout",
+      "variant": "info",
+      "text": "““一个学生，新希望那边能拿到20万，实验室再给30万，我们五五分。”——张强 与 陈建国 的内部沟通记录（2026-02）”"
+    },
+    {
+      "type": "callout",
+      "variant": "danger",
+      "text": "该通讯录与对话记录证明张强向校外机构输送学生牟利，并与陈建国（实验室）、刀哥（教官）形成完整链条。"
+    }
+  ],
+  "registersClueId": "clue-lvzhong-internal-contact"
+}

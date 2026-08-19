@@ -1,0 +1,31 @@
+{
+  "id": "page-lvzhong-news-visit",
+  "siteId": "site-lvzhong",
+  "url": "https://www.lvzhong-edu.cn/news/visit-shanhe-lab/",
+  "title": "张强校长带队参观山河医科大学实验室",
+  "accessibility": {
+    "kind": "linkedOnly",
+    "fromPageId": "page-lvzhong-news"
+  },
+  "blocks": [
+    {
+      "type": "callout",
+      "variant": "info",
+      "text": "张强校长带队参观山河医科大学实验室"
+    },
+    {
+      "type": "paragraph",
+      "text": "2025-12-20  来源：校办"
+    },
+    {
+      "type": "paragraph",
+      "text": "12月18日，张强校长带领部分骨干教师赴山河医科大学生物能源与疾病控制国家重点实验室参观调研，与实验室主任陈建国教授就校院合作深入交流。"
+    },
+    {
+      "type": "image",
+      "assetId": "photo-zhang-chen-handshake",
+      "caption": "张强校长（左）与山河医科大学陈建国教授（右）在实验楼前合影",
+      "zoomable": true
+    }
+  ]
+}

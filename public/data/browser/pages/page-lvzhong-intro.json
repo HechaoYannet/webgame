@@ -1,0 +1,58 @@
+{
+  "id": "page-lvzhong-intro",
+  "siteId": "site-lvzhong",
+  "url": "https://www.lvzhong-edu.cn/intro/",
+  "title": "绿草中学 — 学校简介",
+  "accessibility": {
+    "kind": "public"
+  },
+  "blocks": [
+    {
+      "type": "nav",
+      "links": [
+        {
+          "label": "首页",
+          "pageId": "page-lvzhong-home"
+        }
+      ]
+    },
+    {
+      "type": "callout",
+      "variant": "info",
+      "text": "学校简介"
+    },
+    {
+      "type": "paragraph",
+      "text": "绿草中学创办于1998年，是长沙市示范性普通高级中学。学校占地120亩，现有教学班42个，在校学生2000余人，教职工180余人。"
+    },
+    {
+      "type": "paragraph",
+      "text": "▌ 师资队伍"
+    },
+    {
+      "type": "paragraph",
+      "text": "校长张强，教育学硕士，曾任某民办教育机构校长，在青少年行为管理与家校共育方面经验丰富。"
+    },
+    {
+      "type": "paragraph",
+      "text": "▌ 学校荣誉"
+    },
+    {
+      "type": "table",
+      "headers": [
+        "项目"
+      ],
+      "rows": [
+        [
+          "2025年市级“平安校园”称号"
+        ],
+        [
+          "2024年度长沙市中学教育质量优秀奖"
+        ],
+        [
+          "2023年湖南省心理健康教育示范校"
+        ]
+      ]
+    }
+  ]
+}

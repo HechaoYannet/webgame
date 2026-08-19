@@ -1,0 +1,91 @@
+[
+  {
+    "characterId": "char-liqiaorui",
+    "wechatRemark": "李桥瑞",
+    "wechatNickname": "桥瑞",
+    "status": "lost",
+    "starValue": 5
+  },
+  {
+    "characterId": "char-yanxinze",
+    "wechatRemark": "闫欣泽",
+    "wechatNickname": "欣泽",
+    "status": "lost",
+    "starValue": 5
+  },
+  {
+    "characterId": "char-wangshufen",
+    "wechatRemark": "王老师",
+    "wechatNickname": "王淑芬",
+    "starValue": 3
+  },
+  {
+    "characterId": "char-liushu",
+    "wechatRemark": "刘叔",
+    "wechatNickname": "宿管刘",
+    "starValue": 2
+  },
+  {
+    "characterId": "char-zhangqiang",
+    "wechatRemark": "张校长",
+    "wechatNickname": "张强",
+    "starValue": 5
+  },
+  {
+    "characterId": "char-mom",
+    "wechatRemark": "妈妈",
+    "wechatNickname": "妈妈",
+    "starValue": 0
+  },
+  {
+    "characterId": "char-dad",
+    "wechatRemark": "爸",
+    "wechatNickname": "爸爸",
+    "starValue": 0
+  },
+  {
+    "characterId": "char-zhouming",
+    "wechatRemark": "周明",
+    "wechatNickname": "周明",
+    "starValue": 1
+  },
+  {
+    "characterId": "char-chenyutong",
+    "wechatRemark": "陈雨桐",
+    "wechatNickname": "雨桐",
+    "starValue": 2
+  },
+  {
+    "characterId": "char-zhaotianyu",
+    "wechatRemark": "赵天宇",
+    "wechatNickname": "天宇",
+    "starValue": 0
+  },
+  {
+    "characterId": "char-liqiaorui-mom",
+    "wechatRemark": "李桥瑞妈妈",
+    "wechatNickname": "瑞妈妈",
+    "starValue": 2
+  },
+  {
+    "characterId": "char-dao",
+    "wechatRemark": "",
+    "wechatNickname": "新希望成长中心-张校长",
+    "isOfficialAccount": true,
+    "starValue": 3
+  },
+  {
+    "characterId": "char-chenjianguo",
+    "wechatRemark": "",
+    "wechatNickname": "论文AI翻译解读",
+    "isOfficialAccount": true,
+    "starValue": 5
+  },
+  {
+    "characterId": "char-zhangqiang",
+    "wechatRemark": "绿中家长群",
+    "wechatNickname": "绿中家长群",
+    "isOfficialAccount": false,
+    "starValue": 3
+  }
+]

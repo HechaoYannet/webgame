@@ -1,0 +1,279 @@
+[
+  {
+    "id": "article-ai-interpret",
+    "accountName": "论文AI翻译解读",
+    "accountCategory": "tool",
+    "title": "AI解读结果：《源石结晶生物能源提取与人体内结晶生成机制研究》",
+    "publishedAt": "2026-03-13T16:00:00+08:00",
+    "bodyBlocks": [
+      { "type": "heading", "level": 1, "text": "AI 解读结果" },
+      { "type": "callout", "variant": "info", "text": "本解读由 AI 根据您上传的论文 PDF 自动生成，仅供参考。" },
+      { "type": "heading", "level": 2, "text": "一、研究概要" },
+      { "type": "paragraph", "text": "该研究由山河医科大学陈建国团队开展，探讨从人体内“源石结晶”中提取生物能源的机制，并研究如何在青少年体内诱导结晶生成。" },
+      { "type": "heading", "level": 2, "text": "二、关键发现" },
+      { "type": "list", "ordered": true, "items": [
+        "研究团队从青少年受试者体内提取“源石结晶”，用于能源开发。",
+        "实验对象来源标注为“新希望成长中心”，均为 12-18 岁青少年。",
+        "论文伦理审批栏为空，未载明知情同意与未成年人保护审查。",
+        "实验方案存在高热、脏器损伤等高风险描述。"
+      ] },
+      { "type": "heading", "level": 2, "text": "三、基金与作者信息" },
+      { "type": "paragraph", "text": "基金号 2025YFC0123456，通讯作者陈建国（山河医科大学生物能源与疾病控制国家重点实验室主任）。" },
+      { "type": "callout", "variant": "warning", "text": "解读末尾附带作者备注：实验数据管理后台地址 lab.shanhe-med.cn/admin，测试账号 admin，访问密码为基金号后 6 位。" },
+      { "type": "heading", "level": 2, "text": "四、合规性提示" },
+      { "type": "paragraph", "text": "依据《涉及人的生物医学研究伦理审查办法》及未成年人保护相关规定，以未成年人为受试者需法定代理人书面同意并经伦理委员会审查。本论文伦理审批栏空白，存在重大合规风险。" }
+    ],
+    "isGeneratedContent": true,
+    "triggerUploadPuzzleId": "puzzle-upload-paper",
+    "url": "https://paper-ai-interpret.local/article/ai-interpret",
+    "registersClueId": "clue-lab-backend-address"
+  },
+  {
+    "id": "article-ai-tool-intro",
+    "accountName": "论文AI翻译解读",
+    "accountCategory": "tool",
+    "title": "上传PDF，秒懂论文：论文AI翻译解读工具上线",
+    "publishedAt": "2026-03-10T09:00:00+08:00",
+    "bodyBlocks": [
+      { "type": "paragraph", "text": "看不懂英文论文？专业术语太多？把 PDF 发给我们，AI 帮你快速生成中文结构与关键发现解读。" },
+      { "type": "list", "ordered": false, "items": [
+        "支持中英文 PDF",
+        "自动抽取基金号、作者、伦理审查信息",
+        "标注合规风险与关键结论"
+      ] },
+      { "type": "callout", "variant": "info", "text": "使用方法：进入公众号对话，上传论文 PDF，系统自动返回解读文章。" }
+    ]
+  },
+  {
+    "id": "article-lvzhong-screening-notice",
+    "accountName": "绿草中学官方公众号",
+    "accountCategory": "school",
+    "title": "绿草中学2026年春季心理筛查通知",
+    "publishedAt": "2026-03-12T10:00:00+08:00",
+    "bodyBlocks": [
+      { "type": "paragraph", "text": "为关爱学生心理健康，我校联合专业机构开展春季心理筛查，请各班按时组织。" },
+      { "type": "callout", "variant": "info", "text": "通知详情见校园官网“通知公告”栏目。" }
+    ],
+    "url": "https://lvzhong.edu.cn/notice/screening"
+  },
+  {
+    "id": "article-lvzhong-speech",
+    "accountName": "绿草中学官方公众号",
+    "accountCategory": "school",
+    "title": "张强校长在新学期开学典礼上的讲话",
+    "publishedAt": "2026-03-01T09:00:00+08:00",
+    "bodyBlocks": [
+      { "type": "quote", "text": "同学们，我的小目标是先挣一个亿，也希望你们都有自己的小目标。" },
+      { "type": "paragraph", "text": "张强校长在开学典礼上发表讲话，寄语全体师生新学期新气象。" }
+    ]
+  },
+  {
+    "id": "article-lvzhong-civilized",
+    "accountName": "绿草中学官方公众号",
+    "accountCategory": "school",
+    "title": "绿草中学荣获市级文明单位",
+    "publishedAt": "2026-02-20T15:00:00+08:00",
+    "bodyBlocks": [
+      { "type": "paragraph", "text": "经市文明办评定，我校荣获 2025 年度市级“文明单位”称号，并连续保持“平安校园”荣誉。" }
+    ]
+  },
+  {
+    "id": "article-lvzhong-signing",
+    "accountName": "绿草中学官方公众号",
+    "accountCategory": "school",
+    "title": "绿草中学与新希望成长中心合作签约仪式公告",
+    "publishedAt": "2026-01-10T14:00:00+08:00",
+    "bodyBlocks": [
+      { "type": "paragraph", "text": "我校与新希望成长中心正式签署合作协议，共同推进学生心理健康与行为矫正工作。张强校长、新希望成长中心负责人出席签约仪式。" }
+    ]
+  },
+  {
+    "id": "article-xinxwang-spring-recruit",
+    "accountName": "新希望成长中心",
+    "accountCategory": "org",
+    "title": "春季招生开始，名额有限",
+    "publishedAt": "2026-03-05T10:00:00+08:00",
+    "bodyBlocks": [
+      { "type": "paragraph", "text": "2026 年春季招生正式启动，面向 12-18 岁“网瘾”“叛逆”“厌学”青少年，一学期 20 万元，名额有限，报名从速。" },
+      { "type": "callout", "variant": "info", "text": "创始人张强校长寄语：用爱和专业，点亮每一个孩子的未来。" }
+    ]
+  },
+  {
+    "id": "article-xinxwang-case-xiaoli",
+    "accountName": "新希望成长中心",
+    "accountCategory": "org",
+    "title": "学员小李的转变：从网瘾少年到三好学生",
+    "publishedAt": "2026-02-15T11:00:00+08:00",
+    "bodyBlocks": [
+      { "type": "paragraph", "text": "小李入学前沉迷游戏，成绩垫底。经过我中心系统矫正，如今已被评为三好学生。" },
+      { "type": "callout", "variant": "warning", "text": "本案例配图均为背影，未展示学员正面照片。" }
+    ]
+  },
+  {
+    "id": "article-xinxwang-shanhe-coop",
+    "accountName": "新希望成长中心",
+    "accountCategory": "org",
+    "title": "中心与山河医科大实验室达成战略合作",
+    "publishedAt": "2026-01-28T10:00:00+08:00",
+    "bodyBlocks": [
+      { "type": "paragraph", "text": "我中心与山河医科大学生物能源与疾病控制国家重点实验室签署战略合作协议，共同开展青少年身心健康研究。" },
+      { "type": "paragraph", "text": "实验室主任陈建国教授出席签约仪式。" }
+    ]
+  },
+  {
+    "id": "article-xinxwang-newyear",
+    "accountName": "新希望成长中心",
+    "accountCategory": "org",
+    "title": "张校长新年致辞",
+    "publishedAt": "2026-01-01T09:00:00+08:00",
+    "bodyBlocks": [
+      { "type": "quote", "text": "新希望，新起点。新的一年，让我们继续为每一个迷途的孩子点亮归途。" }
+    ]
+  },
+  {
+    "id": "article-xinxwang-case-xiaowang",
+    "accountName": "新希望成长中心",
+    "accountCategory": "org",
+    "title": "学员小王的成功故事",
+    "publishedAt": "2025-11-10T10:00:00+08:00",
+    "bodyBlocks": [
+      { "type": "paragraph", "text": "小王曾是叛逆典型，如今已回到校园并考取重点高中。感谢家长信任与我中心教官的悉心教导。" }
+    ]
+  },
+  {
+    "id": "article-xinxwang-method",
+    "accountName": "新希望成长中心",
+    "accountCategory": "org",
+    "title": "我们的教学方法",
+    "publishedAt": "2025-09-05T10:00:00+08:00",
+    "bodyBlocks": [
+      { "type": "paragraph", "text": "我中心采用“军事化管理+心理疏导+行为矫正”三位一体教学法，帮助学员重塑规律生活。" }
+    ]
+  },
+  {
+    "id": "article-shanhe-volunteer",
+    "accountName": "山河医科大学",
+    "accountCategory": "school",
+    "title": "我校生物能源实验室招募实验志愿者",
+    "publishedAt": "2026-03-05T14:00:00+08:00",
+    "bodyBlocks": [
+      { "type": "paragraph", "text": "生物能源与疾病控制国家重点实验室面向社会招募实验志愿者，要求 12-18 岁青少年，有一定补偿。" },
+      { "type": "callout", "variant": "warning", "text": "招募条件未说明伦理审查流程。" }
+    ]
+  },
+  {
+    "id": "article-shanhe-breakthrough",
+    "accountName": "山河医科大学",
+    "accountCategory": "school",
+    "title": "实验室在清洁能源领域取得重大突破",
+    "publishedAt": "2026-02-28T10:00:00+08:00",
+    "bodyBlocks": [
+      { "type": "paragraph", "text": "陈建国教授团队在清洁能源领域取得重大突破，利用特殊晶体材料实现能源高效提取。" },
+      { "type": "quote", "text": "我们利用特殊晶体材料解决能源问题，这是未来的方向。——陈建国" }
+    ]
+  },
+  {
+    "id": "article-shanhe-fund",
+    "accountName": "山河医科大学",
+    "accountCategory": "school",
+    "title": "陈建国教授团队获国家自然科学基金重大项目资助",
+    "publishedAt": "2026-01-15T09:00:00+08:00",
+    "bodyBlocks": [
+      { "type": "paragraph", "text": "陈建国教授团队申报项目获批国家自然科学基金重大项目资助，基金号 2025YFC0123456。" }
+    ]
+  },
+  {
+    "id": "article-shanhe-recruit-phd",
+    "accountName": "山河医科大学",
+    "accountCategory": "school",
+    "title": "校园招聘：生物能源方向博士生",
+    "publishedAt": "2025-12-20T10:00:00+08:00",
+    "bodyBlocks": [
+      { "type": "paragraph", "text": "生物能源与疾病控制国家重点实验室招聘生物能源方向博士生，欢迎有志青年加盟。" }
+    ]
+  },
+  {
+    "id": "article-news-3-missing",
+    "accountName": "湖南本地新闻",
+    "accountCategory": "news",
+    "title": "长沙3名青少年失联，家属急寻",
+    "publishedAt": "2026-03-10T18:00:00+08:00",
+    "bodyBlocks": [
+      { "type": "paragraph", "text": "近期长沙及周边地区陆续有 3 名青少年失联，家属焦急寻人。经家属反映，失联者均曾被送入“新希望成长中心”。" },
+      { "type": "callout", "variant": "danger", "text": "如提供线索请联系家属或拨打 110。" }
+    ]
+  },
+  {
+    "id": "article-news-edu-check",
+    "accountName": "湖南本地新闻",
+    "accountCategory": "news",
+    "title": "市教育局将开展民办教育机构专项检查",
+    "publishedAt": "2026-02-25T10:00:00+08:00",
+    "bodyBlocks": [
+      { "type": "paragraph", "text": "市教育局通知，将对全市民办教育机构开展专项检查，重点核查办学资质与招生行为。" }
+    ]
+  },
+  {
+    "id": "article-news-blacklist",
+    "accountName": "湖南本地新闻",
+    "accountCategory": "news",
+    "title": "2025年湖南民办学校黑名单公布，7家上榜",
+    "publishedAt": "2026-02-01T09:00:00+08:00",
+    "bodyBlocks": [
+      { "type": "paragraph", "text": "省教育厅公布 2025 年度民办学校黑名单，7 家机构因违规办学等行为上榜。" }
+    ]
+  },
+  {
+    "id": "article-news-pyramid",
+    "accountName": "湖南本地新闻",
+    "accountCategory": "news",
+    "title": "湖南警方捣毁一非法传销窝点",
+    "publishedAt": "2026-01-20T15:00:00+08:00",
+    "bodyBlocks": [
+      { "type": "paragraph", "text": "湖南警方近日捣毁一处非法传销窝点，解救被困人员若干。" }
+    ]
+  },
+  {
+    "id": "article-game-endfield-beta",
+    "accountName": "游戏资讯号",
+    "accountCategory": "game",
+    "title": "《明日方舟：终末地》全面测试资格开放，3月28日公测",
+    "publishedAt": "2026-03-11T12:00:00+08:00",
+    "bodyBlocks": [
+      { "type": "paragraph", "text": "鹰角网络宣布《明日方舟：终末地》将于 2026 年 3 月 28 日开启公测，全面测试资格现已开放申请。" },
+      { "type": "callout", "variant": "info", "text": "详情见官方公告。" }
+    ],
+    "link": { "pageId": "page-endfield-news" }
+  },
+  {
+    "id": "article-game-weekly",
+    "accountName": "游戏资讯号",
+    "accountCategory": "game",
+    "title": "本周新游推荐",
+    "publishedAt": "2026-03-04T10:00:00+08:00",
+    "bodyBlocks": [
+      { "type": "paragraph", "text": "本周多款新游上线，包括《明日方舟：终末地》即将开启测试。" }
+    ]
+  },
+  {
+    "id": "article-antiaddict-investigation",
+    "accountName": "戒网瘾观察",
+    "accountCategory": "health",
+    "title": "戒网瘾学校乱象调查",
+    "publishedAt": "2026-02-18T10:00:00+08:00",
+    "bodyBlocks": [
+      { "type": "paragraph", "text": "本刊暗访多家戒网瘾机构，发现普遍存在体罚、电击、非法拘禁等乱象，部分机构与不明机构存在利益输送。" },
+      { "type": "callout", "variant": "danger", "text": "专家呼吁家长谨慎选择，注意核查机构资质与教学方式。" }
+    ]
+  },
+  {
+    "id": "article-antiaddict-regulation",
+    "accountName": "戒网瘾观察",
+    "accountCategory": "health",
+    "title": "国家卫健委发文：严禁利用未成年人进行人体实验",
+    "publishedAt": "2026-01-08T10:00:00+08:00",
+    "bodyBlocks": [
+      { "type": "paragraph", "text": "国家卫健委发布通知，重申严禁利用未成年人进行人体实验，违者依法追责。" }
+    ]
+  }
+]

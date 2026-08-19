@@ -1,0 +1,168 @@
+{
+  "$schema": "self-described/writer-phone-story-sms-events-v1",
+  "$description": "短信事件清单（互动设计 §三/§四）。SmsEvent 定义静态短信内容；推送时机由 puzzle.onSuccess.pushSms 或 risk-events 触发。'from' 字段为 characterId 或 { kind:'unknownNumber'; display } 字面号码；'pushTriggerPuzzleId' 标注由哪个谜题成功副作用直接推送（与 puzzles.json PuzzleEffect.pushSms 对齐）。文案 agent 不写关卡钩子 registersClueId/triggersEvidenceId，留空由 level-designer phase3 回填。",
+  "events": [
+    {
+      "id": "sms-zhangqiang-threat",
+      "pushTriggerPuzzleId": "puzzle-lab-backend",
+      "from": {
+        "kind": "unknownNumber",
+        "display": "未知号码",
+        "digits": "0731-88888888-0"
+      },
+      "receivedAt": "2026-03-13T18:30:00+08:00",
+      "body": "林哲，别多管闲事。新希望成长中心的教官已经出发了。建议你删掉所有东西。",
+      "footnote": "（5秒后又一条）别以为我不知道你在哪。",
+      "alertStyle": "danger",
+      "registersClueId": null,
+      "triggersEvidenceId": null,
+      "comment": "实验室后台 puzzle-lab-backend.onSuccess pushSms 直推。配合 doorbell-dao-visit + countdown-finale 三件套同时触发。来源未知号码，刻意暗合 88888888 举报电话尾号作封闭环叙事但不点破。"
+    },
+    {
+      "id": "sms-zhangqiang-second-threat",
+      "pushTriggerRiskEventId": "risk-press-zhangqiang-for-truth",
+      "from": {
+        "kind": "unknownNumber",
+        "display": "未知号码",
+        "digits": "private"
+      },
+      "receivedAt": "2026-03-13T15:40:00+08:00",
+      "body": "你问的那些事，别再问了。下不为例。",
+      "footnote": null,
+      "alertStyle": "warning",
+      "registersClueId": null,
+      "triggersEvidenceId": null,
+      "comment": "玩家在微信向张强追问李桥瑞去向/真相（askedContact char-zhangqiang keyword '真相'）后数分钟推送，标志玩家被盯上、风险上升。与 risk-events risk-press-zhangqiang-for-truth 关联（该事件 amount 20）。"
+    },
+    {
+      "id": "sms-liushu-exchange-1",
+      "pushTrigger": {
+        "kind": "askedContact",
+        "characterId": "char-liushu",
+        "keyword": "李桥瑞去向"
+      },
+      "from": "char-liushu",
+      "receivedAt": "2026-03-13T15:35:00+08:00",
+      "body": "他家长来接走了。",
+      "footnote": null,
+      "alertStyle": "info",
+      "registersClueId": null,
+      "triggersEvidenceId": null,
+      "comment": "宿管刘叔短信往返第1条（玩家主动发短信问李桥瑞去向）。"
+    },
+    {
+      "id": "sms-liushu-exchange-2",
+      "pushTrigger": {
+        "kind": "askedContact",
+        "characterId": "char-liushu",
+        "keyword": "哪个家长"
+      },
+      "from": "char-linzhe",
+      "direction": "sent",
+      "receivedAt": "2026-03-13T15:36:00+08:00",
+      "body": "哪个家长？他爸妈都在外地。",
+      "footnote": null,
+      "alertStyle": "info",
+      "registersClueId": null,
+      "triggersEvidenceId": null,
+      "comment": "林哲追问。"
+    },
+    {
+      "id": "sms-liushu-exchange-3",
+      "pushTrigger": {
+        "kind": "askedContact",
+        "characterId": "char-liushu",
+        "keyword": "哪个家长"
+      },
+      "from": "char-liushu",
+      "receivedAt": "2026-03-13T15:37:00+08:00",
+      "body": "我只负责把人交给学校。别的我不管。",
+      "footnote": null,
+      "alertStyle": "info",
+      "registersClueId": null,
+      "triggersEvidenceId": null,
+      "comment": "刘叔推脱（信息架构 §2.6 宿管刘叔与林哲的短信）。"
+    },
+    {
+      "id": "sms-liushu-exchange-4",
+      "pushTrigger": {
+        "kind": "askedContact",
+        "characterId": "char-liushu",
+        "keyword": "兄弟"
+      },
+      "from": "char-linzhe",
+      "direction": "sent",
+      "receivedAt": "2026-03-13T15:38:00+08:00",
+      "body": "刘叔，李桥瑞是我兄弟。",
+      "footnote": null,
+      "alertStyle": "info",
+      "registersClueId": null,
+      "triggersEvidenceId": null,
+      "comment": "林哲再问，刘叔不再回复。"
+    },
+    {
+      "id": "sms-liushu-warning",
+      "pushTrigger": {
+        "kind": "askedContact",
+        "characterId": "char-liushu",
+        "keyword": "新希望成长中心"
+      },
+      "from": "char-liushu",
+      "receivedAt": "2026-03-13T15:40:00+08:00",
+      "body": "别去那地方。",
+      "footnote": null,
+      "alertStyle": "warning",
+      "registersClueId": null,
+      "triggersEvidenceId": null,
+      "comment": "若玩家在短信中提到'新希望成长中心'，刘叔回复'别去那地方'（信息架构 §5.3 角色提示；clue-source: sms）。红鲱鱼式侧面暗示危险，刘叔不知人体实验核心秘密。"
+    },
+    {
+      "id": "sms-verification-redherring",
+      "pushTrigger": {
+        "kind": "idleOnPage",
+        "pageId": "page-xinxwang-financial",
+        "seconds": 30
+      },
+      "from": {
+        "kind": "unknownNumber",
+        "display": "10086",
+        "digits": "10086"
+      },
+      "receivedAt": "2026-03-13T16:05:00+08:00",
+      "body": "【中国移动】您的验证码为 88888888，请勿泄露给他人。",
+      "footnote": null,
+      "alertStyle": "info",
+      "registersClueId": null,
+      "triggersEvidenceId": null,
+      "comment": "红鲱鱼验证码短信。玩家卡在新希望后台密码时若停留超30秒系统推送本条，88888888 暗合新希望后台密码（张强QQ空间'密码是我最爱的数字组合')+举报电话尾号，纯巧合红鲱鱼。注意：CLAUDE.md §6.2 新希望后台 88888888 不进 requiredEvidenceIds。"
+    },
+    {
+      "id": "sms-mom-care",
+      "pushTrigger": {
+        "kind": "chapterEntered",
+        "chapterId": "ch-5"
+      },
+      "from": "char-mom",
+      "receivedAt": "2026-03-13T18:00:00+08:00",
+      "body": "哲哲，周末在家好好写作业，别玩手机了。冰箱里有菜，自己热热吃。",
+      "footnote": null,
+      "alertStyle": "info",
+      "registersClueId": null,
+      "triggersEvidenceId": null,
+      "comment": "进入第五章（倒计时紧张阶段）时妈妈来的日常短信，反衬林哲父母在外、独自一人在家面对威胁的孤立感，flavor text 无线索价值。"
+    },
+    {
+      "id": "sms-good-ending-dispatcher",
+      "pushTriggerPuzzleId": "puzzle-evidence-finale",
+      "pushTriggerEndingId": "good",
+      "from": "char-dispatcher",
+      "receivedAt": "2026-03-13T18:45:00+08:00",
+      "body": "【湖南省公安厅举报中心】您提交的线索已受理，案件编号 2026-0313-HN。请保持电话畅通，注意人身安全。感谢您的举报。",
+      "footnote": null,
+      "alertStyle": "success",
+      "registersClueId": null,
+      "triggersEvidenceId": null,
+      "comment": "真结局举报成功后官方案件受理回执短信，与 call-script-dispatcher-report 通话脚本配套。"
+    }
+  ]
+}

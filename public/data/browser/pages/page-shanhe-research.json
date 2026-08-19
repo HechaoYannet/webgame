@@ -1,0 +1,50 @@
+{
+  "id": "page-shanhe-research",
+  "siteId": "site-shanhe-med",
+  "url": "https://www.shanhe-med.cn/research/",
+  "title": "山河医科大学 — 科研动态",
+  "accessibility": {
+    "kind": "public"
+  },
+  "blocks": [
+    {
+      "type": "nav",
+      "links": [
+        {
+          "label": "首页",
+          "pageId": "page-shanhe-home"
+        }
+      ]
+    },
+    {
+      "type": "callout",
+      "variant": "info",
+      "text": "科研动态"
+    },
+    {
+      "type": "articleList",
+      "items": [
+        {
+          "title": "我校生物能源实验室在清洁能源领域取得重大突破",
+          "pageId": "page-shanhe-research-breakthrough",
+          "date": "2026-02-28"
+        },
+        {
+          "title": "实验室发表预印本论文：从人体结晶中提取能源",
+          "pageId": "page-shanhe-research-crystal",
+          "date": "2026-02-28"
+        },
+        {
+          "title": "实验室获“能源创新奖”",
+          "pageId": "page-shanhe-news-award",
+          "date": "2026-02-10"
+        },
+        {
+          "title": "陈建国教授团队获国家自然科学基金重大项目",
+          "pageId": "page-shanhe-news-funding",
+          "date": "2026-01-15"
+        }
+      ]
+    }
+  ]
+}

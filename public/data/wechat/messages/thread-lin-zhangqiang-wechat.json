@@ -1,0 +1,74 @@
+[
+  {
+    "id": "msg-lin-zq-001",
+    "threadId": "thread-lin-zhangqiang-wechat",
+    "direction": "received",
+    "authorCharacterId": "char-zhangqiang",
+    "timestamp": "2026-03-14T10:00:00+08:00",
+    "kind": "text",
+    "text": "林哲同学，听王老师说你很关心李桥瑞"
+  },
+  {
+    "id": "msg-lin-zq-002",
+    "threadId": "thread-lin-zhangqiang-wechat",
+    "direction": "sent",
+    "authorCharacterId": "char-linzhe",
+    "timestamp": "2026-03-14T10:01:00+08:00",
+    "kind": "text",
+    "text": "张校长，我想知道李桥瑞到底去哪了"
+  },
+  {
+    "id": "msg-lin-zq-003",
+    "threadId": "thread-lin-zhangqiang-wechat",
+    "direction": "received",
+    "authorCharacterId": "char-zhangqiang",
+    "timestamp": "2026-03-14T10:02:00+08:00",
+    "kind": "text",
+    "text": "他回家了，学校已经处理好了"
+  },
+  {
+    "id": "msg-lin-zq-004",
+    "threadId": "thread-lin-zhangqiang-wechat",
+    "direction": "sent",
+    "authorCharacterId": "char-linzhe",
+    "timestamp": "2026-03-14T10:03:00+08:00",
+    "kind": "text",
+    "text": "他妈妈说他没回家"
+  },
+  {
+    "id": "msg-lin-zq-005",
+    "threadId": "thread-lin-zhangqiang-wechat",
+    "direction": "received",
+    "authorCharacterId": "char-zhangqiang",
+    "timestamp": "2026-03-14T10:05:00+08:00",
+    "kind": "text",
+    "text": "林哲，有些事情你不了解，不要乱说"
+  },
+  {
+    "id": "msg-lin-zq-006",
+    "threadId": "thread-lin-zhangqiang-wechat",
+    "direction": "sent",
+    "authorCharacterId": "char-linzhe",
+    "timestamp": "2026-03-14T10:06:00+08:00",
+    "kind": "text",
+    "text": "我就是想知道真相"
+  },
+  {
+    "id": "msg-lin-zq-007",
+    "threadId": "thread-lin-zhangqiang-wechat",
+    "direction": "received",
+    "authorCharacterId": "char-zhangqiang",
+    "timestamp": "2026-03-14T10:07:00+08:00",
+    "kind": "text",
+    "text": "没有真相，只有事实。事实就是李桥瑞已经被家长接走。"
+  },
+  {
+    "id": "msg-lin-zq-008",
+    "threadId": "thread-lin-zhangqiang-wechat",
+    "direction": "received",
+    "authorCharacterId": "char-zhangqiang",
+    "timestamp": "2026-03-14T10:08:00+08:00",
+    "kind": "text",
+    "text": "另外，建议你少管闲事"
+  }
+]

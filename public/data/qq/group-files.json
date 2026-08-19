@@ -1,0 +1,89 @@
+{
+  "$schema": "self-described/writer-qq-group-files-v1",
+  "$description": "QQ群文件清单（信息架构 §3.3）。每个群组下列出上传文件，含文件名/上传人/日期/类型/可关联 pageId 或 assetId。关卡钩子 registersClueId/triggersEvidenceId 留空，level-designer Phase3 回填。",
+  "groups": [
+    {
+      "threadId": "thread-gaoer-yiban-qq",
+      "title": "高二一班级群 · 文件",
+      "files": [
+        {
+          "id": "gf-screening-notice-pdf",
+          "name": "绿草中学2026年春季心理筛查通知.pdf",
+          "uploaderCharacterId": "char-wangshufen",
+          "uploadedAt": "2026-03-12T10:00:00+08:00",
+          "type": "pdf",
+          "sizeKB": 248,
+          "relatePageId": "page-lvzhong-screening-pdf",
+          "note": "与官网隐藏入口的心理筛查通知对应，是内部系统名单的对印文件。"
+        },
+        {
+          "id": "gf-student-handbook",
+          "name": "绿草中学学生手册2026版.pdf",
+          "uploaderCharacterId": "char-wangshufen",
+          "uploadedAt": "2026-02-20T09:00:00+08:00",
+          "type": "pdf",
+          "sizeKB": 1820,
+          "note": "常规校规文件，含“严禁携带电子产品”等条款。红鲱鱼细节。"
+        },
+        {
+          "id": "gf-final-grade-table",
+          "name": "高二一班期末考试成绩表.xlsx",
+          "uploaderCharacterId": "char-wangshufen",
+          "uploadedAt": "2026-01-18T16:00:00+08:00",
+          "type": "xlsx",
+          "sizeKB": 64,
+          "note": "常规成绩表，含李桥瑞、闫欣泽、林哲、周明、陈雨桐、赵天宇等名单。"
+        },
+        {
+          "id": "gf-cooperation-notice",
+          "name": "关于我校与新希望成长中心合作的通知.pdf",
+          "uploaderCharacterId": "char-zhangqiang",
+          "uploadedAt": "2026-01-10T11:00:00+08:00",
+          "type": "pdf",
+          "sizeKB": 96,
+          "relatePageId": "page-lvzhong-agreement",
+          "note": "对外公告版，措辞与内部协议扫描件形成对照。"
+        },
+        {
+          "id": "gf-siguo-window-photo",
+          "name": "3月12日晚 思过室窗户.jpg",
+          "uploaderCharacterId": "char-yanxinze",
+          "uploadedAt": "2026-03-12T23:45:00+08:00",
+          "type": "image",
+          "sizeKB": 1024,
+          "assetId": "group-siguo-window-photo",
+          "note": "闫欣泽从校外拍，窗户开着，与潜入计划相关。",
+          "registersClueId": "clue-siguo-window"
+        }
+      ]
+    },
+    {
+      "threadId": "thread-game-qq",
+      "title": "绿中游戏群 · 文件",
+      "files": [
+        {
+          "id": "gf-endfield-reserve-link",
+          "name": "终末地公测预约链接.url",
+          "uploaderCharacterId": "char-zhaotianyu",
+          "uploadedAt": "2026-03-09T19:40:00+08:00",
+          "type": "link",
+          "sizeKB": 1,
+          "link": {
+            "title": "明日方舟：终末地 公测预约",
+            "url": "https://endfield.hypergryph.com/news/1181"
+          },
+          "note": "红鲱鱼，仅用于提示QQ密码来源（终末地3月28日公测）。"
+        },
+        {
+          "id": "gf-endfield-guide",
+          "name": "终末地开荒攻略合集.pdf",
+          "uploaderCharacterId": "char-zhaotianyu",
+          "uploadedAt": "2026-03-11T17:00:00+08:00",
+          "type": "pdf",
+          "sizeKB": 2560,
+          "note": "红鲱鱼，游戏攻略，与主线无关。"
+        }
+      ]
+    }
+  ]
+}

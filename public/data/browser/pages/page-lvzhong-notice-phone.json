@@ -1,0 +1,24 @@
+{
+  "id": "page-lvzhong-notice-phone",
+  "siteId": "site-lvzhong",
+  "url": "https://www.lvzhong-edu.cn/notice/no-phone-2026/",
+  "title": "绿草中学关于严禁学生携带电子产品的通知",
+  "accessibility": {
+    "kind": "public"
+  },
+  "blocks": [
+    {
+      "type": "callout",
+      "variant": "info",
+      "text": "绿草中学关于严禁学生携带电子产品的通知"
+    },
+    {
+      "type": "paragraph",
+      "text": "发布时间：2026-03-05"
+    },
+    {
+      "type": "paragraph",
+      "text": "严禁学生携带手机、平板、智能手表等电子产品进入校园。一经发现，由宿管统一没收并送交思过室处理，严重者通知家长。"
+    }
+  ]
+}

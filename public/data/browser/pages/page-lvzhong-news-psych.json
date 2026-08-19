@@ -1,0 +1,25 @@
+{
+  "id": "page-lvzhong-news-psych",
+  "siteId": "site-lvzhong",
+  "url": "https://www.lvzhong-edu.cn/news/psych-lecture/",
+  "title": "我校举行心理健康教育讲座",
+  "accessibility": {
+    "kind": "linkedOnly",
+    "fromPageId": "page-lvzhong-news"
+  },
+  "blocks": [
+    {
+      "type": "callout",
+      "variant": "info",
+      "text": "我校举行心理健康教育讲座"
+    },
+    {
+      "type": "paragraph",
+      "text": "2026-03-08  来源：校办"
+    },
+    {
+      "type": "paragraph",
+      "text": "3月7日下午，我校邀请山河医科大学陈建国教授来校开展心理健康教育讲座，主题为“青春期身心发展与科学管理”。陈教授结合科研案例，深入浅出地讲解了青少年身心变化规律。"
+    }
+  ]
+}

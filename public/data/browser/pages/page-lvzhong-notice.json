@@ -1,0 +1,75 @@
+{
+  "id": "page-lvzhong-notice",
+  "siteId": "site-lvzhong",
+  "url": "https://www.lvzhong-edu.cn/notice/",
+  "title": "绿草中学 — 通知公告",
+  "accessibility": {
+    "kind": "public"
+  },
+  "blocks": [
+    {
+      "type": "nav",
+      "links": [
+        {
+          "label": "首页",
+          "pageId": "page-lvzhong-home"
+        },
+        {
+          "label": "通知公告",
+          "pageId": "page-lvzhong-notice"
+        },
+        {
+          "label": "校长信箱",
+          "pageId": "page-lvzhong-principal-mailbox"
+        }
+      ]
+    },
+    {
+      "type": "callout",
+      "variant": "info",
+      "text": "通知公告"
+    },
+    {
+      "type": "articleList",
+      "items": [
+        {
+          "title": "关于开展学生心理健康筛查的通知",
+          "pageId": "page-lvzhong-notice-screening",
+          "date": "2026-03-12"
+        },
+        {
+          "title": "绿草中学2026年春季放假安排",
+          "pageId": "page-lvzhong-notice-vacation",
+          "date": "2026-03-11"
+        },
+        {
+          "title": "绿草中学关于严禁学生携带电子产品的通知",
+          "pageId": "page-lvzhong-notice-phone",
+          "date": "2026-03-05"
+        },
+        {
+          "title": "绿草中学与新希望成长中心合作签约仪式公告",
+          "pageId": "page-lvzhong-notice-signing",
+          "date": "2026-01-10"
+        },
+        {
+          "title": "绿草中学2025年度工作总结",
+          "pageId": "page-lvzhong-notice-annual2025",
+          "date": "2025-12-30"
+        }
+      ]
+    },
+    {
+      "type": "sourceComment",
+      "comment": "<!-- 心理筛查通知详情页 URL 异常：/notice/screening/ → 管理员测试目录 /qiangzhang 仅校长账号可访问（账号: zhangqiang） -->"
+    }
+  ],
+  "discoverableBy": [
+    {
+      "type": "urlSuffix",
+      "basePageId": "page-lvzhong-notice-screening",
+      "suffix": "/qiangzhang"
+    }
+  ],
+  "registersClueId": "clue-lvzhong-hidden-url"
+}

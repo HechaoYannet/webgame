@@ -1,0 +1,25 @@
+{
+  "id": "page-hnga",
+  "siteId": "site-hnga",
+  "url": "https://gat.hunan.gov.cn/",
+  "title": "湖南省公安厅 — 举报中心",
+  "accessibility": {
+    "kind": "public"
+  },
+  "blocks": [
+    {
+      "type": "callout",
+      "variant": "info",
+      "text": "湖南省公安厅举报中心"
+    },
+    {
+      "type": "paragraph",
+      "text": "受理违法犯罪线索举报。"
+    },
+    {
+      "type": "callout",
+      "variant": "info",
+      "text": "举报电话：0731-88888888（终章真结局需拨打此电话提交证据）"
+    }
+  ]
+}

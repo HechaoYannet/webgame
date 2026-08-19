@@ -1,0 +1,88 @@
+{
+  "id": "page-lvzhong-home",
+  "siteId": "site-lvzhong",
+  "url": "https://www.lvzhong-edu.cn/",
+  "title": "绿草中学 — 首页",
+  "accessibility": {
+    "kind": "public"
+  },
+  "blocks": [
+    {
+      "type": "hero",
+      "heading": "绿草中学 · 厚德博学 追求卓越",
+      "subheading": "湖南省长沙市示范性普通高级中学",
+      "imageAssetId": "campus-hero-lvzhong"
+    },
+    {
+      "type": "nav",
+      "links": [
+        {
+          "label": "首页",
+          "pageId": "page-lvzhong-home"
+        },
+        {
+          "label": "通知公告",
+          "pageId": "page-lvzhong-notice"
+        },
+        {
+          "label": "学校简介",
+          "pageId": "page-lvzhong-intro"
+        },
+        {
+          "label": "校园新闻",
+          "pageId": "page-lvzhong-news"
+        },
+        {
+          "label": "教学科研",
+          "pageId": "page-lvzhong-teaching"
+        },
+        {
+          "label": "德育之窗",
+          "pageId": "page-lvzhong-moral"
+        },
+        {
+          "label": "校园风光",
+          "pageId": "page-lvzhong-gallery"
+        },
+        {
+          "label": "校长信箱",
+          "pageId": "page-lvzhong-principal-mailbox"
+        }
+      ]
+    },
+    {
+      "type": "callout",
+      "variant": "info",
+      "text": "【校长寄语】各位同学、家长：教育是一场长跑。我的小目标是先挣一个亿——先让一亿个孩子健康成长，再谈成绩。绿中愿做这长跑路上的同行者。——  校长 张强"
+    },
+    {
+      "type": "paragraph",
+      "text": "新闻速览："
+    },
+    {
+      "type": "articleList",
+      "items": [
+        {
+          "title": "我校举行心理健康教育讲座（主讲：陈建国教授）",
+          "pageId": "page-lvzhong-news",
+          "date": "2026-03-08"
+        },
+        {
+          "title": "我校与新希望成长中心开展合作，助力学生健康成长",
+          "pageId": "page-lvzhong-news",
+          "date": "2026-01-10"
+        },
+        {
+          "title": "张强校长带队参观山河医科大学实验室",
+          "pageId": "page-lvzhong-news",
+          "date": "2025-12-20"
+        },
+        {
+          "title": "关于开展学生心理健康筛查的通知",
+          "pageId": "page-lvzhong-notice",
+          "date": "2026-03-12"
+        }
+      ]
+    }
+  ]
+}

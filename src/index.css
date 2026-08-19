@@ -1,0 +1,234 @@
+/* src/index.css — 全局暗色基调 + keyframes（《张强宿舍大逃杀》frontend-phone-shell）
+   交互设计 §二：PC 浏览器居中模拟手机。暗色基调，theme.ts 定义的 palette 为主色。
+   frontend-phone-shell 自有；这里替换掉 Vite 默认 index.css 以适配手机模拟外壳。 */
+
+:root {
+  color-scheme: dark;
+  --ui-bg: #050507;
+  --ui-screen: #16161e;
+  --ui-text: #f2f2f7;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  background: var(--ui-bg);
+  color: var(--ui-text);
+  font-family: system-ui, -apple-system, "Segoe UI", "PingFang SC",
+    "Microsoft YaHei", "Hiragino Sans GB", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow: hidden;
+}
+
+#root {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+button {
+  font-family: inherit;
+}
+
+img {
+  -webkit-user-drag: none;
+  user-select: none;
+}
+
+/* 滚动条暗色 */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.14);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.24);
+}
+
+/* ===== keyframes ===== */
+@keyframes ui-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes ui-shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(-4px) rotate(-0.5deg);
+  }
+  40% {
+    transform: translateX(4px) rotate(0.5deg);
+  }
+  60% {
+    transform: translateX(-3px) rotate(-0.3deg);
+  }
+  80% {
+    transform: translateX(3px) rotate(0.3deg);
+  }
+}
+.ui-shake {
+  animation: ui-shake 0.4s ease-in-out infinite;
+}
+
+@keyframes ui-slide-down {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes ui-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.08);
+    opacity: 0.85;
+  }
+}
+
+@keyframes ui-flash {
+  0% {
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* 心跳（risk>70 或倒计时中） */
+@keyframes ui-heartbeat {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  15% {
+    transform: scale(1.18);
+  }
+  30% {
+    transform: scale(1);
+  }
+  45% {
+    transform: scale(1.12);
+  }
+  60% {
+    transform: scale(1);
+  }
+}
+
+@keyframes ui-heartbeat-screen {
+  /* 屏幕整体轻微明灭心跳 */
+  0%,
+  100% {
+    filter: brightness(1);
+  }
+  15% {
+    filter: brightness(1.04);
+  }
+  30% {
+    filter: brightness(1);
+  }
+  45% {
+    filter: brightness(1.03);
+  }
+  60% {
+    filter: brightness(1);
+  }
+}
+
+/* 倒计时悬浮脉冲 */
+@keyframes ui-countdown-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(220, 30, 30, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 0 6px rgba(220, 30, 30, 0);
+  }
+}
+.ui-countdown-pulse {
+  animation: ui-countdown-pulse 1s ease-in-out infinite;
+}
+@keyframes ui-countdown-pulse-fast {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(220, 30, 30, 0.7);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(220, 30, 30, 0);
+    transform: scale(1.04);
+  }
+}
+.ui-countdown-pulse-fast {
+  animation: ui-countdown-pulse-fast 0.5s ease-in-out infinite;
+}
+
+/* 风险红边脉冲 */
+@keyframes ui-red-edge-pulse {
+  0%,
+  100% {
+    opacity: 0.85;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* 通话振铃脉冲 */
+@keyframes ui-call-pulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.55);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 0 0 20px rgba(34, 197, 94, 0);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
+  }
+}
+
+/* 减少动画偏好 */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}

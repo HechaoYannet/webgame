@@ -1,0 +1,34 @@
+{
+  "id": "page-news-3-missing",
+  "siteId": "site-news",
+  "url": "https://news.hunan-news.cn/2026/03/10/3-missing-teens.html",
+  "title": "长沙3名青少年失联，家属急寻",
+  "accessibility": {
+    "kind": "public"
+  },
+  "blocks": [
+    {
+      "type": "callout",
+      "variant": "info",
+      "text": "长沙3名青少年失联，家属急寻"
+    },
+    {
+      "type": "paragraph",
+      "text": "2026-03-10  来源：湖南新闻网"
+    },
+    {
+      "type": "paragraph",
+      "text": "近日，长沙先后有3名13-16岁青少年失联，家属多方寻找无果。值得注意的是，3名失联者均曾被送入“新希望成长中心”接受行为矫正训练，失联时间均在入营后2-4个月。"
+    },
+    {
+      "type": "paragraph",
+      "text": "家属呼吁知情者提供线索。截至发稿，新希望成长中心未作公开回应。"
+    },
+    {
+      "type": "callout",
+      "variant": "warning",
+      "text": "该案与李桥瑞、闫欣泽失联案并非同一案件，但说明类似犯罪并非孤例，侧面佐证新希望成长中心的可疑性。仅作侧面证据，非通关必需。"
+    }
+  ],
+  "registersClueId": "clue-3-missing-teens"
+}

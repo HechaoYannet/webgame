@@ -1,0 +1,110 @@
+[
+  {
+    "id": "msg-li-lin-001",
+    "threadId": "thread-li-lin-wechat",
+    "direction": "received",
+    "authorCharacterId": "char-liqiaorui",
+    "timestamp": "2026-03-12T23:18:00+08:00",
+    "kind": "text",
+    "text": "兄弟，我今晚要干件大事",
+    "registersClueId": "clue-li-wechat-lost"
+  },
+  {
+    "id": "msg-li-lin-002",
+    "threadId": "thread-li-lin-wechat",
+    "direction": "received",
+    "authorCharacterId": "char-liqiaorui",
+    "timestamp": "2026-03-12T23:18:00+08:00",
+    "kind": "text",
+    "text": "如果明天没回来，你帮我登QQ，密码是那个日子"
+  },
+  {
+    "id": "msg-li-lin-003",
+    "threadId": "thread-li-lin-wechat",
+    "direction": "sent",
+    "authorCharacterId": "char-linzhe",
+    "timestamp": "2026-03-12T23:19:00+08:00",
+    "kind": "text",
+    "text": "什么日子？"
+  },
+  {
+    "id": "msg-li-lin-004",
+    "threadId": "thread-li-lin-wechat",
+    "direction": "sent",
+    "authorCharacterId": "char-linzhe",
+    "timestamp": "2026-03-12T23:19:00+08:00",
+    "kind": "text",
+    "text": "你什么意思？"
+  },
+  {
+    "id": "msg-li-lin-005",
+    "threadId": "thread-li-lin-wechat",
+    "direction": "received",
+    "authorCharacterId": "char-liqiaorui",
+    "timestamp": "2026-03-12T23:20:00+08:00",
+    "kind": "text",
+    "text": "别问了，你看到我朋友圈就懂了"
+  },
+  {
+    "id": "msg-li-lin-006",
+    "threadId": "thread-li-lin-wechat",
+    "direction": "received",
+    "authorCharacterId": "char-liqiaorui",
+    "timestamp": "2026-03-12T23:20:00+08:00",
+    "kind": "text",
+    "text": "我先睡了，明天见"
+  },
+  {
+    "id": "msg-li-lin-007",
+    "threadId": "thread-li-lin-wechat",
+    "direction": "received",
+    "authorCharacterId": "char-liqiaorui",
+    "timestamp": "2026-03-12T23:20:30+08:00",
+    "kind": "voice",
+    "voiceDurationSec": 6,
+    "voiceTranscript": "兄弟，保重，别忘了我说的日子。"
+  },
+  {
+    "id": "msg-li-lin-008",
+    "threadId": "thread-li-lin-wechat",
+    "direction": "system",
+    "timestamp": "2026-03-13T00:05:00+08:00",
+    "kind": "system",
+    "text": "对方已离线，消息可能不会被及时接收"
+  },
+  {
+    "id": "msg-li-lin-009",
+    "threadId": "thread-li-lin-wechat",
+    "direction": "sent",
+    "authorCharacterId": "char-linzhe",
+    "timestamp": "2026-03-13T15:00:00+08:00",
+    "kind": "text",
+    "text": "桥瑞？你到家没？"
+  },
+  {
+    "id": "msg-li-lin-010",
+    "threadId": "thread-li-lin-wechat",
+    "direction": "sent",
+    "authorCharacterId": "char-linzhe",
+    "timestamp": "2026-03-13T15:00:30+08:00",
+    "kind": "text",
+    "text": "回个话"
+  },
+  {
+    "id": "msg-li-lin-011",
+    "threadId": "thread-li-lin-wechat",
+    "direction": "sent",
+    "authorCharacterId": "char-linzhe",
+    "timestamp": "2026-03-13T15:10:00+08:00",
+    "kind": "text",
+    "text": "你QQ密码到底是什么日子？"
+  },
+  {
+    "id": "msg-li-lin-012",
+    "threadId": "thread-li-lin-wechat",
+    "direction": "system",
+    "timestamp": "2026-03-13T15:10:05+08:00",
+    "kind": "system",
+    "text": "消息已发出，但被对方拒收了。"
+  }
+]

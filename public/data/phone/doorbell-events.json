@@ -1,0 +1,46 @@
+{
+  "$schema": "self-described/writer-phone-story-doorbell-events-v1",
+  "$description": "智能门铃/摄像头App事件（互动设计 §一映射表、§三.3、§四.2）。DoorbellEvent 定义门口画面+音频+震屏+倒计时提示。doorbell-dao-visit 由 puzzle-lab-backend.onSuccess pushDoorbell 触发，与 sms-zhangqiang-threat + countdown-finale(180s) + audio-heartbeat 同步到达，构成终章压迫四件套。文案严格遵循 CLAUDE.md §6.1（倒计时3分钟180秒）+ §6.2（风险值高→手机红边）+ §6.3（超时切bad结局不可回退，文案'门被打开，屏幕黑屏，林哲也消失了'）。文案 agent 不写 registersClueId/triggersEvidenceId，留空由 level-designer phase3 回填。",
+  "events": [
+    {
+      "id": "doorbell-dao-visit",
+      "sourcePuzzleId": "puzzle-lab-backend",
+      "pushTriggerPuzzleId": "puzzle-lab-backend",
+      "triggeredAt": "2026-03-13T18:30:00+08:00",
+      "doorbellCharacterId": "char-dao",
+      "title": "门口有人停留",
+      "pushNotification": {
+        "appName": "智能门铃",
+        "title": "门口有人停留",
+        "body": "检测到有人按门铃，点击查看实时画面"
+      },
+      "liveFeed": {
+        "sceneDescription": "画面里是一个光头壮汉，正反复按门口的门铃，身后楼道灯光昏暗。他抬手又敲了敲门，脸上的表情看不真切。",
+        "characterAssetId": "avatar-dao",
+        "clipAssetId": "video-doorbell-dao-loop",
+        "loop": true
+      },
+      "audio": {
+        "assetId": "audio-doorbell-knock",
+        "loop": true,
+        "volume": 0.8
+      },
+      "deviceFeedback": [
+        { "type": "vibrate", "pattern": "long" },
+        { "type": "redEdgePulse", "intensity": 0.9 }
+      ],
+      "countdownBar": {
+        "countdownId": "countdown-finale",
+        "durationSec": 180,
+        "style": "red",
+        "alertText": "尽快整理证据并报警",
+        "alertStyle": "danger"
+      },
+      "onTimeoutText": "门被打开了，屏幕黑屏，林哲也消失了。",
+      "onTimeoutEndingId": "bad",
+      "registersClueId": null,
+      "triggersEvidenceId": null,
+      "comment": "刀哥上门事件（互动设计 §三.3、剧情大纲 第五章、CLAUDE.md §6.1/§6.3）。puzzle-lab-backend.onSuccess pushDoorbell 推送。文案与 puzzles.json puzzle-lab-backend.onSuccess 的 startCountdown(180s, countdown-finale) + pushSms(sms-zhangqiang-threat) + playAudio(audio-heartbeat) 配套。倒计时归零→bad结局（endings.json trigger countdownExpired countdown-finale），文案'林哲也消失了'。"
+    }
+  ]
+}

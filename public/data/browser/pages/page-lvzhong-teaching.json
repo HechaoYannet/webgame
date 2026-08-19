@@ -1,0 +1,33 @@
+{
+  "id": "page-lvzhong-teaching",
+  "siteId": "site-lvzhong",
+  "url": "https://www.lvzhong-edu.cn/teaching/",
+  "title": "绿草中学 — 教学科研",
+  "accessibility": {
+    "kind": "public"
+  },
+  "blocks": [
+    {
+      "type": "nav",
+      "links": [
+        {
+          "label": "首页",
+          "pageId": "page-lvzhong-home"
+        }
+      ]
+    },
+    {
+      "type": "callout",
+      "variant": "info",
+      "text": "教学科研"
+    },
+    {
+      "type": "paragraph",
+      "text": "《绿草中学2025-2026学年第二学期教学计划》"
+    },
+    {
+      "type": "paragraph",
+      "text": "教学资源下载区：需登录校务内部系统后访问。（提示：使用校长账号登录 /qiangzhang 内部系统可下载教学资源）"
+    }
+  ]
+}

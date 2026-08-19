@@ -1,0 +1,54 @@
+{
+  "id": "page-xinxwang-about",
+  "siteId": "site-xinxwang",
+  "url": "https://www.xinxwang-center.com/about/",
+  "title": "新希望成长中心 — 关于我们",
+  "accessibility": {
+    "kind": "public"
+  },
+  "blocks": [
+    {
+      "type": "nav",
+      "links": [
+        {
+          "label": "首页",
+          "pageId": "page-xinxwang-home"
+        }
+      ]
+    },
+    {
+      "type": "callout",
+      "variant": "info",
+      "text": "关于我们"
+    },
+    {
+      "type": "paragraph",
+      "text": "新希望成长中心成立于2005年，是长沙专业从事青少年行为矫正的民办教育机构。中心占地80亩，封闭式管理，配备心理咨询师、退伍军人教官与生活老师团队。"
+    },
+    {
+      "type": "paragraph",
+      "text": "▌ 创始人 · 张强"
+    },
+    {
+      "type": "paragraph",
+      "text": "创始人张强先生，资深教育工作者，现任绿草中学校长。20年来致力于“问题少年”转化工作，提出“先改变行为，再重塑心灵”的教育理念。"
+    },
+    {
+      "type": "table",
+      "headers": [
+        "项目"
+      ],
+      "rows": [
+        [
+          "诚信办学单位（市级）"
+        ],
+        [
+          "2018年度青少年教育贡献奖"
+        ],
+        [
+          "长沙市民办教育协会会员单位"
+        ]
+      ]
+    }
+  ]
+}

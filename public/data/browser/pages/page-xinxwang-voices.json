@@ -1,0 +1,40 @@
+{
+  "id": "page-xinxwang-voices",
+  "siteId": "site-xinxwang",
+  "url": "https://www.xinxwang-center.com/voices/",
+  "title": "新希望成长中心 — 家长心声",
+  "accessibility": {
+    "kind": "public"
+  },
+  "blocks": [
+    {
+      "type": "nav",
+      "links": [
+        {
+          "label": "首页",
+          "pageId": "page-xinxwang-home"
+        }
+      ]
+    },
+    {
+      "type": "callout",
+      "variant": "info",
+      "text": "家长心声"
+    },
+    {
+      "type": "callout",
+      "variant": "info",
+      "text": "““感谢新希望，我家孩子终于不再玩手机了。”——李妈妈”"
+    },
+    {
+      "type": "callout",
+      "variant": "info",
+      "text": "““教官很负责，孩子变化很大。”——王爸爸”"
+    },
+    {
+      "type": "callout",
+      "variant": "warning",
+      "text": "【已删除留言 · 页面缓存残留】“求求学校了，我儿子在你们这里失踪了！三个月了没有任何消息，求你们让他给我打个电话！”——一位匿名家长（该留言已被管理员删除，但浏览器缓存仍可检索到）"
+    }
+  ]
+}
