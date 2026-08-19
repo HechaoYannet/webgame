@@ -22,6 +22,7 @@ import type { PageBlock, PageId, PuzzleId } from "@/types";
 import { usePuzzle } from "@/engine/hooks/usePuzzle";
 import { PdfViewer } from "./PdfViewer";
 
+
 interface PageBlockViewProps {
   block: PageBlock;
   /** 站内 pageId 链接回调（nav/articleList/loginForm 成功后跳转）。 */

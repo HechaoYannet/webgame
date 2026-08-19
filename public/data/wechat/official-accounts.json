@@ -54,7 +54,8 @@
       { "type": "paragraph", "text": "为关爱学生心理健康，我校联合专业机构开展春季心理筛查，请各班按时组织。" },
       { "type": "callout", "variant": "info", "text": "通知详情见校园官网“通知公告”栏目。" }
     ],
-    "url": "https://lvzhong.edu.cn/notice/screening"
+    "url": "https://lvzhong.edu.cn/notice/screening",
+    "link": { "title": "访问绿草中学官网", "pageId": "page-lvzhong-home" }
   },
   {
     "id": "article-lvzhong-speech",

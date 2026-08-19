@@ -14,6 +14,7 @@
 import { useState } from 'react'
 import { getContact } from '@/data/loader'
 import { usePuzzle } from '@/engine/hooks/usePuzzle'
+import { openSitePage } from '@/sites/sitePage'
 import { PUZZLE_PDF_SCREENING } from './qqConstants'
 import type { QqGroupFile } from './qqData'
 import { loadGroupFiles } from './qqData'
@@ -106,7 +107,13 @@ function GroupFileRow({
           <span>{f.sizeKB}KB</span>
         </div>
         {f.relatePageId && (
-          <div className="qq-groupfile-note">对应官网页面（{f.relatePageId}），可在浏览器中查看</div>
+          <button
+            type="button"
+            className="qq-groupfile-note qq-groupfile-link-btn"
+            onClick={() => openSitePage(f.relatePageId!)}
+          >
+            对应官网页面（{f.relatePageId}）›
+          </button>
         )}
         {f.note && <div className="qq-groupfile-note">{f.note}</div>}
         {f.link && (

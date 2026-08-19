@@ -162,6 +162,8 @@ export interface OfficialAccountArticle {
   coverAssetId?: string;
   bodyBlocks: ArticleBlock[];
   url?: string;
+  /** 可点跳转链接（pageId → 站内全屏站点路由新标签打开，如公众号引导访问官网）。 */
+  link?: { title?: string; url?: string; pageId?: PageId };
   registersClueId?: ClueId;
   triggersEvidenceId?: EvidenceId;
   /** 论文 AI 解读：前端检测论文 PDF 已在 FilesApp → 触发本伪解读文章（CLAUDE.md §6.5）。 */

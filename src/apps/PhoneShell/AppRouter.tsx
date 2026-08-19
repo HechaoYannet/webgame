@@ -122,6 +122,15 @@ function makeAppRouteComponent(appId: string): React.ComponentType {
 }
 
 const routes: RouteObject[] = [
+  // 全屏站点路由（无手机框）：调查网站作为真网页，新标签打开。
+  // 独立于 PhoneShell，SiteView 内部自调 loadGameData()。
+  {
+    path: '/site/:siteId/:pageId',
+    lazy: async () => {
+      const mod = await import('@/sites/SiteView')
+      return { Component: mod.default }
+    },
+  },
   {
     path: '/',
     Component: RootLayout,

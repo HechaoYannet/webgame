@@ -19,6 +19,7 @@ import {
 import { Avatar } from "./Avatar";
 import { ArticleBlockRenderer } from "./ArticleBlockRenderer";
 import { usePuzzle } from "./wechatEngine";
+import { openSitePage } from "@/sites/sitePage";
 
 export interface OfficialTabProps {
   characters: Character[];
@@ -350,7 +351,18 @@ function ArticleDetail({
           )}
         </div>
         <ArticleBlockRenderer blocks={article.bodyBlocks} />
-        {article.url && (
+        {article.link && article.link.pageId && (
+          <div className="wc-article-link">
+            <button
+              type="button"
+              className="wc-article-link-btn"
+              onClick={() => openSitePage(article.link!.pageId!)}
+            >
+              {article.link.title ?? "访问网页"} ›
+            </button>
+          </div>
+        )}
+        {article.url && !article.link?.pageId && (
           <div className="wc-article-url">原文链接：{article.url}（仅显示）</div>
         )}
       </article>

@@ -25,6 +25,7 @@ import { appColor, alertStyleColor, palette, radius, spacing } from '@/ui/theme'
 import { AppGlyph, Glyph } from '@/ui/icons'
 import { Button } from '@/ui/Primitives'
 import { formatShortDateTime } from '@/utils/time'
+import { openSitePage } from '@/sites/sitePage'
 
 export function NotificationBar() {
   const notifications = useNotifications()
@@ -45,9 +46,14 @@ export function NotificationBar() {
   if (notifications.length === 0) return null
 
   const handleOpen = (n: (typeof notifications)[number]) => {
-    if (n.appId) navigate(`/app/${n.appId}`)
-    else if (n.threadId) navigate(`/app/sms`)
-    else if (n.pageId) navigate(`/app/browser`)
+    if (n.pageId) {
+      // 调查网页通知 → 新标签打开全屏站点路由（BrowserApp 已移除）
+      openSitePage(n.pageId)
+    } else if (n.appId) {
+      navigate(`/app/${n.appId}`)
+    } else if (n.threadId) {
+      navigate(`/app/sms`)
+    }
     dismissNotification(n.id)
     setExpanded(false)
   }

@@ -221,6 +221,7 @@ const articleSchema: z.ZodType<OfficialAccountArticle> = z.object({
   coverAssetId: z.string().optional(),
   bodyBlocks: z.array(articleBlockSchema),
   url: z.string().optional(),
+  link: z.object({ title: z.string().optional(), url: z.string().optional(), pageId: idStr.optional() }).optional(),
   registersClueId: idStr.optional(),
   triggersEvidenceId: idStr.optional(),
   isGeneratedContent: z.boolean().optional(),

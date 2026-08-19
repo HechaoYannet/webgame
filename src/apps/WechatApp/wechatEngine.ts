@@ -14,8 +14,8 @@
  * 本文件仅做形状适配 + 命名统一，不持剧情/答案。
  */
 import { useCallback } from 'react'
-import { useNavigate } from 'react-router'
 import { useGameStore } from '@/engine/store/gameStore'
+import { openSitePage } from '@/sites/sitePage'
 import type { EvidenceId, PageId, PuzzleId, ThreadId } from '@/types'
 
 /* ------------------------------------------------------------------ *
@@ -118,20 +118,11 @@ export function useGameState(): GameStateApi {
  * ------------------------------------------------------------------ */
 
 export function useNavigateToPage(): (pageId: PageId, fromThread?: ThreadId) => void {
-  const navigate = useNavigate()
-  return useCallback(
-    (pageId: PageId, _fromThread?: ThreadId) => {
-      // 跨 App 站内跳转契约：pageId 经 sessionStorage 透传给 BrowserApp（轻量、刷新即失效）。
-      try {
-        sessionStorage.setItem('webgame-browser-pending-page', pageId)
-      } catch {
-        // 无痕模式忽略
-      }
-      // HashRouter：navigate 走 hash 段，CLAUDE.md §2 强制。
-      navigate(`/app/browser?pageId=${encodeURIComponent(pageId)}`)
-    },
-    [navigate],
-  )
+  // 重写后：BrowserApp 已移除，调查网页走全屏站点路由新标签（openSitePage）。
+  // useNavigate 不再需要（原跳 /app/browser 已废），保留 hook 形态以维持调用面。
+  return useCallback((pageId: PageId, _fromThread?: ThreadId) => {
+    void openSitePage(pageId)
+  }, [])
 }
 
 /* ------------------------------------------------------------------ *
