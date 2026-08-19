@@ -43,13 +43,7 @@
     "id": "ch-2",
     "index": 2,
     "title": "绿中官网与内部系统",
-    "enterCondition": {
-      "kind": "and",
-      "conditions": [
-        { "kind": "puzzleSolved", "puzzleId": "puzzle-qq-login" },
-        { "kind": "clueRegistered", "clueId": "clue-lvzhong-hidden-url" }
-      ]
-    },
+    "enterCondition": { "kind": "puzzleSolved", "puzzleId": "puzzle-qq-login" },
     "introMonologueId": "mono-ch2",
     "onEnterEffects": [],
     "objectives": [

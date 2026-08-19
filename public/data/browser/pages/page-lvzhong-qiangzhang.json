@@ -29,5 +29,8 @@
       "basePageId": "page-lvzhong-notice-screening",
       "suffix": "/qiangzhang"
     }
+  ],
+  "onViewEffects": [
+    { "type": "advanceChapter", "toChapterId": "ch-2" }
   ]
 }

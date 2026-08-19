@@ -65,11 +65,18 @@ export function ChatTab({ characters }: ChatTabProps): JSX.Element {
     [characters],
   );
 
+  // 修卡死 bug：当 activeThreadId 指向已不存在的会话时，移到 useEffect 重置——
+  // 避免在 render 内 setActiveThreadId 触发 unstable render（与 OfficialTab 同型修复）。
+  useEffect(() => {
+    if (activeThreadId && !threads.find((t) => t.id === activeThreadId)) {
+      setActiveThreadId(null);
+    }
+  }, [activeThreadId, threads]);
+
   if (activeThreadId) {
     const thread = threads.find((t) => t.id === activeThreadId);
     if (!thread) {
-      // 会话被卸载（理论上不发生），退回列表
-      setActiveThreadId(null);
+      // 会话被卸载（理论上不发生），退回列表骨架——useEffect 会清空 activeThreadId
       return <ChatListSkeleton />;
     }
     return (

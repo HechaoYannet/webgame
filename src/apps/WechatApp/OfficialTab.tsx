@@ -18,7 +18,7 @@ import {
 } from "./data";
 import { Avatar } from "./Avatar";
 import { ArticleBlockRenderer } from "./ArticleBlockRenderer";
-import { useClue, usePuzzle } from "./wechatEngine";
+import { usePuzzle } from "./wechatEngine";
 
 export interface OfficialTabProps {
   characters: Character[];
@@ -63,7 +63,14 @@ export function OfficialTab({ characters }: OfficialTabProps): JSX.Element {
     };
   }, []);
 
-  // 单文章详情视图
+  // 单文章详情视图（修卡死 bug：不在 render 内 setState——当 activeArticleId 指向已不存在的
+  // 文章时，移到 useEffect 重置，避免 render 期 setActiveArticleId 触发 unstable render / 卡死）。
+  useEffect(() => {
+    if (activeArticleId && !articles.find((a) => a.id === activeArticleId)) {
+      setActiveArticleId(null);
+    }
+  }, [activeArticleId, articles]);
+
   if (activeArticleId) {
     const art = articles.find((a) => a.id === activeArticleId);
     if (art) {
@@ -75,7 +82,6 @@ export function OfficialTab({ characters }: OfficialTabProps): JSX.Element {
         />
       );
     }
-    setActiveArticleId(null);
   }
 
   // 列表：按公众号分组
@@ -311,15 +317,8 @@ function ArticleDetail({
   article,
   onBack,
 }: ArticleDetailProps): JSX.Element {
-  const clue = useClue();
-
-  const onView = useCallback(() => {
-    clue.view({ kind: "wechat-article", articleId: article.id });
-  }, [clue, article.id]);
-
-  useEffect(() => {
-    onView();
-  }, [onView]);
+  // （重写后）线索注册装饰已废：查看文章不再注册线索。原 useEffect(onView,[onView]) 死循环
+  // （onView 依赖每渲染新的 clue 对象）随之移除——这是"点公众号文章卡死"的根因。
 
   return (
     <div className="wc-article-detail">

@@ -7,7 +7,7 @@
  * - 查看 → useClue().view({kind:"wechat-moment",momentId})。
  * - link.pageId → 站内跳转（§6.4）。
  */
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { Character, MomentsPost } from "@/types";
 import { Avatar } from "./Avatar";
 import {
@@ -16,7 +16,7 @@ import {
   loadWechatMoments,
   type CharacterDictionary,
 } from "./data";
-import { useClue, useGameState, useNavigateToPage } from "./wechatEngine";
+import { useNavigateToPage } from "./wechatEngine";
 import { ImageViewer } from "./ImageViewer";
 
 export interface MomentsTabProps {
@@ -103,20 +103,8 @@ interface MomentRowProps {
 }
 
 function MomentRow({ post, dict, onZoom }: MomentRowProps): JSX.Element {
-  const clue = useClue();
-  const gameState = useGameState();
   const navigateToPage = useNavigateToPage();
   const author = dict.byId.get(post.authorCharacterId);
-
-  // 进入视图即上报一次查看（ClueRegistry 查表决定是否注册线索/收集证据）
-  const onView = useCallback(() => {
-    clue.view({ kind: "wechat-moment", momentId: post.id });
-    gameState.viewMoment(post.id);
-  }, [clue, gameState, post.id]);
-
-  useEffect(() => {
-    onView();
-  }, [onView]);
 
   const likes = post.likes ?? [];
   const comments = post.comments ?? [];
