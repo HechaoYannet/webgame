@@ -20,7 +20,7 @@ import type { PageBlock, PageId, WebPage } from '@/types'
 import { getPage } from '@/data/loader'
 import { useChapter } from '@/engine/hooks/useChapter'
 import { PageBlockView } from '@/ui/PageBlockView'
-import { sitePageUrl } from './sitePage'
+import { siteIdForPageId, sitePageHash } from './sitePage'
 
 type ViewState =
   | { kind: 'loading' }
@@ -55,16 +55,12 @@ export default function SiteView(): JSX.Element {
     void loadAndRender(pageId)
   }, [pageId, loadAndRender])
 
-  // 站内导航：pushState 更新 hash（触发 useParams 重读 → 重新加载），不整页刷新。
+  // 站内导航：改 location.hash 触发 react-router createHashRouter 重解析（自动重渲染）。
+  // 用 hash 跳转而非 pushState——pushState 第三参若只给 hash 段会把 # 当路径，破坏路由。
   const navigateInSite = useCallback((targetPageId: PageId) => {
-    const siteId = params.siteId
+    const siteId = siteIdForPageId(targetPageId) ?? params.siteId
     if (!siteId) return
-    const url = sitePageUrl(targetPageId) ?? `#/site/${siteId}/${targetPageId}`
-    // sitePageUrl 返回 BASE_URL + hash；pushState 用 hash 段
-    const hashPart = url.includes('#') ? url.slice(url.indexOf('#')) : url
-    window.history.pushState(null, '', hashPart)
-    // pushState 不触发 react-router 重渲染，手动 dispatch popstate
-    window.dispatchEvent(new PopStateEvent('popstate'))
+    window.location.hash = sitePageHash(siteId, targetPageId)
   }, [params.siteId])
 
   const onViewSource = useCallback(() => {
