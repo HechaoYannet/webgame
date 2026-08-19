@@ -11,12 +11,13 @@
  *   与手机框同 store（localStorage 持久化 + 同 SPA JS 上下文），点上东西直接生效，
  *   无需跨标签通信桥。
  * - 顶部一个极简头部：显示页 title + page.url（纯展示，无地址栏 chrome）+ 返回手机（关标签）。
- * - 数据就绪门控：站点标签独立 React 实例，需自调 loadGameData()（幂等缓存）。
+ * - 数据就绪：main.tsx 已 await loadGameData() 再 render，本组件内无需门控，所有同步
+ *   getter（getChapterById 等）在首次渲染即安全。
  */
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useParams } from 'react-router'
 import type { PageBlock, PageId, WebPage } from '@/types'
-import { getPage, loadGameData } from '@/data/loader'
+import { getPage } from '@/data/loader'
 import { useChapter } from '@/engine/hooks/useChapter'
 import { PageBlockView } from '@/ui/PageBlockView'
 import { sitePageUrl } from './sitePage'
@@ -32,17 +33,7 @@ export default function SiteView(): JSX.Element {
   const pageId = params.pageId as PageId | undefined
   const chapter = useChapter()
 
-  const [dataReady, setDataReady] = useState(false)
   const [view, setView] = useState<ViewState>({ kind: 'loading' })
-
-  // 站点标签独立 React 实例：自调 loadGameData（幂等），再渲染。
-  useEffect(() => {
-    let cancelled = false
-    loadGameData().then(() => {
-      if (!cancelled) setDataReady(true)
-    })
-    return () => { cancelled = true }
-  }, [])
 
   // 加载 pageId 对应页面 + 首访触发 onViewEffects。
   const loadAndRender = useCallback(async (pid: PageId) => {
@@ -59,10 +50,10 @@ export default function SiteView(): JSX.Element {
   }, [])
 
   useEffect(() => {
-    if (!dataReady || !pageId) return
+    if (!pageId) return
     setView({ kind: 'loading' })
     void loadAndRender(pageId)
-  }, [dataReady, pageId, loadAndRender])
+  }, [pageId, loadAndRender])
 
   // 站内导航：pushState 更新 hash（触发 useParams 重读 → 重新加载），不整页刷新。
   const navigateInSite = useCallback((targetPageId: PageId) => {
@@ -80,7 +71,7 @@ export default function SiteView(): JSX.Element {
     setView((v) => (v.kind === 'page' ? { kind: 'source', page: v.page } : v))
   }, [])
 
-  if (!dataReady || view.kind === 'loading') {
+  if (view.kind === 'loading') {
     return <div style={centerStyle}>加载中…</div>
   }
   if (view.kind === 'notfound') {
