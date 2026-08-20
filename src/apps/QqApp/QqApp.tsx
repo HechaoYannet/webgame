@@ -4,14 +4,15 @@
  * 视点：李桥瑞 QQ 账号（direction：李桥瑞发的=sent，他人发的=received）。
  *
  * 顶层先 `await loadGameData()`（loader 缓存幂等），让子组件可同步读 getQqThreads()/
- * getQzone()/getContact()/getQqContact()；登录态用 usePuzzle('puzzle-qq-login').solved。
- * 四个底部 Tab：消息 / 空间 / 群文件 / 通讯录。
- * 不硬编码剧情/密码——答案在 puzzles.json，由 engine 校验。
+ * getQzone()/getContact()/getQqContact()；登录态用 useGameStore solvedPuzzleIds
+ * includes 'puzzle-qq-login'。
+ * 四个底部 Tab：消息 / 空间 / 群文件 / 通讯录。登 QQ 后所有会话可见（无 thread 门禁）。
+ * 不硬编码剧情/密码——答案在 puzzles.json，由 @/game/answerCheck 校验。
  */
 import { useState } from 'react'
 import { loadGameData, getQqThreads } from '@/data/loader'
 import type { ChatThread } from '@/types'
-import { usePuzzle } from '@/engine/hooks/usePuzzle'
+import { useGameStore } from '@/game/gameStore'
 import { Avatar, ErrorState, Loading, useAsync } from './components'
 import { getContact, getQqContact } from '@/data/loader'
 import type { QqContact } from '@/types'
@@ -25,9 +26,8 @@ import './qq.css'
 type Tab = 'messages' | 'qzone' | 'groupFiles' | 'contacts'
 
 export default function QqApp() {
-  // 登录态（puzzle-qq-login.solved）。success 收集 ev-qq-chat-plan + advanceChapter ch-1
-  const loginPuzzle = usePuzzle(PUZZLE_QQ_LOGIN)
-  const loggedIn = loginPuzzle.solved
+  // 登录态：puzzle-qq-login 是否已解（已解 = markPuzzleSolved 写入 solvedPuzzleIds）。
+  const loggedIn = useGameStore((s) => s.solvedPuzzleIds.includes(PUZZLE_QQ_LOGIN))
 
   // 加载全局数据（loader 幂等缓存；同步 getter 需先 await）
   const { error: loadError } = useAsync(loadGameData, [])

@@ -5,15 +5,15 @@
  *
  * 文件类型：
  *   - pdf：点击打开 PDF 门禁；加密 PDF（心理筛查通知 gf-screening-notice-pdf，对应
- *     puzzle-pdf-screening，答案 0312 在 puzzles.json，engine 校验）需先输密码 submit
- *   - image：点击放大（思过室窗户照片，clue-siguo-window 线索由数据 registersClueId
- *     钩子触发；此处仍传 view 事件兜底）
+ *     puzzle-pdf-screening，答案 0312 在 puzzles.json，@/game/answerCheck 校验）需先输密码
+ *   - image：点击放大（查看即取证的装饰已废）
  *   - xlsx/link：展示信息
  * relatePageId 文件提示"对应官网页面"（pageId 由 BrowserApp 处理，§6.4 不外跳）。
  */
 import { useState } from 'react'
 import { getContact } from '@/data/loader'
-import { usePuzzle } from '@/engine/hooks/usePuzzle'
+import { checkAnswer } from '@/game/answerCheck'
+import { useGameStore } from '@/game/gameStore'
 import { openSitePage } from '@/sites/sitePage'
 import { PUZZLE_PDF_SCREENING } from './qqConstants'
 import type { QqGroupFile } from './qqData'
@@ -106,7 +106,9 @@ function GroupFileRow({
           <span>·</span>
           <span>{f.sizeKB}KB</span>
         </div>
-        {f.relatePageId && (
+        {/* {f.relatePageId && (
+
+          
           <button
             type="button"
             className="qq-groupfile-note qq-groupfile-link-btn"
@@ -114,10 +116,12 @@ function GroupFileRow({
           >
             对应官网页面（{f.relatePageId}）›
           </button>
-        )}
+        )} */}
         {f.note && <div className="qq-groupfile-note">{f.note}</div>}
         {f.link && (
-          <div className="qq-groupfile-link">
+          <div className="qq-groupfile-link"
+          onClick={() => openSitePage("https://endfield.hypergryph.com/news/1181")}
+          >
             <div className="qq-groupfile-link-title">{f.link.title}</div>
             {f.link.url && <div className="qq-groupfile-link-url">{f.link.url}</div>}
           </div>
@@ -128,31 +132,36 @@ function GroupFileRow({
 }
 
 /**
- * PDF 门禁：加密 PDF（心理筛查通知 gf-screening-notice-pdf）需 submit
- * puzzle-pdf-screening 密码（0312，由 puzzles.json + engine 校验，前端不持答案）。
- * 解密成功后展示占位 PDF 内容（完整 PDF 由 FilesApp 的 pdfViewer 渲染）。
+ * PDF 门禁：加密 PDF（心理筛查通知 gf-screening-notice-pdf）需 checkAnswer
+ * puzzle-pdf-screening 密码（0312，由 puzzles.json + @/game/answerCheck 校验，前端不持答案）。
+ * 解密成功后在本组件内嵌展示占位 PDF 内容（FilesApp 已删，不再外部渲染）。
  */
 function PdfGate({ file, onClose }: { file: QqGroupFile; onClose: () => void }) {
-  const puzzle = usePuzzle(PUZZLE_PDF_SCREENING)
+  const solved = useGameStore((s) => s.solvedPuzzleIds.includes(PUZZLE_PDF_SCREENING))
+  const finished = useGameStore((s) => s.finished)
+  const markPuzzleSolved = useGameStore((s) => s.markPuzzleSolved)
   const [pwd, setPwd] = useState('')
   const [toast, setToast] = useState<string | null>(null)
 
   // 该 PDF 是否对应加密谜题：screening-notice-pdf 关联 page-lvzhong-screening-pdf
   // 非加密 PDF 直接展示。
   const needsPassword = file.id === 'gf-screening-notice-pdf'
-  const solved = !needsPassword || puzzle.solved
+  const unlocked = !needsPassword || solved
 
   function handleUnlock(e: React.FormEvent) {
     e.preventDefault()
     if (!pwd) return
-    const res = puzzle.submit(pwd.trim())
-    if (res.success) {
+    if (finished) {
+      setToast('游戏已结束，无法解密。')
+      return
+    }
+    const ok = checkAnswer(PUZZLE_PDF_SCREENING, pwd.trim())
+    if (ok) {
+      markPuzzleSolved(PUZZLE_PDF_SCREENING)
       setToast(null)
       setPwd('')
-    } else if (res.error === 'game-finished') {
-      setToast('游戏已结束，无法解密。')
     } else {
-      setToast(res.hintTriggered ? `密码错误（第 ${res.wrongAttempts} 次）。` : '密码错误，请重试。')
+      setToast('密码错误，请重试。')
       setPwd('')
     }
   }
@@ -166,7 +175,7 @@ function PdfGate({ file, onClose }: { file: QqGroupFile; onClose: () => void }) 
             ×
           </button>
         </header>
-        {needsPassword && !solved ? (
+        {needsPassword && !unlocked ? (
           <div className="qq-pdf-gate-unlock">
             <p className="qq-pdf-gate-hint">该 PDF 已加密，请输入密码：</p>
             <form onSubmit={handleUnlock}>
@@ -179,12 +188,12 @@ function PdfGate({ file, onClose }: { file: QqGroupFile; onClose: () => void }) 
                 autoFocus
                 autoComplete="off"
                 inputMode="numeric"
-                disabled={puzzle.lastResult?.locked}
+                disabled={finished}
               />
               <button
                 type="submit"
                 className="qq-pdf-gate-submit"
-                disabled={!pwd || !!puzzle.lastResult?.locked}
+                disabled={!pwd || finished}
               >
                 解密
               </button>
@@ -196,7 +205,7 @@ function PdfGate({ file, onClose }: { file: QqGroupFile; onClose: () => void }) 
           <div className="qq-pdf-gate-content">
             <p className="qq-pdf-gate-content-label">【PDF 预览】</p>
             <p className="qq-pdf-gate-content-body">
-              {file.note ?? `${file.name}（已${solved ? '解密' : '打开'}，详细内容由 PDF 即时渲染）`}
+              {file.note ?? `${file.name}（已${unlocked ? '解密' : '打开'}，详细内容由 PDF 即时渲染）`}
             </p>
             <p className="qq-pdf-gate-content-hint">
               提示：完整 PDF 可在「文件」App 中查看完整页面（pdfViewer）。

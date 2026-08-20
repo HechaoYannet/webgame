@@ -1,0 +1,20 @@
+{
+  "id": "page-ai-interpret",
+  "siteId": "site-ai-pdf",
+  "url": "https://paper-ai-interpret.local/result",
+  "title": "AI解读结果：《源石结晶生物能源提取与人体内结晶生成机制研究》",
+  "accessibility": { "kind": "public" },
+  "blocks": [
+    { "type": "heading", "level": 1, "text": "AI 解读结果" },
+    { "type": "callout", "variant": "info", "text": "本解读由 AI 根据您上传的论文 PDF 自动生成，仅供参考。" },
+    { "type": "heading", "level": 2, "text": "一、研究概要" },
+    { "type": "paragraph", "text": "该研究由山河医科大学陈建国团队开展，探讨从人体内“源石结晶”中提取生物能源的机制，并研究如何在青少年体内诱导结晶生成。" },
+    { "type": "heading", "level": 2, "text": "二、关键发现" },
+    { "type": "list", "ordered": true, "items": ["研究团队从青少年受试者体内提取“源石结晶”，用于能源开发。", "实验对象来源标注为“新希望成长中心”，均为 12-18 岁青少年。", "论文伦理审批栏为空，未载明知情同意与未成年人保护审查。", "实验方案存在高热、脏器损伤等高风险描述。"] },
+    { "type": "heading", "level": 2, "text": "三、基金与作者信息" },
+    { "type": "paragraph", "text": "通讯作者陈建国（山河医科大学生物能源与疾病控制国家重点实验室主任）。" },
+    { "type": "callout", "variant": "warning", "text": "解读末尾附带作者备注：实验数据管理后台地址 lab.shanhe-med.cn/admin，测试账号 admin，访问密码为基金号后 6 位。" },
+    { "type": "heading", "level": 2, "text": "四、合规性提示" },
+    { "type": "paragraph", "text": "依据《涉及人的生物医学研究伦理审查办法》及未成年人保护相关规定，以未成年人为受试者需法定代理人书面同意并经伦理委员会审查。本论文伦理审批栏空白，存在重大合规风险。" }
+  ]
+}

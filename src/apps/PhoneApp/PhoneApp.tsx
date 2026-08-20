@@ -9,12 +9,16 @@
  *   PhoneApp 拨打 0731-88888888 →
  *   通话字幕（call-scripts.json call-script-dispatcher-report）→
  *   玩家在通话内"发送证据"再次触发 puzzle-evidence-finale →
- *   引擎 evidenceSet 校验 → good 分支 endEffects（pushEnding good + openNewsApp）经引擎
- *   EffectExecutor 执行 → 真结局。
+ *   checkAnswer(puzzle-evidence-finale, {selected}) 校验 → good 分支
+ *   endEffects（pushEnding good / openNewsApp good）由本组件直调 pushEnding → 真结局。
  *
- * 迁移说明（frontend-phone-apps engine 迁移）：
- *   原 ./runtime 已删除。全局态/谜题/证据/倒计时全部走 @/engine/hooks，
- *   反馈服务走 @/engine/feedback。本地仅保留 UI 局部 useState（拨号输入、通话进行态）。
+ * 迁移说明（frontend-phone-apps engine 迁移，玩家决策 2026-08-19）：
+ *   已脱离 @/engine。状态走 @/game/gameStore，答案校验走 @/game/answerCheck，
+ *   倒计时运行态走 @/utils/shellState 的 useCountdown('countdown-finale')，
+ *   音频走 @/game/audio，类型取自 @/types，数据用 @/data/loader 的同步 getter
+ *   （main.tsx 已 await loadGameData，同步 getter 安全）。本地仅保留 UI 局部
+ *   useState（拨号输入、通话进行态）。endEffects 的 pushEnding/openNewsApp 直调
+ *   useGameStore.pushEnding（openNewsApp 等价 pushEnding，EndingOverlay 读 endings.json 渲染）。
  */
 
 import { useEffect, useMemo, useState } from 'react';
@@ -23,20 +27,27 @@ import type {
   CallRecord,
   CallScript,
   CallScriptBlock,
-} from './data';
+  CallScriptBranch,
+  EvidenceId,
+} from '@/types';
 import {
-  loadCallLog,
-  loadCallScripts,
-} from './data';
-import { usePuzzle } from '@/engine/hooks/usePuzzle';
-import { useGameStore, hasActiveCountdown } from '@/engine/store/gameStore';
-import * as AudioService from '@/engine/feedback/AudioService';
-import * as HapticsService from '@/engine/feedback/HapticsService';
-import { executeEffects } from '@/engine/puzzle/EffectExecutor';
-import type { PuzzleEffect } from '@/types';
-import type { EvidenceId } from '@/types';
+  getAllCallRecords,
+  getCallScriptById,
+} from '@/data/loader';
+import { checkAnswer } from '@/game/answerCheck';
+import { useGameStore } from '@/game/gameStore';
+import * as AudioService from '@/game/audio';
+import { useCountdown, usePendingAnsweredCall, consumePendingAnsweredCall } from '@/utils/shellState';
 
 type Phase = 'recents' | 'dial' | 'calling';
+
+/** 不应在通话记录中显示的记录 id：
+ *  - call-report-police：举报电话仅在终章实际拨号时进入通话界面，不应出现在历史里。
+ *  - call-zhangqiang-threat-incoming：威胁来电改为登录新希望后台后实时振铃打入，不进历史。 */
+const HIDDEN_RECORD_IDS = new Set<string>([
+  'call-report-police',
+  'call-zhangqiang-threat-incoming',
+]);
 
 const KEY_MAP: { d: string; sub?: string }[] = [
   { d: '1', sub: '' },
@@ -63,38 +74,43 @@ function normalizeDigits(s: string): string {
   return s.replace(/[^\d*#+]/g, '');
 }
 
+/** 轻触反馈（就地替代 HapticsService.vibrate）。 */
+function haptic(ms = 30): void {
+  try {
+    navigator.vibrate?.(ms);
+  } catch {
+    // 忽略
+  }
+}
+
 export default function PhoneApp(): ReactNode {
   const [phase, setPhase] = useState<Phase>('recents');
   const [draft, setDraft] = useState('');
-  const [records, setRecords] = useState<CallRecord[]>([]);
-  const [scripts, setScripts] = useState<CallScript[]>([]);
-  const [loadErr, setLoadErr] = useState<string | null>(null);
 
-  // 倒计时进行中 → 红色拨号强调（受 engine CountdownService 驱动）。
-  // engine store 的 countdowns 是真值（key='webgame-save'），PhoneShell 状态栏/通知栏同源。
-  const countdowns = useGameStore((s) => s.countdowns);
-  // 多倒计时场景任一未过期即视为进行中
-  const countdownRunning = useMemo(
-    () => Object.values(countdowns ?? {}).some((c) => !c.expired) || hasActiveCountdown('countdown-finale'),
-    [countdowns],
+  // 倒计时进行中 → 红色拨号强调。唯一倒计时 = countdown-finale。
+  // useCountdown 订阅 gameStore.countdowns 变化，active 等价 isActive('countdown-finale')。
+  const countdown = useCountdown('countdown-finale');
+  const countdownRunning = countdown.active;
+
+  // main.tsx 已 await loadGameData，同步 getter 在首次渲染即安全。
+  // 过滤掉不应出现在通话历史里的记录（举报电话、威胁来电——见 HIDDEN_RECORD_IDS）。
+  const records: CallRecord[] = useMemo(
+    () => getAllCallRecords().filter((r) => !HIDDEN_RECORD_IDS.has(r.id)),
+    [],
   );
 
+  // 接听"未知号码威胁来电"后 IncomingCallOverlay 导航到 /app/phone 并登记
+  // pendingAnsweredCallScriptId。这里订阅该信号（响应式），一旦出现就取走并进 CallView
+  // 播放威胁通话（6 秒静默挂断 + 心跳）。订阅式而非仅 mount 读取，保证 PhoneApp 已挂载时
+  // 二次接听也能进入通话界面。
+  const answeredScriptId = usePendingAnsweredCall();
   useEffect(() => {
-    let mounted = true;
-    Promise.all([loadCallLog(), loadCallScripts()])
-      .then(([r, sc]) => {
-        if (!mounted) return;
-        setRecords(r);
-        setScripts(sc);
-      })
-      .catch((e: unknown) => {
-        if (!mounted) return;
-        setLoadErr(e instanceof Error ? e.message : String(e));
-      });
-    return () => {
-      mounted = false;
-    };
-  }, []);
+    if (!answeredScriptId) return;
+    const script = getCallScriptById(answeredScriptId);
+    consumePendingAnsweredCall();
+    if (!script) return;
+    onStartCall(script.title ?? '未知号码', script);
+  }, [answeredScriptId]);
 
   const press = (k: string) => setDraft((d) => (d.length >= 24 ? d : d + k));
 
@@ -110,14 +126,6 @@ export default function PhoneApp(): ReactNode {
     setCaller(null);
     AudioService.stop();
   };
-
-  if (loadErr) {
-    return (
-      <div className="phone-app" style={wrapStyle}>
-        <div style={{ padding: 24, color: '#ff8888' }}>数据加载失败：{loadErr}</div>
-      </div>
-    );
-  }
 
   if (phase === 'calling' && caller) {
     return (
@@ -136,15 +144,29 @@ export default function PhoneApp(): ReactNode {
         onBack={phase === 'dial' ? () => setPhase('recents') : undefined}
         rightAction={
           phase === 'recents' ? (
-            <button style={iconBtn} onClick={() => setPhase('dial')}>
-              ⌘
+            <button style={dialLinkBtn} onClick={() => setPhase('dial')}>
+              拨号
             </button>
           ) : undefined
         }
       />
 
       {phase === 'recents' && (
-        <RecentsList records={records} onCall={(rec) => onCreateCall(rec, scripts, onStartCall)} />
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }}>
+          <RecentsList records={records} onCall={(rec) => onCreateCall(rec, onStartCall)} />
+          {/* 显眼底部拨号栏：原先右上角仅一个 36px ⌘ 图标，太隐蔽玩家找不到拨号盘。
+              改为大号绿色通话按钮 + "拨号"文字，居中置底，仿真实手机拨号入口。 */}
+          <div style={dialBarStyle}>
+            <button
+              style={dialBigBtn(countdownRunning)}
+              onClick={() => setPhase('dial')}
+              aria-label="打开拨号盘"
+            >
+              <span style={{ fontSize: 26 }}>⌕</span>
+              <span>拨号</span>
+            </button>
+          </div>
+        </div>
       )}
 
       {phase === 'dial' && (
@@ -164,7 +186,7 @@ export default function PhoneApp(): ReactNode {
                 key={k.d}
                 style={keyBtn}
                 onClick={() => press(k.d)}
-                onPointerDown={() => HapticsService.vibrate('short')}
+                onPointerDown={() => haptic(30)}
               >
                 <div style={{ fontSize: 26, fontWeight: 600 }}>{k.d}</div>
                 {k.sub && <div style={{ fontSize: 9, letterSpacing: 1, color: '#888' }}>{k.sub}</div>}
@@ -182,7 +204,7 @@ export default function PhoneApp(): ReactNode {
                 const isHotline =
                   raw === HOTLINE_RAW || raw === normalizeDigits(HOTLINE_DISPLAY);
                 if (isHotline) {
-                  const script = scripts.find((s) => s.id === DISPATCHER_SCRIPT_ID);
+                  const script = getCallScriptById(DISPATCHER_SCRIPT_ID);
                   onStartCall(HOTLINE_DISPLAY, script);
                 } else {
                   // 拨打其他号码：尝试匹配 call-log 里的预设通话
@@ -192,7 +214,7 @@ export default function PhoneApp(): ReactNode {
                       normalizeDigits(r.displayNumber) === raw,
                   );
                   const script = rec?.scriptId
-                    ? scripts.find((s) => s.id === rec.scriptId)
+                    ? getCallScriptById(rec.scriptId)
                     : undefined;
                   onStartCall(draft, script);
                 }
@@ -217,10 +239,9 @@ export default function PhoneApp(): ReactNode {
 
 function onCreateCall(
   rec: CallRecord,
-  scripts: CallScript[],
   onStartCall: (display: string, script?: CallScript) => void,
 ) {
-  const script = rec.scriptId ? scripts.find((s) => s.id === rec.scriptId) : undefined;
+  const script = rec.scriptId ? getCallScriptById(rec.scriptId) : undefined;
   onStartCall(rec.displayNumber, script);
 }
 
@@ -243,13 +264,15 @@ function CallView({ display, script, onHangup }: CallViewProps): ReactNode {
   const [evidencePromptOpen, setEvidencePromptOpen] = useState(false);
   const [waitingEvidenceResult, setWaitingEvidenceResult] = useState(false);
 
-  // 终章谜题状态 + 倒计时进行态读 engine store（真值，与 PhoneShell 同源）
+  // 终章谜题已解状态（渲染期同步读 gameStore.solvedPuzzleIds）。
   const finalePuzzled = useGameStore((s) => s.solvedPuzzleIds.includes(FINALE_PUZZLE_ID));
-  const countdownRunning = useGameStore((s) => Object.values(s.countdowns ?? {}).some((c) => !c.expired));
-  // 引擎 usePuzzle(puzzleId)：submit(value) 走 PuzzleService（内部已执行 onSuccess/onFailure）
-  const { submit: submitFinale } = usePuzzle(FINALE_PUZZLE_ID);
+  // 倒计时进行态：唯一倒计时 countdown-finale，active 等价 isActive('countdown-finale')。
+  const countdownRunning = useCountdown('countdown-finale').active;
 
-  const baseBlocks: CallScriptBlock[] = dispatcherScript?.blocks ?? [];
+  // baseBlocks 取自当前 script（任意预设通话如班主任脚本都有自带 blocks）。
+  // 之前只取 dispatcherScript.blocks 导致非举报电话（班主任/未知号码）baseBlocks 为空、
+  // visibleBlocks 永远为 []，通话卡在"正在呼叫…"——表现为"打不通"。这里改用 script.blocks。
+  const baseBlocks: CallScriptBlock[] = script?.blocks ?? [];
   const branchBlocks: CallScriptBlock[] = branch
     ? dispatcherScript?.branches?.[branch]?.blocks ?? []
     : [];
@@ -280,6 +303,11 @@ function CallView({ display, script, onHangup }: CallViewProps): ReactNode {
     const current = [...baseBlocks, ...branchBlocks][nowIdx];
     if (!current) return;
 
+    // 进入首条台词块即置"通话中"（无前置 system 块的脚本，如班主任通话）。
+    if (current.type === 'line' && nowIdx === 0) {
+      setStatus('通话中');
+    }
+
     // 命中系统提示：渲染后短暂推进
     if (current.type === 'system') {
       setStatus(current.text);
@@ -296,7 +324,7 @@ function CallView({ display, script, onHangup }: CallViewProps): ReactNode {
 
     // 命中 branch：根据 puzzle-evidence-finale 解谜状态决定分支
     if (current.type === 'branch') {
-      // 此分支由提交证据时的 submit 结果驱动；这里兜底跳过
+      // 此分支由提交证据时的 checkAnswer 结果驱动；这里兜底跳过
       return;
     }
 
@@ -325,7 +353,7 @@ function CallView({ display, script, onHangup }: CallViewProps): ReactNode {
   useEffect(() => {
     if (callEnded) {
       AudioService.stop();
-      HapticsService.vibrate('long');
+      haptic(80);
       setStatus('通话结束');
       const t = setTimeout(onHangup, 1500);
       return () => clearTimeout(t);
@@ -333,25 +361,30 @@ function CallView({ display, script, onHangup }: CallViewProps): ReactNode {
   }, [callEnded, onHangup]);
 
   // evidenceSelection 节点打开证据勾选弹窗（终章核心联动）。
-  // 提交时调 engine usePuzzle().submit({ selected })：PuzzleService 内部已校验 + 执行
-  // onSuccess（advanceChapter ch-finale）。分支 endEffects（pushEnding good / openNewsApp good）
-  // 经 engine EffectExecutor 统一执行，本组件不再自己 _applyEffects。
-  async function handleEvidenceSubmit(selected: EvidenceId[]): Promise<void> {
+  // 提交时调 checkAnswer(puzzle-evidence-finale, {selected})：纯函数校验，由本组件
+  // 决定后续动作（markPuzzleSolved + 选分支 + 执行 endEffects 的 pushEnding/openNewsApp）。
+  function handleEvidenceSubmit(selected: EvidenceId[]): void {
     if (!dispatcherScript) return;
     setWaitingEvidenceResult(true);
-    const result = submitFinale({ selected });
+    const success = checkAnswer(FINALE_PUZZLE_ID, { selected });
+    if (success) {
+      useGameStore.getState().markPuzzleSolved(FINALE_PUZZLE_ID);
+    }
     setEvidencePromptOpen(false);
-    // 根据 submit 结果切分支
-    const decidedBranch: 'good' | 'normal' = result.success ? 'good' : 'normal';
+    // 根据校验结果切分支
+    const decidedBranch: 'good' | 'normal' = success ? 'good' : 'normal';
     setBranch(decidedBranch);
     setNowIdx((i) => i + 1); // 跳过 branch 块
     setWaitingEvidenceResult(false);
-    // 分支块播完后，把 branch.endEffects 交引擎 EffectExecutor 执行（真结局闭环）
-    const branchEndEffects =
-      (dispatcherScript.branches?.[decidedBranch]?.endEffects as PuzzleEffect[] | undefined) ?? [];
-    const branchLen = dispatcherScript.branches?.[decidedBranch]?.blocks.length ?? 0;
+    // 分支块播完后，把 branch.endEffects 直调执行（真结局闭环）。
+    // pushEnding/openNewsApp → useGameStore.pushEnding（openNewsApp 等价 pushEnding，
+    // EndingOverlay 读 endings.json 渲染）；其余 effect 类型忽略（新机制已无引擎副作用）。
+    const branchData: CallScriptBranch | undefined =
+      dispatcherScript.branches?.[decidedBranch];
+    const branchEndEffects = branchData?.endEffects ?? [];
+    const branchLen = branchData?.blocks.length ?? 0;
     setTimeout(() => {
-      executeEffects(branchEndEffects);
+      applyBranchEndEffects(branchEndEffects);
       setCallEnded(true);
     }, (branchLen + 1) * 2400);
   }
@@ -424,13 +457,42 @@ function CallView({ display, script, onHangup }: CallViewProps): ReactNode {
   );
 }
 
+/**
+ * 执行分支 endEffects（取代旧引擎 EffectExecutor.executeEffects）。
+ * 新机制下只有 pushEnding / openNewsApp 有意义，二者都映射为 pushEnding：
+ *   - pushEnding { endingId } → useGameStore.pushEnding(endingId)
+ *   - openNewsApp { endingId } → useGameStore.pushEnding(endingId)
+ *     （EndingOverlay 统一读 endings.json 的 epilogueBlocks 渲染结局，新闻播报在 good 结局文本内）
+ * 其余 effect 类型（addRisk/startCountdown/pushSms/...）在新架构里由各自专项机制驱动，
+ * 此处忽略（good/normal 分支 endEffects 实际只含 advanceChapter + pushEnding/openNewsApp）。
+ */
+function applyBranchEndEffects(effects: CallScriptBranch['endEffects']): void {
+  const store = useGameStore.getState();
+  for (const eff of effects) {
+    if (!eff || typeof eff.type !== 'string') continue;
+    if (eff.type === 'pushEnding' || eff.type === 'openNewsApp') {
+      const endingId = (eff as { endingId?: string }).endingId;
+      if (endingId === 'good' || endingId === 'normal' || endingId === 'bad') {
+        store.pushEnding(endingId);
+      }
+    }
+    if (eff.type === 'advanceChapter') {
+      const toChapterId = (eff as { toChapterId?: string }).toChapterId;
+      if (typeof toChapterId === 'string') {
+        store.advanceChapter(toChapterId);
+      }
+    }
+    // 其余 effect 类型：忽略（无引擎副作用链）
+  }
+}
+
 interface EvidenceSelectionProps {
   onSubmit: (selected: EvidenceId[]) => void;
   onCancel: () => void;
 }
 
 function EvidenceSelection({ onSubmit, onCancel }: EvidenceSelectionProps): ReactNode {
-  // 直接读 engine store 的 collectedEvidenceIds 渲染可勾选证据
+  // 直接读 gameStore 的 collectedEvidenceIds 渲染可勾选证据
   const collected = useGameStore((s) => s.collectedEvidenceIds);
   const [selected, setSelected] = useState<Set<EvidenceId>>(new Set(collected));
 
@@ -598,6 +660,46 @@ const iconBtn: React.CSSProperties = {
   fontSize: 22,
   cursor: 'pointer',
 };
+/** 右上角"拨号"文字按钮（次入口；主入口是底部大拨号按钮）。 */
+const dialLinkBtn: React.CSSProperties = {
+  height: 32,
+  padding: '0 12px',
+  background: '#1a2838',
+  color: '#4cd0ff',
+  border: '1px solid #2c5e8c',
+  borderRadius: 16,
+  fontSize: 13,
+  fontWeight: 600,
+  cursor: 'pointer',
+};
+/** 通话记录页底部拨号栏。 */
+const dialBarStyle: React.CSSProperties = {
+  flex: '0 0 auto',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  padding: '16px 0 28px',
+  background: '#0e1620',
+  borderTop: '1px solid #1a2636',
+};
+/** 底部大号拨号按钮（仿真实手机）。倒计时进行中红色强调速拨举报电话。 */
+function dialBigBtn(urgent: boolean): React.CSSProperties {
+  return {
+    display: 'flex',
+    alignItems: 'center',
+    gap: 8,
+    height: 56,
+    padding: '0 32px',
+    borderRadius: 28,
+    border: 'none',
+    background: urgent ? '#ff4d4f' : '#3aa55c',
+    color: '#fff',
+    fontSize: 17,
+    fontWeight: 600,
+    cursor: 'pointer',
+    boxShadow: urgent ? '0 0 18px #ff4d4f88' : '0 0 12px #3aa55c66',
+  };
+}
 const recentRowStyle: React.CSSProperties = {
   display: 'flex',
   alignItems: 'center',
@@ -638,21 +740,27 @@ const keypad: React.CSSProperties = {
   flex: 1,
   display: 'grid',
   gridTemplateColumns: 'repeat(3, 1fr)',
-  gap: 12,
-  padding: '8px 32px',
+  gap: 14,
+  padding: '8px 30px',
   alignContent: 'center',
+  justifyContent: 'center',
+  maxWidth: 320,
+  width: '100%',
+  margin: '0 auto',
 };
 const keyBtn: React.CSSProperties = {
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
   justifyContent: 'center',
-  height: 56,
-  background: '#1a2838',
+  height: 64,
+  background: '#20323f',
   color: '#e7eef7',
   border: 'none',
-  borderRadius: 28,
+  borderRadius: 32,
   cursor: 'pointer',
+  transition: 'background 0.1s',
+  userSelect: 'none',
 };
 const actionRow: React.CSSProperties = {
   display: 'flex',

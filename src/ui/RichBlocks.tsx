@@ -228,7 +228,7 @@ function PageBlockItem({ block, ctx }: { block: PageBlock; ctx?: BlockRenderCont
     case 'loginForm':
       return <BlockLoginForm puzzleId={block.puzzleId} ctx={ctx} />
     case 'pdfViewer':
-      return <BlockPdfViewer assetId={block.assetId} requiresPuzzleId={block.requiresPuzzleId} ctx={ctx} />
+      return <BlockPdfViewer assetId={block.assetId} ctx={ctx} />
   }
 }
 

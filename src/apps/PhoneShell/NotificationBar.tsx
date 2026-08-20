@@ -19,7 +19,8 @@ import {
   dismissNotification,
   clearNotifications,
   hideFullscreenAlert,
-  setIncomingCall,
+  endIncomingCall,
+  answerIncomingCall,
 } from '@/utils/shellState'
 import { appColor, alertStyleColor, palette, radius, spacing } from '@/ui/theme'
 import { AppGlyph, Glyph } from '@/ui/icons'
@@ -228,6 +229,7 @@ function FullscreenAlertOverlay() {
 
 function IncomingCallOverlay() {
   const call = useIncomingCall()
+  const navigate = useNavigate()
   if (!call?.active) return null
   return (
     <div
@@ -271,7 +273,7 @@ function IncomingCallOverlay() {
         <button
           type="button"
           aria-label="拒接"
-          onClick={() => setIncomingCall(null)}
+          onClick={() => endIncomingCall()}
           style={{
             width: 60,
             height: 60,
@@ -290,7 +292,11 @@ function IncomingCallOverlay() {
         <button
           type="button"
           aria-label="接听"
-          onClick={() => setIncomingCall(null)}
+          onClick={() => {
+            // 接听：停振铃，登记待答录脚本，跳电话 App 由 CallView 接管播放威胁通话。
+            answerIncomingCall()
+            navigate('/app/phone')
+          }}
           style={{
             width: 60,
             height: 60,

@@ -4,8 +4,7 @@
   "url": "https://www.lvzhong-edu.cn/internal/patrol/",
   "title": "绿草中学 — 学生宿舍巡查记录",
   "accessibility": {
-    "kind": "loginRequired",
-    "puzzleId": "puzzle-lvzhong-internal"
+    "kind": "public"
   },
   "blocks": [
     {

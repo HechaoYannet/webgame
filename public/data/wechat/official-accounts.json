@@ -1,48 +1,36 @@
 [
   {
-    "id": "article-ai-interpret",
-    "accountName": "论文AI翻译解读",
-    "accountCategory": "tool",
-    "title": "AI解读结果：《源石结晶生物能源提取与人体内结晶生成机制研究》",
-    "publishedAt": "2026-03-13T16:00:00+08:00",
-    "bodyBlocks": [
-      { "type": "heading", "level": 1, "text": "AI 解读结果" },
-      { "type": "callout", "variant": "info", "text": "本解读由 AI 根据您上传的论文 PDF 自动生成，仅供参考。" },
-      { "type": "heading", "level": 2, "text": "一、研究概要" },
-      { "type": "paragraph", "text": "该研究由山河医科大学陈建国团队开展，探讨从人体内“源石结晶”中提取生物能源的机制，并研究如何在青少年体内诱导结晶生成。" },
-      { "type": "heading", "level": 2, "text": "二、关键发现" },
-      { "type": "list", "ordered": true, "items": [
-        "研究团队从青少年受试者体内提取“源石结晶”，用于能源开发。",
-        "实验对象来源标注为“新希望成长中心”，均为 12-18 岁青少年。",
-        "论文伦理审批栏为空，未载明知情同意与未成年人保护审查。",
-        "实验方案存在高热、脏器损伤等高风险描述。"
-      ] },
-      { "type": "heading", "level": 2, "text": "三、基金与作者信息" },
-      { "type": "paragraph", "text": "基金号 2025YFC0123456，通讯作者陈建国（山河医科大学生物能源与疾病控制国家重点实验室主任）。" },
-      { "type": "callout", "variant": "warning", "text": "解读末尾附带作者备注：实验数据管理后台地址 lab.shanhe-med.cn/admin，测试账号 admin，访问密码为基金号后 6 位。" },
-      { "type": "heading", "level": 2, "text": "四、合规性提示" },
-      { "type": "paragraph", "text": "依据《涉及人的生物医学研究伦理审查办法》及未成年人保护相关规定，以未成年人为受试者需法定代理人书面同意并经伦理委员会审查。本论文伦理审批栏空白，存在重大合规风险。" }
-    ],
-    "isGeneratedContent": true,
-    "triggerUploadPuzzleId": "puzzle-upload-paper",
-    "url": "https://paper-ai-interpret.local/article/ai-interpret",
-    "registersClueId": "clue-lab-backend-address"
-  },
-  {
     "id": "article-ai-tool-intro",
     "accountName": "论文AI翻译解读",
     "accountCategory": "tool",
     "title": "上传PDF，秒懂论文：论文AI翻译解读工具上线",
     "publishedAt": "2026-03-10T09:00:00+08:00",
     "bodyBlocks": [
-      { "type": "paragraph", "text": "看不懂英文论文？专业术语太多？把 PDF 发给我们，AI 帮你快速生成中文结构与关键发现解读。" },
-      { "type": "list", "ordered": false, "items": [
-        "支持中英文 PDF",
-        "自动抽取基金号、作者、伦理审查信息",
-        "标注合规风险与关键结论"
-      ] },
-      { "type": "callout", "variant": "info", "text": "使用方法：进入公众号对话，上传论文 PDF，系统自动返回解读文章。" }
-    ]
+      {
+        "type": "paragraph",
+        "text": "看不懂英文论文？专业术语太多？把 PDF 发给我们，AI 帮你快速生成中文结构与关键发现解读。"
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "items": [
+          "支持中英文 PDF",
+          "AI自动总结论文摘要，用人话讲清楚研究内容",
+          "科研的绝佳好手，节省阅读时间",
+          "让复杂的学术内容变得简单易懂",
+          "适合科研人员、学生、科普爱好者"
+        ]
+      },
+      {
+        "type": "callout",
+        "variant": "info",
+        "text": "使用方法：进入AI解读官网，上传论文 PDF，系统自动返回解读文章。"
+      }
+    ],
+    "link": {
+      "title": "进入AI解读工具",
+      "pageId": "page-ai-pdf-home"
+    }
   },
   {
     "id": "article-lvzhong-screening-notice",
@@ -51,11 +39,17 @@
     "title": "绿草中学2026年春季心理筛查通知",
     "publishedAt": "2026-03-12T10:00:00+08:00",
     "bodyBlocks": [
-      { "type": "paragraph", "text": "为关爱学生心理健康，我校联合专业机构开展春季心理筛查，请各班按时组织。" },
-      { "type": "callout", "variant": "info", "text": "通知详情见校园官网“通知公告”栏目。" }
+      {
+        "type": "paragraph",
+        "text": "为关爱学生心理健康，我校联合专业机构开展春季心理筛查，请各班按时组织。"
+      },
+      {
+        "type": "callout",
+        "variant": "info",
+        "text": "通知详情见校园官网“通知公告”栏目。"
+      }
     ],
-    "url": "https://lvzhong.edu.cn/notice/screening",
-    "link": { "title": "访问绿草中学官网", "pageId": "page-lvzhong-home" }
+    "url": "https://lvzhong.edu.cn/notice/screening"
   },
   {
     "id": "article-lvzhong-speech",
@@ -64,8 +58,60 @@
     "title": "张强校长在新学期开学典礼上的讲话",
     "publishedAt": "2026-03-01T09:00:00+08:00",
     "bodyBlocks": [
-      { "type": "quote", "text": "同学们，我的小目标是先挣一个亿，也希望你们都有自己的小目标。" },
-      { "type": "paragraph", "text": "张强校长在开学典礼上发表讲话，寄语全体师生新学期新气象。" }
+      {
+        "type": "quote",
+        "text": "同学们，我的小目标是先挣一个亿，也希望你们都有自己的小目标。"
+      },
+  
+    {
+      "type": "heading",
+      "level": 1,
+      "text": "校长开学典礼讲话要点"
+    },
+    {
+      "type": "callout",
+      "variant": "info",
+      "text": "本解读根据张强校长在2026年秋季开学典礼上的现场讲话整理，涵盖开场立意、核心寄语与结语反响，仅供参考。"
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "一、开场与立意"
+    },
+    {
+      "type": "paragraph",
+      "text": "张强校长以一句“欢迎回家”温情开场，并用手机拍下蓝天，以幽默拉近距离。随后，他借校门口遭雷击后重发新枝的老槐树，引出“重新开始”的核心立意——新学期不是时间的被动延续，而是每个人主动埋下“重新开始”种子的契机。"
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "二、三大核心寄语"
+    },
+    {
+      "type": "list",
+      "ordered": true,
+      "items": [
+        "向深扎根——勉励教师将每一节常态课都当作公开课来打磨，深耕课堂，夯实教学基本功。",
+        "向光生长——鼓励学生不惧试错，哪怕每天只进步半厘米，也要保持破土而出的勇气。",
+        "相互致意——呼吁师生之间、同学之间多一声问候、多一次伸手，让校园不仅有分数，更有温度。"
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "三、温情细节与结语"
+    },
+    {
+      "type": "paragraph",
+      "text": "校长特意提及后勤阿姨凌晨熬粥的背影、保安大叔雨夜巡查的手电光，强调“辉煌来自无数平凡托举的合力”。最后，他放下讲稿，郑重躬身致意，以“愿我们不负此秋，各自努力，然后在期末的终点，彼此骄傲地相见”作结。全场掌声雷动，鸽子掠过旗杆，为讲话画上充满希望的句点。"
+    },
+    {
+      "type": "callout",
+      "variant": "warning",
+      "text": "本次讲话未使用讲稿，全程即兴发挥，但立意清晰、情感真挚，被师生视为近年来“最暖开学致辞”。"
+    }
+  
+
     ]
   },
   {
@@ -75,7 +121,10 @@
     "title": "绿草中学荣获市级文明单位",
     "publishedAt": "2026-02-20T15:00:00+08:00",
     "bodyBlocks": [
-      { "type": "paragraph", "text": "经市文明办评定，我校荣获 2025 年度市级“文明单位”称号，并连续保持“平安校园”荣誉。" }
+      {
+        "type": "paragraph",
+        "text": "经市文明办评定，我校荣获 2025 年度市级“文明单位”称号，并连续保持“平安校园”荣誉。"
+      }
     ]
   },
   {
@@ -85,7 +134,10 @@
     "title": "绿草中学与新希望成长中心合作签约仪式公告",
     "publishedAt": "2026-01-10T14:00:00+08:00",
     "bodyBlocks": [
-      { "type": "paragraph", "text": "我校与新希望成长中心正式签署合作协议，共同推进学生心理健康与行为矫正工作。张强校长、新希望成长中心负责人出席签约仪式。" }
+      {
+        "type": "paragraph",
+        "text": "我校与新希望成长中心正式签署合作协议，共同推进学生心理健康与行为矫正工作。张强校长、新希望成长中心负责人出席签约仪式。"
+      }
     ]
   },
   {
@@ -95,8 +147,15 @@
     "title": "春季招生开始，名额有限",
     "publishedAt": "2026-03-05T10:00:00+08:00",
     "bodyBlocks": [
-      { "type": "paragraph", "text": "2026 年春季招生正式启动，面向 12-18 岁“网瘾”“叛逆”“厌学”青少年，一学期 20 万元，名额有限，报名从速。" },
-      { "type": "callout", "variant": "info", "text": "创始人张强校长寄语：用爱和专业，点亮每一个孩子的未来。" }
+      {
+        "type": "paragraph",
+        "text": "2026 年春季招生正式启动，面向 12-18 岁“网瘾”“叛逆”“厌学”青少年，一学期 20 万元，名额有限，报名从速。"
+      },
+      {
+        "type": "callout",
+        "variant": "info",
+        "text": "创始人张强校长寄语：用爱和专业，点亮每一个孩子的未来。"
+      }
     ]
   },
   {
@@ -106,8 +165,15 @@
     "title": "学员小李的转变：从网瘾少年到三好学生",
     "publishedAt": "2026-02-15T11:00:00+08:00",
     "bodyBlocks": [
-      { "type": "paragraph", "text": "小李入学前沉迷游戏，成绩垫底。经过我中心系统矫正，如今已被评为三好学生。" },
-      { "type": "callout", "variant": "warning", "text": "本案例配图均为背影，未展示学员正面照片。" }
+      {
+        "type": "paragraph",
+        "text": "小李入学前沉迷游戏，成绩垫底。经过我中心系统矫正，如今已被评为三好学生。"
+      },
+      {
+        "type": "callout",
+        "variant": "warning",
+        "text": "本案例配图均为背影，未展示学员正面照片。"
+      }
     ]
   },
   {
@@ -117,8 +183,14 @@
     "title": "中心与山河医科大实验室达成战略合作",
     "publishedAt": "2026-01-28T10:00:00+08:00",
     "bodyBlocks": [
-      { "type": "paragraph", "text": "我中心与山河医科大学生物能源与疾病控制国家重点实验室签署战略合作协议，共同开展青少年身心健康研究。" },
-      { "type": "paragraph", "text": "实验室主任陈建国教授出席签约仪式。" }
+      {
+        "type": "paragraph",
+        "text": "我中心与山河医科大学生物能源与疾病控制国家重点实验室签署战略合作协议，共同开展青少年身心健康研究。"
+      },
+      {
+        "type": "paragraph",
+        "text": "实验室主任陈建国教授出席签约仪式。"
+      }
     ]
   },
   {
@@ -128,7 +200,10 @@
     "title": "张校长新年致辞",
     "publishedAt": "2026-01-01T09:00:00+08:00",
     "bodyBlocks": [
-      { "type": "quote", "text": "新希望，新起点。新的一年，让我们继续为每一个迷途的孩子点亮归途。" }
+      {
+        "type": "quote",
+        "text": "新希望，新起点。新的一年，让我们继续为每一个迷途的孩子点亮归途。"
+      }
     ]
   },
   {
@@ -138,7 +213,10 @@
     "title": "学员小王的成功故事",
     "publishedAt": "2025-11-10T10:00:00+08:00",
     "bodyBlocks": [
-      { "type": "paragraph", "text": "小王曾是叛逆典型，如今已回到校园并考取重点高中。感谢家长信任与我中心教官的悉心教导。" }
+      {
+        "type": "paragraph",
+        "text": "小王曾是叛逆典型，如今已回到校园并考取重点高中。感谢家长信任与我中心教官的悉心教导。"
+      }
     ]
   },
   {
@@ -148,7 +226,10 @@
     "title": "我们的教学方法",
     "publishedAt": "2025-09-05T10:00:00+08:00",
     "bodyBlocks": [
-      { "type": "paragraph", "text": "我中心采用“军事化管理+心理疏导+行为矫正”三位一体教学法，帮助学员重塑规律生活。" }
+      {
+        "type": "paragraph",
+        "text": "我中心采用“军事化管理+心理疏导+行为矫正”三位一体教学法，帮助学员重塑规律生活。"
+      }
     ]
   },
   {
@@ -158,8 +239,15 @@
     "title": "我校生物能源实验室招募实验志愿者",
     "publishedAt": "2026-03-05T14:00:00+08:00",
     "bodyBlocks": [
-      { "type": "paragraph", "text": "生物能源与疾病控制国家重点实验室面向社会招募实验志愿者，要求 12-18 岁青少年，有一定补偿。" },
-      { "type": "callout", "variant": "warning", "text": "招募条件未说明伦理审查流程。" }
+      {
+        "type": "paragraph",
+        "text": "生物能源与疾病控制国家重点实验室面向社会招募实验志愿者，要求 12-18 岁青少年，有一定补偿。"
+      },
+      {
+        "type": "callout",
+        "variant": "warning",
+        "text": "招募条件未说明伦理审查流程。"
+      }
     ]
   },
   {
@@ -169,8 +257,14 @@
     "title": "实验室在清洁能源领域取得重大突破",
     "publishedAt": "2026-02-28T10:00:00+08:00",
     "bodyBlocks": [
-      { "type": "paragraph", "text": "陈建国教授团队在清洁能源领域取得重大突破，利用特殊晶体材料实现能源高效提取。" },
-      { "type": "quote", "text": "我们利用特殊晶体材料解决能源问题，这是未来的方向。——陈建国" }
+      {
+        "type": "paragraph",
+        "text": "陈建国教授团队在清洁能源领域取得重大突破，利用特殊晶体材料实现能源高效提取。"
+      },
+      {
+        "type": "quote",
+        "text": "我们利用特殊晶体材料解决能源问题，这是未来的方向。——陈建国"
+      }
     ]
   },
   {
@@ -180,7 +274,10 @@
     "title": "陈建国教授团队获国家自然科学基金重大项目资助",
     "publishedAt": "2026-01-15T09:00:00+08:00",
     "bodyBlocks": [
-      { "type": "paragraph", "text": "陈建国教授团队申报项目获批国家自然科学基金重大项目资助，基金号 2025YFC0123456。" }
+      {
+        "type": "paragraph",
+        "text": "陈建国教授团队申报项目获批国家自然科学基金重大项目资助，基金号 2025YFC0123456。"
+      }
     ]
   },
   {
@@ -190,7 +287,10 @@
     "title": "校园招聘：生物能源方向博士生",
     "publishedAt": "2025-12-20T10:00:00+08:00",
     "bodyBlocks": [
-      { "type": "paragraph", "text": "生物能源与疾病控制国家重点实验室招聘生物能源方向博士生，欢迎有志青年加盟。" }
+      {
+        "type": "paragraph",
+        "text": "生物能源与疾病控制国家重点实验室招聘生物能源方向博士生，欢迎有志青年加盟。"
+      }
     ]
   },
   {
@@ -200,8 +300,15 @@
     "title": "长沙3名青少年失联，家属急寻",
     "publishedAt": "2026-03-10T18:00:00+08:00",
     "bodyBlocks": [
-      { "type": "paragraph", "text": "近期长沙及周边地区陆续有 3 名青少年失联，家属焦急寻人。经家属反映，失联者均曾被送入“新希望成长中心”。" },
-      { "type": "callout", "variant": "danger", "text": "如提供线索请联系家属或拨打 110。" }
+      {
+        "type": "paragraph",
+        "text": "近期长沙及周边地区陆续有 3 名青少年失联，家属焦急寻人。经家属反映，失联者均曾被送入“新希望成长中心”。"
+      },
+      {
+        "type": "callout",
+        "variant": "danger",
+        "text": "如提供线索请联系家属或拨打 110。"
+      }
     ]
   },
   {
@@ -211,7 +318,10 @@
     "title": "市教育局将开展民办教育机构专项检查",
     "publishedAt": "2026-02-25T10:00:00+08:00",
     "bodyBlocks": [
-      { "type": "paragraph", "text": "市教育局通知，将对全市民办教育机构开展专项检查，重点核查办学资质与招生行为。" }
+      {
+        "type": "paragraph",
+        "text": "市教育局通知，将对全市民办教育机构开展专项检查，重点核查办学资质与招生行为。"
+      }
     ]
   },
   {
@@ -221,7 +331,10 @@
     "title": "2025年湖南民办学校黑名单公布，7家上榜",
     "publishedAt": "2026-02-01T09:00:00+08:00",
     "bodyBlocks": [
-      { "type": "paragraph", "text": "省教育厅公布 2025 年度民办学校黑名单，7 家机构因违规办学等行为上榜。" }
+      {
+        "type": "paragraph",
+        "text": "省教育厅公布 2025 年度民办学校黑名单，7 家机构因违规办学等行为上榜。"
+      }
     ]
   },
   {
@@ -231,20 +344,32 @@
     "title": "湖南警方捣毁一非法传销窝点",
     "publishedAt": "2026-01-20T15:00:00+08:00",
     "bodyBlocks": [
-      { "type": "paragraph", "text": "湖南警方近日捣毁一处非法传销窝点，解救被困人员若干。" }
+      {
+        "type": "paragraph",
+        "text": "湖南警方近日捣毁一处非法传销窝点，解救被困人员若干。"
+      }
     ]
   },
   {
     "id": "article-game-endfield-beta",
     "accountName": "游戏资讯号",
     "accountCategory": "game",
-    "title": "《明日方舟：终末地》全面测试资格开放，3月28日公测",
+    "title": "《明日方舟：终末地》全面测试资格开放，11月28日公测",
     "publishedAt": "2026-03-11T12:00:00+08:00",
     "bodyBlocks": [
-      { "type": "paragraph", "text": "鹰角网络宣布《明日方舟：终末地》将于 2026 年 3 月 28 日开启公测，全面测试资格现已开放申请。" },
-      { "type": "callout", "variant": "info", "text": "详情见官方公告。" }
+      {
+        "type": "paragraph",
+        "text": "鹰角网络宣布《明日方舟：终末地》将于 2025 年 11 月 28 日开启公测，全面测试资格现已开放申请。"
+      },
+      {
+        "type": "callout",
+        "variant": "info",
+        "text": "详情见官方公告。"
+      }
     ],
-    "link": { "pageId": "page-endfield-news" }
+    "link": {
+      "pageId": "page-endfield-news"
+    }
   },
   {
     "id": "article-game-weekly",
@@ -253,7 +378,10 @@
     "title": "本周新游推荐",
     "publishedAt": "2026-03-04T10:00:00+08:00",
     "bodyBlocks": [
-      { "type": "paragraph", "text": "本周多款新游上线，包括《明日方舟：终末地》即将开启测试。" }
+      {
+        "type": "paragraph",
+        "text": "本周多款新游上线，包括《明日方舟：终末地》即将开启测试。"
+      }
     ]
   },
   {
@@ -263,8 +391,15 @@
     "title": "戒网瘾学校乱象调查",
     "publishedAt": "2026-02-18T10:00:00+08:00",
     "bodyBlocks": [
-      { "type": "paragraph", "text": "本刊暗访多家戒网瘾机构，发现普遍存在体罚、电击、非法拘禁等乱象，部分机构与不明机构存在利益输送。" },
-      { "type": "callout", "variant": "danger", "text": "专家呼吁家长谨慎选择，注意核查机构资质与教学方式。" }
+      {
+        "type": "paragraph",
+        "text": "本刊暗访多家戒网瘾机构，发现普遍存在体罚、电击、非法拘禁等乱象，部分机构与不明机构存在利益输送。"
+      },
+      {
+        "type": "callout",
+        "variant": "danger",
+        "text": "专家呼吁家长谨慎选择，注意核查机构资质与教学方式。"
+      }
     ]
   },
   {
@@ -274,7 +409,427 @@
     "title": "国家卫健委发文：严禁利用未成年人进行人体实验",
     "publishedAt": "2026-01-08T10:00:00+08:00",
     "bodyBlocks": [
-      { "type": "paragraph", "text": "国家卫健委发布通知，重申严禁利用未成年人进行人体实验，违者依法追责。" }
+      {
+        "type": "paragraph",
+        "text": "国家卫健委发布通知，重申严禁利用未成年人进行人体实验，违者依法追责。"
+      }
+    ]
+  },
+  {
+    "id": "article-ai-interpret",
+    "accountName": "论文AI翻译解读",
+    "accountCategory": "tool",
+    "title": "AI解读结果：《源石结晶生物能源提取与人体内结晶生成机制研究》",
+    "publishedAt": "2026-03-13T16:00:00+08:00",
+    "bodyBlocks": [
+      {
+        "type": "heading",
+        "level": 1,
+        "text": "AI 解读结果"
+      },
+      {
+        "type": "callout",
+        "variant": "info",
+        "text": "本解读由 AI 根据您上传的论文 PDF 自动生成，仅供参考。"
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "text": "一、研究概要"
+      },
+      {
+        "type": "paragraph",
+        "text": "该研究由山河医科大学陈建国团队开展，探讨从人体内“源石结晶”中提取生物能源的机制，并研究如何在青少年体内诱导结晶生成。"
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "text": "二、关键发现"
+      },
+      {
+        "type": "list",
+        "ordered": true,
+        "items": [
+          "研究团队从青少年受试者体内提取“源石结晶”，用于能源开发。",
+          "实验对象来源标注为“新希望成长中心”，均为 12-18 岁青少年。",
+          "论文伦理审批栏为空，未载明知情同意与未成年人保护审查。",
+          "实验方案存在高热、脏器损伤等高风险描述。"
+        ]
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "text": "三、基金与作者信息"
+      },
+      {
+        "type": "paragraph",
+        "text": "基金号 2025YFC0123456，通讯作者陈建国（山河医科大学生物能源与疾病控制国家重点实验室主任）。"
+      },
+      {
+        "type": "callout",
+        "variant": "warning",
+        "text": "解读末尾附带作者备注：实验数据管理后台地址 lab.shanhe-med.cn/admin，测试账号 admin，访问密码为基金号后 6 位。"
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "text": "四、合规性提示"
+      },
+      {
+        "type": "paragraph",
+        "text": "依据《涉及人的生物医学研究伦理审查办法》及未成年人保护相关规定，以未成年人为受试者需法定代理人书面同意并经伦理委员会审查。本论文伦理审批栏空白，存在重大合规风险。"
+      }
+    ],
+    "isGeneratedContent": true,
+    "triggerUploadPuzzleId": "puzzle-upload-paper",
+    "link": {
+      "title": "查看完整解读 · 论文AI翻译解读网站",
+      "pageId": "page-ai-interpret"
+    }
+  },
+  {
+    "id": "article-ai-water-01",
+    "accountName": "论文AI翻译解读",
+    "accountCategory": "tool",
+    "title": "论文写作最容易踩的10个坑",
+    "publishedAt": "2026-03-18T10:00:00+08:00",
+    "url": "https://paper-ai-interpret.local/article/water-01",
+    "bodyBlocks": [
+      {
+        "type": "heading",
+        "level": 2,
+        "text": "新手最常翻车的几个地方"
+      },
+      {
+        "type": "paragraph",
+        "text": "写完初稿不代表结束。格式、引用、图表标题这些细节，往往是审稿人第一眼扣分的地方。下面这几条，是我帮学生改稿时反复提醒的。"
+      },
+      {
+        "type": "list",
+        "ordered": true,
+        "items": [
+          "摘要写成了引言",
+          "参考文献格式前后不统一",
+          "图表没有自解释标题",
+          "结论重复了摘要，没有增量",
+          "引用大量二手文献，没回溯一手来源",
+          "公式编号跳号或漏编号",
+          "单位、量纲前后不一致",
+          "「我们认为」「可能」这类模糊词用太多",
+          "图表配色黑白打印看不清",
+          "致谢里漏掉了实际帮过你的人"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "article-ai-water-02",
+    "accountName": "论文AI翻译解读",
+    "accountCategory": "tool",
+    "title": "这5个免费查重渠道别错过了",
+    "publishedAt": "2026-03-16T14:00:00+08:00",
+    "bodyBlocks": [
+      {
+        "type": "callout",
+        "variant": "info",
+        "text": "重复率是投稿第一道门槛，提前自查能省下不少返工时间。"
+      },
+      {
+        "type": "paragraph",
+        "text": "学校提供的查重渠道之外，还有一些免费或试用的小工具可以辅助。注意：任何工具结果都只作参考，最终以投稿系统判定为准。"
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "items": [
+          "开源查重小工具：适合初稿快速扫一遍",
+          "学术搜索引擎：手动搜关键句定位雷同",
+          "学校账号查重系统：最权威，记得提前预约",
+          "浏览器插件类：边写边查，轻量便捷",
+          "关键词反查：把高频短语拎出来逐个核"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "article-ai-water-03",
+    "accountName": "论文AI翻译解读",
+    "accountCategory": "tool",
+    "title": "AI三小时写完文献综述？我试了一下",
+    "publishedAt": "2026-03-15T09:30:00+08:00",
+    "bodyBlocks": [
+      {
+        "type": "paragraph",
+        "text": "最近总刷到「AI 几小时搞定文献综述」的说法。我挑了个熟悉的课题实测了一下，结论是：能省力，但不能省脑。"
+      },
+      {
+        "type": "quote",
+        "text": "AI 负责铺开范围，你得负责判断哪条要留下。"
+      },
+      {
+        "type": "paragraph",
+        "text": "最容易翻车的是引用——张冠李戴、编造出处都很常见。每一句论断都要回原文核对，否则审稿一查就穿帮。"
+      }
+    ]
+  },
+  {
+    "id": "article-ai-water-04",
+    "accountName": "论文AI翻译解读",
+    "accountCategory": "tool",
+    "title": "凌晨三点的实验室，才是我的家",
+    "publishedAt": "2026-03-14T19:00:00+08:00",
+    "bodyBlocks": [
+      {
+        "type": "paragraph",
+        "text": "读研以后，「家」这个词的定义变了。白天跑实验、晚上改论文，那间一直亮着灯的屋子，比宿舍还熟。"
+      },
+      {
+        "type": "quote",
+        "text": "科研人的浪漫，是把「再试一次」当口头禅。"
+      },
+      {
+        "type": "callout",
+        "variant": "info",
+        "text": "但别拿健康换进度，会休息的实验，跑得比熬夜的更久。"
+      }
+    ]
+  },
+  {
+    "id": "article-ai-water-05",
+    "accountName": "论文AI翻译解读",
+    "accountCategory": "tool",
+    "title": "读博第一年该做什么：一份过来人的清单",
+    "publishedAt": "2026-03-12T11:00:00+08:00",
+    "bodyBlocks": [
+      {
+        "type": "heading",
+        "level": 2,
+        "text": "第一年，别急着出成果"
+      },
+      {
+        "type": "list",
+        "ordered": true,
+        "items": [
+          "把组会文献读懂，哪怕一篇读一周",
+          "和导师确认清楚的课题边界，别自己猜",
+          "把工具链代码、文献库、笔记先搭好",
+          "学会记实验日志，比记忆力靠谱"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "text": "第一年的核心不是发文章，是把自己的「研究肌肉」练起来。"
+      }
+    ]
+  },
+  {
+    "id": "article-ai-water-06",
+    "accountName": "论文AI翻译解读",
+    "accountCategory": "tool",
+    "title": "导师不回消息时，我学会了自我推进",
+    "publishedAt": "2026-03-09T08:00:00+08:00",
+    "bodyBlocks": [
+      {
+        "type": "paragraph",
+        "text": "等导师回复是最消耗心态的事。后来我换了思路：每封邮件只问「卡住、无法自查」的问题，并在结尾附上「我目前打算怎么做」。"
+      },
+      {
+        "type": "callout",
+        "variant": "info",
+        "text": "给选择题，而不是填空题，导师回得更快。"
+      },
+      {
+        "type": "paragraph",
+        "text": "实在卡住，就主动约时间面谈，一句「我整理了三个方案，想当面听您意见」比连发消息管用得多。"
+      }
+    ]
+  },
+  {
+    "id": "article-ai-water-07",
+    "accountName": "论文AI翻译解读",
+    "accountCategory": "tool",
+    "title": "毕业季选题怎么定？三个角度帮你破局",
+    "publishedAt": "2026-03-07T09:00:00+08:00",
+    "bodyBlocks": [
+      {
+        "type": "paragraph",
+        "text": "选题卡壳，往往不是因为没想法，而是想法太多却都不落地。试试从这三个角度筛："
+      },
+      {
+        "type": "list",
+        "ordered": true,
+        "items": [
+          "可执行性：数据、方法、时间，缺哪个就先解决哪个",
+          "增量性：相比已有工作，你多了哪一步",
+          "可讲性：一句话能说清「我做了什么、为什么重要」"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "text": "三关都过的题目，通常就是能跑下去的那一个。"
+      }
+    ]
+  },
+  {
+    "id": "article-ai-water-08",
+    "accountName": "论文AI翻译解读",
+    "accountCategory": "tool",
+    "title": "投稿被拒五次后，我重新认识了「贡献」",
+    "publishedAt": "2026-02-28T20:00:00+08:00",
+    "url": "https://paper-ai-interpret.local/article/water-08",
+    "bodyBlocks": [
+      {
+        "type": "paragraph",
+        "text": "连续被拒的那段时间，我把审稿意见反复读，发现戳中的点几乎一样:「贡献不够清晰」。"
+      },
+      {
+        "type": "quote",
+        "text": "不是你做了多少，而是别人能从你的工作里拿走什么。"
+      },
+      {
+        "type": "paragraph",
+        "text": "后来我把引言重写了一遍，开头不再是「本文研究了…」，而是「本文解决了…与已有方法的区别在于…」。拒稿率肉眼可见地降了下来。"
+      }
+    ]
+  },
+  {
+    "id": "article-ai-water-09",
+    "accountName": "论文AI翻译解读",
+    "accountCategory": "tool",
+    "title": "文献管理不求人：我的笔记流分享",
+    "publishedAt": "2026-02-15T13:00:00+08:00",
+    "bodyBlocks": [
+      {
+        "type": "heading",
+        "level": 3,
+        "text": "为什么我不靠脑子记文献"
+      },
+      {
+        "type": "paragraph",
+        "text": "读过的文献，两周不复习就忘得七七八八。我的做法是:每篇只记三件事——它解决什么问题、用了什么方法、对我有什么用。"
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "items": [
+          "按主题而非按时间归档",
+          "关键句直接摘抄并标页码",
+          "每月底做一次主题合并，把零散笔记串起来"
+        ]
+      },
+      {
+        "type": "callout",
+        "variant": "info",
+        "text": "笔记是给未来的自己看的，写得让「三个月后的你」也能看懂。"
+      }
+    ]
+  },
+  {
+    "id": "article-ai-water-10",
+    "accountName": "论文AI翻译解读",
+    "accountCategory": "tool",
+    "title": "为什么你的引言总被导师打回？",
+    "publishedAt": "2026-01-20T10:00:00+08:00",
+    "bodyBlocks": [
+      {
+        "type": "paragraph",
+        "text": "引言被骂，十有八九是「没立住问题」。常见症状:一上来就铺背景，铺了三段还没说要解决什么。"
+      },
+      {
+        "type": "list",
+        "ordered": true,
+        "items": [
+          "第一段：现象或需求是什么",
+          "第二段：已有工作做到了哪一步、还差什么",
+          "第三段：本文补的是哪一块、怎么补"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "text": "按这个骨架写，导师改起来也快，你被退回的次数会少很多。"
+      }
+    ]
+  },
+  {
+    "id": "article-ai-water-11",
+    "accountName": "论文AI翻译解读",
+    "accountCategory": "tool",
+    "title": "寒假在家也能推进科研的6个小习惯",
+    "publishedAt": "2025-12-25T09:00:00+08:00",
+    "bodyBlocks": [
+      {
+        "type": "paragraph",
+        "text": "放假最怕「回校啥也没带回来」。其实不用高强度，几个小习惯就能让你一直在线:"
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "items": [
+          "每天半小时读一篇文献，读不完也记个摘要",
+          "每周固定时间整理一次笔记",
+          "把寒假想做的实验列成清单，回校直接预约",
+          "保持和导师的弱联系，月底发一次进度",
+          "留一天纯休息，别卷出心病",
+          "把困惑写下来，开学第一周集中问导师"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "article-ai-water-12",
+    "accountName": "论文AI翻译解读",
+    "accountCategory": "tool",
+    "title": "写论文别再「憋大招」，小步快跑更靠谱",
+    "publishedAt": "2025-11-18T15:00:00+08:00",
+    "bodyBlocks": [
+      {
+        "type": "paragraph",
+        "text": "很多人写论文的习惯是:想清楚再动笔。结果常常是想了三个月，一个字没写。"
+      },
+      {
+        "type": "quote",
+        "text": "先写烂的，再改成好的；写不出好的，往往是因为还没写出烂的。"
+      },
+      {
+        "type": "paragraph",
+        "text": "我的做法是每天定一个小目标——哪怕只写一节的提纲。攒着攒着，初稿就出来了。"
+      }
+    ]
+  },
+  {
+    "id": "article-ai-water-13",
+    "accountName": "论文AI翻译解读",
+    "accountCategory": "tool",
+    "title": "给研究生新生的7条避坑建议",
+    "publishedAt": "2025-10-30T11:00:00+08:00",
+    "bodyBlocks": [
+      {
+        "type": "heading",
+        "level": 2,
+        "text": "写在开学第一个月"
+      },
+      {
+        "type": "paragraph",
+        "text": "回望自己踩过的坑，挑了最普适的几条，给刚进组的同学。"
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "items": [
+          "组会是你的，不是表演给导师看的",
+          "别等「准备好」才开口，迟到的提问最贵",
+          "保护好你的数据，备份备份再备份",
+          "身体是科研的本钱，久坐要起身",
+          "和师兄师姐处好关系，他们比教程好用",
+          "读不懂的文献，先读它的摘要和图",
+          "别怕拒绝，会议、合作、挂名都要敢说"
+        ]
+      },
+      {
+        "type": "callout",
+        "variant": "info",
+        "text": "研究生是一场马拉松，配速比冲刺重要。"
+      }
     ]
   }
 ]

@@ -4,8 +4,7 @@
   "url": "https://lab.shanhe-med.cn/admin/subject-list",
   "title": "实验室后台 — 受试者信息与系统日志",
   "accessibility": {
-    "kind": "loginRequired",
-    "puzzleId": "puzzle-lab-backend"
+    "kind": "public"
   },
   "blocks": [
     {
@@ -45,12 +44,6 @@
           "生成经费申请报告草稿"
         ]
       ]
-    },
-    {
-      "type": "callout",
-      "variant": "danger",
-      "text": "系统日志证明张强（zhangqiang）上传受试者名单、陈建国（chenjianguo）审核通过，建立完整操作链。补强证据。"
     }
-  ],
-  "registersClueId": "clue-lab-upload-log"
+  ]
 }

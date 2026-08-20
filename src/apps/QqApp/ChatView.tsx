@@ -4,16 +4,13 @@
  * 视点：李桥瑞 QQ。direction：sent=李桥瑞发的（右侧绿）、received=他人发的（左侧白）、
  * system=系统消息（居中灰条）。闫欣泽↔李桥瑞长对话(3/5–3/13)是核心线索区。
  *
- * 会话门禁：挂 requiredPuzzleId 的会话，在对应谜题未解前置灰、不可进入。用 engine 的
- * 同步 isSolved(puzzleId)（可在循环中调用）判定。
- * 查看关键消息调 useClue().view({kind:'message',threadId,messageId})（异步，engine
- * ClueRegistry 查 clue-map：clue-qq-plan(thread-li-yan-qq,autoRegisterOnView:1)）。
+ * 重写后无会话门禁：登 QQ 后所有会话可见可点（登录本身是 puzzle-qq-login）。
+ * 查看消息不再注册线索 / 收集证据（查看即取证的装饰已废）。
  * 消息按需加载用 loader.getMessages(threadId)（带缓存）。
  */
 import { useEffect, useRef, useState } from 'react'
 import type { ChatMessage, ChatThread, ContactId } from '@/types'
 import { getMessages, getContact, getQqContact } from '@/data/loader'
-import { isSolved } from '@/engine/puzzle/PuzzleService'
 import {
   Avatar,
   EmptyState,
@@ -41,10 +38,15 @@ export function ChatList({
   }
   function titleFor(t: ChatThread): string {
     if (t.type === 'group') return t.title
+    // 单聊优先用 thread.title（文案人工写好：普通会话是对方备注名，转存记录是
+    // "闫欣泽 ↔ 林哲（闫转存的聊天记录）" 这类描述性标题）。contacts.json 里曾把群
+    // characterId 误设成真人导致撞车，现已修；但单聊若 fallback 到 getQqContact，
+    // 转存记录会复用真人 qqRemark（如"你同桌"）与真会话重名，故 title 优先。
+    if (t.title) return t.title
     const oid = otherId(t)
     const c = getContact(oid)
     const q = getQqContact(oid)
-    return q?.qqRemark || q?.qqNickname || c?.displayName || c?.name || t.title
+    return q?.qqRemark || q?.qqNickname || c?.displayName || c?.name || ''
   }
 
   return (
@@ -53,14 +55,12 @@ export function ChatList({
       {sorted.length === 0 && <EmptyState text="暂无会话" />}
       <ul className="qq-thread-list">
         {sorted.map((t) => {
-          const locked = t.requiredPuzzleId ? !isSolved(t.requiredPuzzleId) : false
           const oid = otherId(t)
           return (
             <li key={t.id}>
               <button
                 type="button"
-                className={`qq-thread-row${locked ? ' locked' : ''}`}
-                disabled={locked}
+                className="qq-thread-row"
                 onClick={() => onOpen(t.id)}
               >
                 <Avatar charId={oid} name={titleFor(t)} isGroup={t.type === 'group'} />
@@ -70,15 +70,9 @@ export function ChatList({
                     <span className="qq-thread-time">{formatTime(t.lastMessageAt)}</span>
                   </div>
                   <div className="qq-thread-bottom">
-                    {locked ? (
-                      <span className="qq-thread-locked">
-                        🔒 需先{t.requiredPuzzleId === 'puzzle-qq-login' ? '完成登录' : '解谜'}
-                      </span>
-                    ) : (
-                      <span className="qq-thread-unread">
-                        {t.unreadCount ? `${t.unreadCount} 条未读` : '点击查看'}
-                      </span>
-                    )}
+                    <span className="qq-thread-unread">
+                      {t.unreadCount ? `${t.unreadCount} 条未读` : '点击查看'}
+                    </span>
                   </div>
                 </div>
               </button>
@@ -116,7 +110,7 @@ export function ChatView({ thread, onBack }: { thread: ChatThread; onBack: () =>
     <div className="qq-chat-view">
       <SubHeader
         title={
-          thread.type === 'group'
+          thread.type === 'group' || thread.title
             ? thread.title
             : authorName(thread.participantCharacterIds.find((id) => id !== 'char-liqiaorui'))
         }

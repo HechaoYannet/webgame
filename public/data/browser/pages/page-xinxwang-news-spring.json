@@ -4,8 +4,7 @@
   "url": "https://www.xinxwang-center.com/news/spring2026/",
   "title": "我中心2026年春季招生火热进行中",
   "accessibility": {
-    "kind": "linkedOnly",
-    "fromPageId": "page-xinxwang-news"
+    "kind": "public"
   },
   "blocks": [
     {

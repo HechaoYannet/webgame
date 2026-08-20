@@ -4,9 +4,7 @@
   "url": "https://www.lvzhong-edu.cn/notice/screening/qiangzhang",
   "title": "绿草中学 — 校务内部系统登录",
   "accessibility": {
-    "kind": "hidden",
-    "discoverFrom": "page-lvzhong-notice-screening",
-    "hint": "通知公告URL后加 /qiangzhang 进入隐藏登录页（账号 zhangqiang）"
+    "kind": "public"
   },
   "blocks": [
     {
@@ -16,21 +14,11 @@
     },
     {
       "type": "paragraph",
-      "text": "本系统仅限校长账号登录。账号：zhangqiang。密码提示：校长寄语中张校长说“我的小目标是先挣一个亿”。"
+      "text": "本系统仅限校长账号登录。账号：zhangqiang。密码提示：我的小目标（6位英文）"
     },
     {
       "type": "loginForm",
       "puzzleId": "puzzle-lvzhong-internal"
     }
-  ],
-  "discoverableBy": [
-    {
-      "type": "urlSuffix",
-      "basePageId": "page-lvzhong-notice-screening",
-      "suffix": "/qiangzhang"
-    }
-  ],
-  "onViewEffects": [
-    { "type": "advanceChapter", "toChapterId": "ch-2" }
   ]
 }

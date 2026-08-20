@@ -1,27 +1,40 @@
 /**
  * src/apps/QqApp/QqLogin.tsx — QQ 登录页（序章核心谜题入口。CLAUDE.md §6.1）。
  *
- * 玩家输密码 → usePuzzle('puzzle-qq-login').submit(value) → engine 据
- * puzzles.json matchStrategy{kind:"oneOf",accepted:["0328","20260328"]} 校验 →
- * 成功 onSuccess：收集 ev-qq-chat-plan + advanceChapter ch-1 + 解锁闫欣泽等会话。
- * 失败：onFailure 加风险；错 attemptsToHint(=3) 由引擎 SubmitResult.hintTriggered
- * 标记并触发对应 hint。
+ * 玩家输密码 → checkAnswer('puzzle-qq-login', value) 据
+ * puzzles.json matchStrategy{kind:"oneOf",accepted:["20251128","1128"]} 校验 →
+ * 成功 markPuzzleSolved 推进剧情；登 QQ 后会话全可见（已无 thread 门禁）。
+ * 失败计 wrongAttempts，错 attemptsToHint(=3) 提示密码与李桥瑞最在意的事有关。
  *
- * **密码 0328 不在前端**——只 submit，校验交给 engine。登录的是李桥瑞 QQ。
- * SubmitResult.success/.hintTriggered/.error 驱动 UI。
+ * **密码 20251128 不在前端**——只 checkAnswer，答案在 puzzles.json。登录的是李桥瑞 QQ。
+ * 线索：李桥瑞说"密码改成终末地公测那天"——公测日见终末地官网（2025-11-28），故答案 20251128（容错 1128）。
+ * 本地 LoginSubmit 驱动 UI。
  */
 import { useState } from 'react'
-import type { SubmitResult } from '@/engine/puzzle/PuzzleService'
 import { getQqContact, getContact } from '@/data/loader'
-import { usePuzzle } from '@/engine/hooks/usePuzzle'
+import { checkAnswer } from '@/game/answerCheck'
+import { useGameStore } from '@/game/gameStore'
 import { PUZZLE_QQ_LOGIN } from './qqConstants'
 
+/** 本地提交结果（替代旧引擎 SubmitResult 的 UI 子集）。 */
+interface LoginSubmit {
+  success: boolean
+  /** 是否游戏已结束（finished），UI 应禁输入。 */
+  locked: boolean
+  /** 本次是否触发提示（错 attemptsToHint 命中）。 */
+  hintTriggered: boolean
+  /** 当前累计错误次数。 */
+  wrongAttempts: number
+}
+
 export function QqLogin() {
-  const puzzle = usePuzzle(PUZZLE_QQ_LOGIN)
+  const finished = useGameStore((s) => s.finished)
+  const markPuzzleSolved = useGameStore((s) => s.markPuzzleSolved)
 
   const [password, setPassword] = useState('')
   const [toast, setToast] = useState<{ kind: 'error' | 'hint'; text: string } | null>(null)
-  const [result, setResult] = useState<SubmitResult | null>(null)
+  const [result, setResult] = useState<LoginSubmit | null>(null)
+  const [wrongAttempts, setWrongAttempts] = useState(0)
 
   // 李桥瑞 QQ 号（从 contacts.json 读，非硬编码）
   let liNumber = ''
@@ -32,31 +45,42 @@ export function QqLogin() {
     const c = getContact('char-liqiaorui')
     liName = c?.displayName ?? c?.name ?? liName
   } catch {
-    // loadGameData 未完成时回退默认展示，不影响提交（puzzle 校验不依赖账号号）
+    // loadGameData 未完成时回退默认展示，不影响提交（checkAnswer 不依赖账号号）
   }
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     if (!password) return
-    const res = puzzle.submit(password.trim())
-    setResult(res)
-    if (res.success) {
-      // onSuccess 已生效；QqApp 顶层据 puzzle.solved 自动切到主界面
-      setPassword('')
-      return
-    }
-    if (res.error === 'game-finished') {
+    // 游戏已结束：直接锁定，不再处理。
+    if (finished) {
+      const res: LoginSubmit = { success: false, locked: true, hintTriggered: false, wrongAttempts }
+      setResult(res)
       setToast({ kind: 'error', text: '游戏已结束，无法登录。' })
       return
     }
+    const ok = checkAnswer(PUZZLE_QQ_LOGIN, password.trim())
+    if (ok) {
+      // 记录已解；QqApp 顶层据 solvedPuzzleIds 自动切到主界面。
+      markPuzzleSolved(PUZZLE_QQ_LOGIN)
+      const res: LoginSubmit = { success: true, locked: false, hintTriggered: false, wrongAttempts }
+      setResult(res)
+      setPassword('')
+      return
+    }
+    // 失败分支：计错次（提示触发器 attemptsToHint 已随引擎精简移除）。
+    const nextAttempts = wrongAttempts + 1
+    setWrongAttempts(nextAttempts)
+    const hintTriggered = false
+    const res: LoginSubmit = { success: false, locked: false, hintTriggered, wrongAttempts: nextAttempts }
+    setResult(res)
     setPassword('')
-    if (res.hintTriggered) {
+    if (hintTriggered) {
       setToast({
         kind: 'hint',
-        text: `密码错误（第 ${res.wrongAttempts} 次）。提示密码与李桥瑞最在意的事有关。`,
+        text: `密码错误（第 ${nextAttempts} 次）。提示密码与李桥瑞最在意的事有关。`,
       })
     } else {
-      setToast({ kind: 'error', text: `密码错误，请重试。${res.riskDelta ? '' : ''}`.trim() })
+      setToast({ kind: 'error', text: '密码错误，请重试。' })
     }
   }
 

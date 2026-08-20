@@ -10,17 +10,45 @@
  *  - 屏幕震动（shellState.useShaking）：CSS 抖动（门铃/全屏警告触发）。
  */
 import type { CSSProperties, ReactNode } from 'react'
-import { useRisk, useShaking, useRedEdgeIntensity } from '@/utils/shellState'
+import { useEffect, useRef } from 'react'
+import { useGameStore } from '@/game/gameStore'
+import { useRisk, useShaking, useRedEdgeIntensity, watchCountdownExpiry, triggerThreatIncomingCall } from '@/utils/shellState'
 import { StatusBar } from '@/apps/PhoneShell/StatusBar'
 import { NotificationBar } from '@/apps/PhoneShell/NotificationBar'
 import { EndingOverlay } from '@/apps/PhoneShell/EndingOverlay'
 import { palette } from '@/ui/theme'
+import bezelBg from '@/assets/phone/bezel.jpg'
+
+/** 登录新希望后台后触发的威胁来电谜题 id（详见 call-log.json call-zhangqiang-threat-incoming）。 */
+const XINXWANG_BACKEND_PUZZLE = 'puzzle-xinxwang-backend'
 
 export function PhoneShell({ children }: { children?: ReactNode }) {
   const { isRedAlert } = useRisk()
   const shaking = useShaking()
   const redEdge = useRedEdgeIntensity()
   const redEdgeOpacity = isRedAlert ? Math.max(0.45, redEdge || 0.7) : redEdge
+
+  // 挂载时启动倒计时到期监听 → 坏结局（幂等）。
+  useEffect(() => {
+    watchCountdownExpiry()
+  }, [])
+
+  // 登录新希望后台（puzzle-xinxwang-backend 解）→ 监视者打进威胁来电（振铃+心跳）。
+  // 仅在"刚解出后"触发一次：用 ref 记录是否已对该 puzzle 触发过，避免反复振铃。
+  // finished 后不再触发（结局已定）。
+  const solvedPuzzleIds = useGameStore((s) => s.solvedPuzzleIds)
+  const finished = useGameStore((s) => s.finished)
+  const triggeredRef = useRef(false)
+  useEffect(() => {
+    if (triggeredRef.current) return
+    if (finished) return
+    if (solvedPuzzleIds.includes(XINXWANG_BACKEND_PUZZLE)) {
+      triggeredRef.current = true
+      // 略延迟，给"登录跳转财务页"一个节奏，随后手机被来电打断。
+      const t = setTimeout(() => triggerThreatIncomingCall(), 1500)
+      return () => clearTimeout(t)
+    }
+  }, [solvedPuzzleIds, finished])
 
   return (
     <div
@@ -35,17 +63,33 @@ export function PhoneShell({ children }: { children?: ReactNode }) {
         overflow: 'hidden',
       }}
     >
+      {/* 边框外背景：原 #000 纯黑 → 换成 bezel.jpg + 模糊。手机外框不带 filter，保持清晰。 */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          inset: 0,
+          backgroundImage: `url(${bezelBg})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          filter: 'blur(18px) brightness(0.7)',
+          transform: 'scale(1.1)', // 放大一圈消除 blur 边缘透明
+          zIndex: 0,
+        }}
+      />
       {/* 手机外框 */}
       <div
         className={shaking ? 'ui-shake' : ''}
         style={{
           position: 'relative',
+          zIndex: 1,
           width: 390,
           height: 'min(844px, 96vh)',
           maxHeight: 844,
           background: palette.bgScreen,
           borderRadius: 44,
-          boxShadow: '0 0 0 11px #1a1a22, 0 0 0 12px #2c2c38, 0 30px 80px rgba(0,0,0,0.7)',
+          boxShadow:
+            '0 0 0 11px #1a1a22, 0 0 0 12px #2c2c38, 0 30px 80px rgba(0,0,0,0.7)',
           overflow: 'hidden',
           animation: isRedAlert ? 'ui-heartbeat-screen 1s ease-in-out infinite' : undefined,
         }}
@@ -67,7 +111,11 @@ export function PhoneShell({ children }: { children?: ReactNode }) {
           <div style={{ position: 'absolute', right: 18, top: '50%', transform: 'translateY(-50%)', width: 8, height: 8, borderRadius: '50%', background: '#0a1a2a', boxShadow: 'inset 0 0 3px #1a3a5a' }} />
         </div>
 
-        {/* 屏幕内容区（status bar overlay + 路由 + 通知） */}
+        {/* 屏幕内容区：StatusBar 改为 in-flow（修复状态栏遮挡 App 顶部 BUG）。
+            此前 StatusBar/NorificationBar 都是 absolute overlay 盖在 App 之上，App 从 y=0
+            起填满整屏，导致状态栏遮住各 App 顶部 ~44px 头部。改为：StatusBar 占据列首，
+            下方内容区 flex:1 放路由。通知横幅 overlay、IncomingCall/FullscreenAlert/Ending
+            仍用 absolute inset:0 全屏遮罩（它们本就要盖满整屏，含状态栏）。 */}
         <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column' }}>
           <StatusBar />
           <NotificationBar />

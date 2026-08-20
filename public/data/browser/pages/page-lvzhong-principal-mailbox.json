@@ -29,18 +29,6 @@
       "type": "form",
       "formId": "form-principal-mailbox",
       "onSubmitMessage": "留言成功，感谢反馈！"
-    },
-    {
-      "type": "sourceComment",
-      "comment": "<!-- 历史后台维护地址迁移：原 xw.zhangqiang.com.cn/admin（新希望成长中心财务后台，密码须为8位数字）现已停用，仅作记录。 -->"
     }
-  ],
-  "discoverableBy": [
-    {
-      "type": "sourceCodeComment",
-      "onPageId": "page-lvzhong-principal-mailbox",
-      "commentText": "xw.zhangqiang.com.cn/admin"
-    }
-  ],
-  "registersClueId": "clue-principal-mailbox"
+  ]
 }

@@ -19,11 +19,10 @@ import { Avatar } from "./Avatar";
 import {
   buildCharacterDictionary,
   displayName,
-  loadWechatThreads,
-  loadThreadMessages,
   type CharacterDictionary,
 } from "./data";
-import { useClue, useGameState, useNavigateToPage } from "./wechatEngine";
+import { getMessages, getWechatThreads } from "@/data/loader";
+import { useClue, useNavigateToPage } from "./wechatEngine";
 
 /* ------------------------------------------------------------------ *
  * Tab 容器
@@ -39,25 +38,16 @@ export function ChatTab({ characters }: ChatTabProps): JSX.Element {
   const [error, setError] = useState<string | null>(null);
   const [activeThreadId, setActiveThreadId] = useState<ThreadId | null>(null);
 
+  // loader 已在 main.tsx await 过，getWechatThreads 同步安全。
   useEffect(() => {
-    let cancelled = false;
-    setLoading(true);
-    loadWechatThreads()
-      .then((t) => {
-        if (cancelled) return;
-        setThreads(sortThreads(t));
-        setError(null);
-      })
-      .catch((e: unknown) => {
-        if (cancelled) return;
-        setError(e instanceof Error ? e.message : String(e));
-      })
-      .finally(() => {
-        if (!cancelled) setLoading(false);
-      });
-    return () => {
-      cancelled = true;
-    };
+    try {
+      setThreads(sortThreads(getWechatThreads()));
+      setError(null);
+    } catch (e: unknown) {
+      setError(e instanceof Error ? e.message : String(e));
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
   const dict = useMemo(
@@ -90,16 +80,7 @@ export function ChatTab({ characters }: ChatTabProps): JSX.Element {
 
   return (
     <div className="wc-chat-tab">
-      <Header
-        title="微信"
-        subtitle={
-          loading
-            ? "加载中…"
-            : error
-              ? `加载失败：${error}`
-              : `${threads.length} 个会话`
-        }
-      />
+      <ChatNavBar title="微信" />
       {loading && <ChatListSkeleton />}
       {!loading && !error && (
         <ThreadList
@@ -222,17 +203,16 @@ function ThreadView({
   onBack,
 }: ThreadViewProps): JSX.Element {
   const clue = useClue();
-  const gameState = useGameState();
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [draft, setDraft] = useState("");
-  // 进入会话：标记 visitedThread，并请求引擎视为已读（不解锁谜题，纯统计）
+  // 进入会话：getMessages(threadId) 按需加载（loader 内存缓存）。
+  // useGameState 已废（访问计数不持久化、无副作用）——迁移后删除。
   useEffect(() => {
     let cancelled = false;
     setLoading(true);
-    gameState.openThread(thread.id);
-    loadThreadMessages(thread.messageFile)
+    getMessages(thread.id)
       .then((m) => {
         if (cancelled) return;
         // 按时间正序渲染
@@ -249,12 +229,11 @@ function ThreadView({
         if (!cancelled) setLoading(false);
       });
 
-    // 退场时把"首屏可见消息"批量上报为查看（lazy：仅在渲染后，避免大量事件）
     return () => {
       cancelled = true;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [thread.id, thread.messageFile]);
+  }, [thread.id]);
 
   const handleViewMessage = useCallback(
     (m: ChatMessage) => {
@@ -294,17 +273,40 @@ function ThreadView({
     setDraft("");
   }, [draft, thread.id]);
 
+  const hasText = draft.trim().length > 0;
+
   return (
     <div className="wc-thread-view">
-      <Header
-        title={thread.title}
-        subtitle={
-          thread.type === "group"
-            ? `${thread.participantCharacterIds.length} 名成员`
-            : "聊天"
-        }
-        onBack={onBack}
-      />
+      {/* 会话头部：白色背景，居中标题 */}
+      <header className="wc-chat-header">
+        <button
+          type="button"
+          className="wc-chat-header-back"
+          onClick={onBack}
+          aria-label="返回"
+        >
+          ‹
+        </button>
+        <div className="wc-chat-header-center">
+          <div className="wc-chat-header-title">{thread.title}</div>
+          <div className="wc-chat-header-sub">
+            {thread.type === "group"
+              ? `${thread.participantCharacterIds.length} 名成员`
+              : "在线"}
+          </div>
+        </div>
+        <button
+          type="button"
+          className="wc-chat-header-menu"
+          aria-label="更多"
+          onClick={() => {
+            /* 占位，无实际功能 */
+          }}
+        >
+          ···
+        </button>
+      </header>
+
       <div className="wc-thread-messages">
         {loading && <div className="wc-empty">加载中…</div>}
         {!loading && error && (
@@ -325,9 +327,24 @@ function ThreadView({
             />
           ))}
       </div>
-      <div className="wc-thread-input">
+
+      {/* 输入栏：mic / 输入框 / 表情 / + */}
+      <div className="wc-chat-input">
+        <button
+          type="button"
+          className={`wc-chat-input-btn ${hasText ? "wc-chat-send-btn" : "wc-chat-mic-btn"}`}
+          onClick={() => {
+            if (hasText) handleSend();
+            /* mic 按钮无实际录音功能 */
+          }}
+          aria-label={hasText ? "发送" : "语音"}
+          disabled={!hasText && false}
+        >
+          {hasText ? "发送" : "🎤"}
+        </button>
         <input
           type="text"
+          className="wc-chat-input-field"
           value={draft}
           onChange={(e) => setDraft(e.target.value)}
           onKeyDown={(e) => {
@@ -336,11 +353,28 @@ function ThreadView({
               handleSend();
             }
           }}
-          placeholder="发送消息（无人接听）"
+          placeholder=""
           aria-label="输入消息"
         />
-        <button type="button" onClick={handleSend} disabled={!draft.trim()}>
-          发送
+        <button
+          type="button"
+          className="wc-chat-input-btn wc-chat-emoji-btn"
+          aria-label="表情"
+          onClick={() => {
+            /* 占位，无实际功能 */
+          }}
+        >
+          😊
+        </button>
+        <button
+          type="button"
+          className="wc-chat-input-btn wc-chat-plus-btn"
+          aria-label="更多"
+          onClick={() => {
+            /* 占位，无实际功能 */
+          }}
+        >
+          ＋
         </button>
       </div>
     </div>
@@ -400,7 +434,7 @@ function MessageBubble({
       <div className="wc-msg-body">
         {showAuthor && (
           <div className="wc-msg-author">
-            {author ? displayName(author) : "未知"}
+            {author ? displayName(author) : "匿名"}
           </div>
         )}
         <div
@@ -436,6 +470,7 @@ function MessageContent({
           durationSec={message.voiceDurationSec ?? 0}
           transcript={message.voiceTranscript}
           direction={message.direction}
+          messageId={message.id}
         />
       );
 
@@ -482,10 +517,13 @@ function VoiceMessage({
   durationSec,
   transcript,
   direction,
+  messageId,
 }: {
   durationSec: number;
   transcript?: string;
   direction: string;
+  /** 用于生成稳定的波形高度（同一消息每次渲染一致）。 */
+  messageId?: string;
 }): JSX.Element {
   const [expanded, setExpanded] = useState(false);
   const [playing, setPlaying] = useState(false);
@@ -511,6 +549,8 @@ function VoiceMessage({
     };
   }, []);
 
+  const barHeights = useMemo(() => voiceBarHeights(messageId ?? `${durationSec}`, 6), [messageId, durationSec]);
+
   return (
     <div className="wc-msg-voice">
       <button
@@ -520,9 +560,9 @@ function VoiceMessage({
           e.stopPropagation();
           toggle();
         }}
-        aria-label="播放语音"
+        aria-label={playing ? "暂停" : "播放语音"}
       >
-        ▶
+        {playing ? "⏸" : "▶"}
       </button>
       <div
         className={`wc-voice-wave${playing ? " is-playing" : ""}${
@@ -530,11 +570,11 @@ function VoiceMessage({
         }`}
         aria-hidden="true"
       >
-        {Array.from({ length: 18 }).map((_, i) => (
+        {barHeights.map((h, i) => (
           <span
             key={i}
             className="wc-voice-bar"
-            style={{ animationDelay: `${i * 0.05}s` }}
+            style={{ height: `${h}%` }}
           />
         ))}
       </div>
@@ -548,7 +588,7 @@ function VoiceMessage({
             setExpanded((v) => !v);
           }}
         >
-          {expanded ? "收起字幕" : "查看字幕"}
+          {expanded ? "收起" : "转文字"}
         </button>
       )}
       {expanded && transcript && (
@@ -556,6 +596,21 @@ function VoiceMessage({
       )}
     </div>
   );
+}
+
+/** 根据 seed 生成 6 根音波的伪随机高度（25%–95%），模拟真实微信语音波形。 */
+function voiceBarHeights(seed: string, barCount: number): number[] {
+  let hash = 0;
+  for (let i = 0; i < seed.length; i++) {
+    hash = ((hash << 5) - hash + seed.charCodeAt(i)) | 0;
+  }
+  const heights: number[] = [];
+  let s = Math.abs(hash) || 1;
+  for (let i = 0; i < barCount; i++) {
+    s = (s * 1103515245 + 12345) & 0x7fffffff;
+    heights.push(25 + (s % 71));
+  }
+  return heights;
 }
 
 function LinkCard({
@@ -595,31 +650,51 @@ function LinkCard({
  * 通用头部 + 骨架
  * ------------------------------------------------------------------ */
 
-function Header({
-  title,
-  subtitle,
-  onBack,
-}: {
-  title: string;
-  subtitle?: string;
-  onBack?: () => void;
-}): JSX.Element {
+/* 聊天列表顶部导航栏：搜索图标 + "微信" + "+" 按钮 */
+function ChatNavBar({ title }: { title: string }): JSX.Element {
   return (
-    <header className="wc-header">
-      {onBack && (
-        <button
-          type="button"
-          className="wc-header-back"
-          onClick={onBack}
-          aria-label="返回"
+    <header className="wc-chat-navbar">
+      <button
+        type="button"
+        className="wc-navbar-btn"
+        aria-label="搜索"
+        onClick={() => {
+          /* 占位，搜索功能未实现 */
+        }}
+      >
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         >
-          ‹
-        </button>
-      )}
-      <div className="wc-header-titles">
-        <div className="wc-header-title">{title}</div>
-        {subtitle && <div className="wc-header-sub">{subtitle}</div>}
-      </div>
+          <circle cx="11" cy="11" r="8" />
+          <line x1="21" y1="21" x2="16.65" y2="16.65" />
+        </svg>
+      </button>
+      <span className="wc-navbar-title">{title}</span>
+      <button
+        type="button"
+        className="wc-navbar-btn"
+        aria-label="添加"
+        onClick={() => {
+          /* 占位，添加功能未实现 */
+        }}
+      >
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <line x1="12" y1="5" x2="12" y2="19" />
+          <line x1="5" y1="12" x2="19" y2="12" />
+        </svg>
+      </button>
     </header>
   );
 }
@@ -641,8 +716,15 @@ function ChatListSkeleton(): JSX.Element {
 }
 
 function formatTimestamp(iso: string): string {
-  // 简易格式化：MM-DD HH:mm（保留原始 ISO，不引入 Intl 依赖）
-  const m = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/.exec(iso);
-  if (!m) return iso;
-  return `${m[2]}-${m[3]} ${m[4]}:${m[5]}`;
+  // 智能格式化：今天只显 HH:mm，今年显 MM-DD，跨年显 YYYY-MM-DD
+  const date = new Date(iso);
+  if (isNaN(date.getTime())) return iso;
+  const now = new Date();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const msgDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  const hm = `${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}`;
+  if (msgDate.getTime() === today.getTime()) return hm;
+  const md = `${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+  if (date.getFullYear() === now.getFullYear()) return md;
+  return `${date.getFullYear()}-${md}`;
 }

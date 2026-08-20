@@ -34,7 +34,7 @@ export const QqAppManifest: AppManifest = {
 ```
 
 ### QqApp 主界面
-- **QQ 登录页**（序章核心谜题入口）：玩家需用李桥瑞QQ号登录，输密码 → 调 `usePuzzle().submit("puzzle-qq-login", value)` → 引擎校验 `oneOf:["0328","20260328"]` → 成功解锁闫欣泽等会话（CLAUDE.md §6.1）。错误3次触发提示（usePuzzle 内部据 attemptsToHint 触发 hints）
+- **QQ 登录页**（序章核心谜题入口）：玩家需用李桥瑞QQ号登录，输密码 → 调 `usePuzzle().submit("puzzle-qq-login", value)` → 引擎校验 `oneOf:["20251128","1128"]` → 成功解锁闫欣泽等会话（CLAUDE.md §6.1）。错误3次触发提示（usePuzzle 内部据 attemptsToHint 触发 hints）。线索文本不写死数字：玩家自查终末地公测日（11-28）推出 20251128
 - **会话列表**：读 `qq/threads.json`，显示闫欣泽(备注"你同桌")/高二一班级群/绿中游戏群/瑞妈妈 等。挂 `requiredPuzzleId` 的会话在未解谜题前置灰/隐藏
 - **聊天会话页**：读 `messages/<threadId>.json` 渲染。**视点是李桥瑞账号**（direction：李桥瑞发的=sent，闫欣泽发的=received）
   - 闫欣泽↔李桥瑞长对话（3/5–3/13）是核心线索区，查看关键消息调 `useClue().view({kind:"message",threadId,messageId})`
@@ -48,7 +48,7 @@ export const QqAppManifest: AppManifest = {
 
 ## 强制规则
 1. 不硬编码剧情，全从 JSON 读
-2. QQ密码校验交给 engine（你只 submit，答案在 puzzles.json），oneOf 容错 0328/20260328（§6.1）
+2. QQ密码校验交给 engine（你只 submit，答案在 puzzles.json），oneOf 容错 20251128/1128（§6.1，公测日 11-28）
 3. 关键交互调 engine hooks
 4. 纯前端
 

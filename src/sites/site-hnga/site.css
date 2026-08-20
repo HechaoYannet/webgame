@@ -1,0 +1,597 @@
+/**
+ * site-hnga site.css —— 湖南省公安厅政务门户视觉。
+ *
+ * 政务风格：警蓝主色 + 红色重点（举报中心 / 举报电话），衬线标题、
+ * 公文章节式排版，仿 gat.hunan.gov.cn 的肃穆行政观感。所有样式加前缀 hnga- 防止跨站污染。
+ */
+
+.hnga-root {
+  width: 100%;
+  min-height: 100vh;
+  background: #f4f6f9;
+  color: #222;
+  font-family: "Microsoft YaHei", "PingFang SC", "Helvetica Neue", Arial, sans-serif;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+/* ===== 顶部政务条 ===== */
+.hnga-govbar {
+  background: #1a3c6e;
+  color: #cfe0f5;
+  font-size: 12px;
+  padding: 4px 0;
+  border-bottom: 1px solid #102849;
+}
+.hnga-govbar-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.hnga-govbar a {
+  color: #cfe0f5;
+  text-decoration: none;
+  margin: 0 6px;
+}
+.hnga-govbar a:hover {
+  color: #fff;
+  text-decoration: underline;
+}
+
+/* ===== 顶部标题区（警徽占位 + 机关名 + 检索） ===== */
+.hnga-header {
+  background: #fff;
+  border-bottom: 3px solid #b01d26;
+}
+.hnga-header-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 18px 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.hnga-emblem {
+  width: 64px;
+  height: 64px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: #1a3c6e;
+  color: #ffd54a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  box-shadow: 0 0 0 3px #ffd54a inset;
+}
+.hnga-title-block {
+  flex: 1;
+}
+.hnga-title-cn {
+  font-size: 30px;
+  font-weight: 700;
+  color: #1a3c6e;
+  letter-spacing: 4px;
+  margin: 0;
+  line-height: 1.2;
+}
+.hnga-title-en {
+  font-size: 12px;
+  color: #7a8699;
+  letter-spacing: 1px;
+  margin: 4px 0 0;
+}
+.hnga-search {
+  display: flex;
+  border: 1px solid #c8d2e0;
+  border-radius: 2px;
+  overflow: hidden;
+  height: 32px;
+}
+.hnga-search input {
+  width: 180px;
+  border: none;
+  outline: none;
+  padding: 0 10px;
+  font-size: 13px;
+  color: #333;
+}
+.hnga-search button {
+  background: #1a3c6e;
+  color: #fff;
+  border: none;
+  padding: 0 14px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+/* ===== 主导航 ===== */
+.hnga-nav {
+  background: #1a3c6e;
+  border-top: 1px solid #2c5392;
+}
+.hnga-nav-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  flex-wrap: wrap;
+}
+.hnga-nav-item {
+  color: #eaf1fb;
+  text-decoration: none;
+  padding: 12px 22px;
+  font-size: 16px;
+  font-weight: 500;
+  border-right: 1px solid #2c5392;
+  transition: background 0.15s;
+  cursor: pointer;
+  user-select: none;
+}
+.hnga-nav-item:hover,
+.hnga-nav-item.is-active {
+  background: #b01d26;
+  color: #fff;
+}
+
+/* ===== 正文布局：左主栏 + 右侧栏 ===== */
+.hnga-main {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 24px;
+}
+.hnga-main-single {
+  grid-template-columns: 1fr;
+}
+
+/* ===== 面包屑 ===== */
+.hnga-crumb {
+  font-size: 12px;
+  color: #7a8699;
+  padding: 4px 0 12px;
+  border-bottom: 1px dashed #d6deea;
+  margin-bottom: 18px;
+}
+.hnga-crumb a {
+  color: #7a8699;
+  text-decoration: none;
+}
+.hnga-crumb a:hover {
+  color: #1a3c6e;
+  text-decoration: underline;
+}
+
+/* ===== 内容卡片 ===== */
+.hnga-card {
+  background: #fff;
+  border: 1px solid #e3e8f0;
+  margin-bottom: 20px;
+}
+.hnga-card-head {
+  background: #f7f9fc;
+  border-bottom: 1px solid #e3e8f0;
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.hnga-card-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1a3c6e;
+  margin: 0;
+  padding-left: 10px;
+  border-left: 4px solid #b01d26;
+  line-height: 1.2;
+}
+.hnga-card-more {
+  font-size: 12px;
+  color: #8a94a6;
+  text-decoration: none;
+}
+.hnga-card-more:hover {
+  color: #b01d26;
+}
+.hnga-card-body {
+  padding: 20px 22px;
+}
+
+/* ===== 块渲染：paragraph / callout / hero / table / form 等 ===== */
+.hnga-paragraph {
+  margin: 12px 0;
+  color: #333;
+  text-indent: 2em;
+  font-size: 15px;
+  line-height: 1.9;
+}
+.hnga-paragraph-plain {
+  text-indent: 0;
+}
+.hnga-hero {
+  margin: 0 0 18px;
+}
+.hnga-hero-heading {
+  font-size: 26px;
+  font-weight: 700;
+  color: #1a3c6e;
+  margin: 0 0 8px;
+  line-height: 1.3;
+}
+.hnga-hero-sub {
+  font-size: 14px;
+  color: #6b7588;
+  margin: 0;
+}
+.hnga-hero-img {
+  width: 100%;
+  max-height: 280px;
+  object-fit: cover;
+  border: 1px solid #e3e8f0;
+  margin-bottom: 12px;
+}
+.hnga-image {
+  margin: 16px 0;
+  text-align: center;
+}
+.hnga-image img {
+  max-width: 100%;
+  display: block;
+  margin: 0 auto;
+  border: 1px solid #e3e8f0;
+}
+.hnga-image-caption {
+  font-size: 12px;
+  color: #8a94a6;
+  margin-top: 6px;
+}
+
+.hnga-callout {
+  margin: 16px 0;
+  padding: 12px 16px;
+  border-left: 4px solid #1a3c6e;
+  background: #eef3fb;
+  font-size: 14px;
+  color: #1a3c6e;
+  line-height: 1.7;
+}
+.hnga-callout.is-warning {
+  border-left-color: #e0932b;
+  background: #fdf6ea;
+  color: #8a5a14;
+}
+.hnga-callout.is-danger {
+  border-left-color: #b01d26;
+  background: #fbecec;
+  color: #a01a23;
+}
+
+.hnga-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 14px 0;
+  font-size: 14px;
+}
+.hnga-table th {
+  background: #eef3fb;
+  color: #1a3c6e;
+  font-weight: 600;
+  padding: 10px 12px;
+  border: 1px solid #d6deea;
+  text-align: left;
+}
+.hnga-table td {
+  padding: 8px 12px;
+  border: 1px solid #e3e8f0;
+  color: #333;
+}
+
+.hnga-form {
+  margin: 16px 0;
+  padding: 16px;
+  background: #f7f9fc;
+  border: 1px solid #e3e8f0;
+  border-radius: 2px;
+}
+.hnga-form-row {
+  margin-bottom: 12px;
+}
+.hnga-form-label {
+  display: block;
+  font-size: 13px;
+  color: #5a6473;
+  margin-bottom: 4px;
+}
+.hnga-form-input,
+.hnga-form-textarea {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #c8d2e0;
+  border-radius: 2px;
+  padding: 8px 10px;
+  font-size: 14px;
+  font-family: inherit;
+  color: #222;
+  outline: none;
+}
+.hnga-form-input:focus,
+.hnga-form-textarea:focus {
+  border-color: #1a3c6e;
+}
+.hnga-form-textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+.hnga-form-submit {
+  background: #1a3c6e;
+  color: #fff;
+  border: none;
+  padding: 8px 24px;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 2px;
+}
+.hnga-form-submit:hover {
+  background: #2c5392;
+}
+.hnga-form-msg {
+  margin-top: 10px;
+  font-size: 13px;
+  color: #1a7a3d;
+}
+
+.hnga-loginform {
+  margin: 16px 0;
+  padding: 18px;
+  background: #f7f9fc;
+  border: 1px solid #e3e8f0;
+}
+.hnga-loginform-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1a3c6e;
+  margin: 0 0 12px;
+}
+.hnga-loginform-error {
+  margin-top: 8px;
+  font-size: 13px;
+  color: #b01d26;
+}
+
+.hnga-sourcecomment {
+  margin: 18px 0;
+  padding: 10px 14px;
+  background: #f0f2f5;
+  border: 1px dashed #c8d2e0;
+  font-family: "Consolas", "Monaco", monospace;
+  font-size: 12px;
+  color: #6b7588;
+  white-space: pre-wrap;
+}
+.hnga-sourcecomment a {
+  color: #1a3c6e;
+}
+
+.hnga-nav-block ul {
+  list-style: none;
+  margin: 8px 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.hnga-nav-block li a {
+  display: inline-block;
+  padding: 6px 14px;
+  background: #eef3fb;
+  color: #1a3c6e;
+  text-decoration: none;
+  font-size: 14px;
+  border-radius: 2px;
+}
+.hnga-nav-block li a:hover {
+  background: #1a3c6e;
+  color: #fff;
+}
+
+.hnga-articlelist {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.hnga-articlelist li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px dashed #e3e8f0;
+}
+.hnga-articlelist li a {
+  color: #333;
+  text-decoration: none;
+  flex: 1;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  padding-right: 12px;
+}
+.hnga-articlelist li a:hover {
+  color: #b01d26;
+}
+.hnga-articlelist-date {
+  font-size: 12px;
+  color: #8a94a6;
+  flex-shrink: 0;
+}
+
+.hnga-pdfviewer {
+  margin: 16px 0;
+}
+
+/* ===== 举报中心横幅（醒目展示举报电话） ===== */
+.hnga-report-banner {
+  background: linear-gradient(135deg, #b01d26 0%, #8a1620 100%);
+  color: #fff;
+  padding: 28px 24px;
+  margin: 0 0 20px;
+  border-radius: 2px;
+  box-shadow: 0 2px 8px rgba(176, 29, 38, 0.25);
+}
+.hnga-report-banner-label {
+  font-size: 14px;
+  letter-spacing: 4px;
+  opacity: 0.9;
+  margin: 0 0 6px;
+}
+.hnga-report-banner-title {
+  font-size: 26px;
+  font-weight: 700;
+  margin: 0 0 10px;
+  letter-spacing: 2px;
+}
+.hnga-report-phone {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin: 6px 0 0;
+}
+.hnga-report-phone-label {
+  font-size: 15px;
+  opacity: 0.9;
+}
+.hnga-report-phone-num {
+  font-size: 40px;
+  font-weight: 800;
+  font-family: "DIN", "Arial", sans-serif;
+  letter-spacing: 2px;
+  color: #ffe08a;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+}
+.hnga-report-note {
+  font-size: 12px;
+  opacity: 0.85;
+  margin: 10px 0 0;
+  line-height: 1.6;
+}
+
+/* ===== 右侧栏 ===== */
+.hnga-sidebar {
+  font-size: 14px;
+}
+.hnga-side-block {
+  background: #fff;
+  border: 1px solid #e3e8f0;
+  margin-bottom: 16px;
+}
+.hnga-side-head {
+  background: #1a3c6e;
+  color: #fff;
+  padding: 8px 14px;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+.hnga-side-body {
+  padding: 12px 14px;
+}
+.hnga-quicklist {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.hnga-quicklist li {
+  border-bottom: 1px dashed #e3e8f0;
+}
+.hnga-quicklist li:last-child {
+  border-bottom: none;
+}
+.hnga-quicklist li a {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 2px;
+  font-size: 13px;
+  color: #333;
+  text-decoration: none;
+}
+.hnga-quicklist li a:hover {
+  color: #b01d26;
+}
+.hnga-quicklist-date {
+  color: #8a94a6;
+  font-size: 12px;
+}
+.hnga-contact-line {
+  font-size: 13px;
+  color: #333;
+  line-height: 1.9;
+}
+.hnga-contact-phone {
+  font-size: 22px;
+  font-weight: 800;
+  color: #b01d26;
+  font-family: "DIN", "Arial", sans-serif;
+  letter-spacing: 1px;
+  display: block;
+  margin: 4px 0;
+}
+
+/* ===== 公告条 ===== */
+.hnga-notice-strip {
+  background: #fff7e6;
+  border: 1px solid #f0d894;
+  color: #8a5a14;
+  padding: 8px 18px;
+  font-size: 13px;
+  margin-bottom: 18px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.hnga-notice-strip strong {
+  color: #b01d26;
+}
+
+/* ===== 页脚 ===== */
+.hnga-footer {
+  background: #1a3c6e;
+  color: #cfe0f5;
+  padding: 28px 20px 20px;
+  margin-top: 20px;
+  border-top: 3px solid #b01d26;
+}
+.hnga-footer-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  text-align: center;
+  font-size: 12px;
+  line-height: 1.9;
+}
+.hnga-footer-links {
+  margin-bottom: 8px;
+}
+.hnga-footer-links a {
+  color: #cfe0f5;
+  text-decoration: none;
+  margin: 0 8px;
+}
+.hnga-footer-links a:hover {
+  color: #fff;
+  text-decoration: underline;
+}
+.hnga-footer-copy {
+  color: #8fa8cc;
+}
+
+.hnga-loading {
+  padding: 60px 20px;
+  text-align: center;
+  color: #7a8699;
+  font-size: 14px;
+}

@@ -1,0 +1,485 @@
+/**
+ * site-arxiv 视觉：经典学术预印本库（仿 arXiv）。
+ * 特征——浅灰底、衬线正文、红橙强调色、紧凑信息密度、左侧学科分类条、
+ * 论文条目列表（arXiv listing 式样）、摘要页 metadata 表 + PDF 下载框 + 评论区。
+ */
+.site-arxiv-root {
+  width: 100%;
+  min-height: 100vh;
+  background: #ffffff;
+  color: #1a1a1a;
+  font-family: "Times New Roman", "Songti SC", "SimSun", Georgia, serif;
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+/* ===== 顶部通栏（arXiv 式红底品牌条） ===== */
+.site-arxiv-topbar {
+  background: #b31b1b;
+  color: #fff;
+  border-bottom: 3px solid #7d1313;
+}
+.site-arxiv-topbar-inner {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 16px 24px;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.site-arxiv-brand {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  text-decoration: none;
+  color: #fff;
+}
+.site-arxiv-brand-mark {
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  font-family: "Times New Roman", Georgia, serif;
+}
+.site-arxiv-brand-sub {
+  font-size: 13px;
+  opacity: 0.85;
+  letter-spacing: 1px;
+}
+.site-arxiv-topbar-meta {
+  font-family: "Helvetica Neue", Arial, "PingFang SC", sans-serif;
+  font-size: 12px;
+  opacity: 0.82;
+  text-align: right;
+  line-height: 1.7;
+}
+
+/* ===== 主导航条 ===== */
+.site-arxiv-nav {
+  background: #f6f6f4;
+  border-bottom: 1px solid #d9d9d9;
+}
+.site-arxiv-nav-inner {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  gap: 2px;
+  overflow-x: auto;
+  font-family: "Helvetica Neue", Arial, "PingFang SC", sans-serif;
+}
+.site-arxiv-nav-link {
+  display: inline-block;
+  padding: 11px 16px;
+  font-size: 13px;
+  color: #3a3a3a;
+  text-decoration: none;
+  white-space: nowrap;
+  border-bottom: 2px solid transparent;
+  transition: color 0.12s, border-color 0.12s, background 0.12s;
+}
+.site-arxiv-nav-link:hover {
+  color: #b31b1b;
+  background: #fafafa;
+}
+.site-arxiv-nav-link.is-active {
+  color: #b31b1b;
+  border-bottom-color: #b31b1b;
+  font-weight: 600;
+}
+
+/* ===== 主体两栏：左侧分类条 + 右侧内容 ===== */
+.site-arxiv-main {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 22px 24px 56px;
+  display: flex;
+  gap: 28px;
+  align-items: flex-start;
+}
+.site-arxiv-sidebar {
+  width: 188px;
+  flex-shrink: 0;
+  font-family: "Helvetica Neue", Arial, "PingFang SC", sans-serif;
+  font-size: 12px;
+  color: #555;
+  position: sticky;
+  top: 12px;
+}
+.site-arxiv-sidebar-title {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #888;
+  margin: 0 0 8px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid #e3e3e3;
+}
+.site-arxiv-sidebar-list {
+  list-style: none;
+  margin: 0 0 18px;
+  padding: 0;
+}
+.site-arxiv-sidebar-list li {
+  padding: 4px 0;
+}
+.site-arxiv-sidebar-list a {
+  color: #2a6496;
+  text-decoration: none;
+}
+.site-arxiv-sidebar-list a:hover {
+  text-decoration: underline;
+}
+.site-arxiv-sidebar-note {
+  font-size: 11px;
+  color: #999;
+  line-height: 1.6;
+  border-top: 1px dashed #e0e0e0;
+  padding-top: 10px;
+  margin-top: 6px;
+}
+
+.site-arxiv-content {
+  flex: 1;
+  min-width: 0;
+}
+.site-arxiv-loading {
+  padding: 60px 0;
+  text-align: center;
+  color: #888;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+}
+
+/* ===== 面包屑 ===== */
+.site-arxiv-crumb {
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  font-size: 12px;
+  color: #888;
+  margin-bottom: 14px;
+}
+.site-arxiv-crumb a {
+  color: #2a6496;
+  text-decoration: none;
+}
+.site-arxiv-crumb a:hover {
+  text-decoration: underline;
+}
+.site-arxiv-crumb-sep {
+  margin: 0 6px;
+  color: #bbb;
+}
+
+/* ===== 列表页标题条 ===== */
+.site-arxiv-section-head {
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: #1a1a1a;
+  border-bottom: 2px solid #b31b1b;
+  padding-bottom: 8px;
+  margin: 0 0 18px;
+}
+.site-arxiv-section-meta {
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  font-size: 12px;
+  color: #777;
+  margin-bottom: 18px;
+}
+
+/* ===== 论文条目列表（arXiv listing 式样） ===== */
+.site-arxiv-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.site-arxiv-list-item {
+  padding: 16px 0;
+  border-bottom: 1px solid #ececec;
+}
+.site-arxiv-list-item-head {
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  font-size: 12px;
+  color: #777;
+  margin-bottom: 4px;
+}
+.site-arxiv-list-item-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0 0 4px;
+}
+.site-arxiv-list-item-title a {
+  color: #b31b1b;
+  text-decoration: none;
+}
+.site-arxiv-list-item-title a:hover {
+  text-decoration: underline;
+}
+.site-arxiv-list-item-authors {
+  font-size: 13px;
+  color: #444;
+  margin: 0 0 6px;
+}
+.site-arxiv-list-item-subjects {
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  font-size: 12px;
+  color: #777;
+}
+.site-arxiv-list-empty {
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  color: #888;
+  padding: 24px 0;
+  font-size: 14px;
+}
+
+/* ===== 摘要页：标题区 ===== */
+.site-arxiv-abs-title {
+  font-size: 21px;
+  font-weight: 700;
+  color: #1a1a1a;
+  line-height: 1.4;
+  margin: 0 0 10px;
+}
+.site-arxiv-abs-authors {
+  font-size: 14px;
+  color: #333;
+  margin: 0 0 14px;
+}
+.site-arxiv-abs-authors a {
+  color: #2a6496;
+  text-decoration: none;
+}
+
+/* ===== 摘要页 metadata 表（arXiv 式左标签右值） ===== */
+.site-arxiv-meta {
+  font-family: "Helvetica Neue", Arial, "PingFang SC", sans-serif;
+  font-size: 13px;
+  margin: 0 0 20px;
+  background: #fafafa;
+  border: 1px solid #ececec;
+  border-radius: 3px;
+  padding: 12px 16px;
+}
+.site-arxiv-meta-row {
+  display: flex;
+  gap: 10px;
+  padding: 3px 0;
+}
+.site-arxiv-meta-label {
+  flex: 0 0 110px;
+  color: #777;
+  font-weight: 600;
+}
+.site-arxiv-meta-value {
+  color: #1a1a1a;
+  word-break: break-all;
+}
+.site-arxiv-meta-value.is-code {
+  font-family: "Courier New", Consolas, monospace;
+  color: #b31b1b;
+}
+
+/* ===== 摘要正文 ===== */
+.site-arxiv-abs-section {
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 22px 0 6px;
+  border-left: 3px solid #b31b1b;
+  padding-left: 8px;
+}
+.site-arxiv-paragraph {
+  margin: 10px 0;
+  color: #1a1a1a;
+}
+.site-arxiv-paragraph.is-keywords {
+  font-family: "Helvetica Neue", Arial, "PingFang SC", sans-serif;
+  font-size: 13px;
+  color: #555;
+}
+
+/* ===== 段落内的引文/评论 callout（学术讨论框） ===== */
+.site-arxiv-callout {
+  margin: 14px 0;
+  padding: 12px 16px;
+  border-radius: 3px;
+  font-family: "Helvetica Neue", Arial, "PingFang SC", sans-serif;
+  font-size: 13px;
+  line-height: 1.7;
+  border-left: 4px solid #b31b1b;
+  background: #f7f2f2;
+  color: #5a1a1a;
+}
+.site-arxiv-callout.is-warning {
+  background: #fff8e6;
+  border-left-color: #d48806;
+  color: #6b4a00;
+}
+.site-arxiv-callout.is-danger {
+  background: #fff1f0;
+  border-left-color: #cf1322;
+  color: #820014;
+}
+.site-arxiv-callout.is-info {
+  background: #f0f7ff;
+  border-left-color: #2a6496;
+  color: #1d4a7a;
+}
+
+/* ===== PDF 下载/查看框 ===== */
+.site-arxiv-pdf-box {
+  margin: 18px 0;
+  border: 1px solid #d9d9d9;
+  border-radius: 3px;
+  background: #fff;
+  overflow: hidden;
+}
+.site-arxiv-pdf-head {
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  background: #f6f6f4;
+  border-bottom: 1px solid #ececec;
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.site-arxiv-pdf-head-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #333;
+}
+.site-arxiv-pdf-actions {
+  display: flex;
+  gap: 8px;
+}
+.site-arxiv-pdf-btn {
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  display: inline-block;
+  padding: 6px 14px;
+  font-size: 12px;
+  color: #fff;
+  background: #b31b1b;
+  border: 1px solid #8c1414;
+  border-radius: 3px;
+  text-decoration: none;
+  cursor: pointer;
+}
+.site-arxiv-pdf-btn.is-secondary {
+  background: #fff;
+  color: #b31b1b;
+}
+.site-arxiv-pdf-btn:hover {
+  background: #8c1414;
+  color: #fff;
+}
+.site-arxiv-pdf-btn.is-secondary:hover {
+  background: #fbeeee;
+  color: #8c1414;
+}
+.site-arxiv-pdf-body {
+  padding: 14px 16px;
+}
+
+/* ===== 评论区 ===== */
+.site-arxiv-comments {
+  margin-top: 28px;
+  border-top: 1px solid #ececec;
+  padding-top: 18px;
+}
+.site-arxiv-comment-item {
+  margin: 12px 0;
+  padding: 12px 16px;
+  background: #fafafa;
+  border: 1px solid #ececec;
+  border-radius: 3px;
+  font-family: "Helvetica Neue", Arial, "PingFang SC", sans-serif;
+  font-size: 13px;
+  color: #333;
+  line-height: 1.7;
+}
+.site-arxiv-comment-author {
+  font-size: 12px;
+  color: #888;
+  margin-top: 6px;
+}
+
+/* ===== nav block（站内导航条，arXiv 式） ===== */
+.site-arxiv-navblock {
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  font-size: 13px;
+  margin: 4px 0 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #ececec;
+}
+.site-arxiv-navblock a {
+  color: #2a6496;
+  text-decoration: none;
+  margin-right: 14px;
+}
+.site-arxiv-navblock a:hover {
+  text-decoration: underline;
+}
+
+/* ===== image ===== */
+.site-arxiv-image {
+  margin: 18px 0;
+}
+.site-arxiv-image-img {
+  width: 100%;
+  border-radius: 3px;
+  display: block;
+}
+.site-arxiv-image-caption {
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  font-size: 12px;
+  color: #777;
+  text-align: center;
+  margin-top: 6px;
+}
+
+/* ===== 与列表互跳链接 ===== */
+.site-arxiv-back {
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  margin-top: 28px;
+  padding-top: 16px;
+  border-top: 1px solid #ececec;
+}
+.site-arxiv-back a {
+  color: #2a6496;
+  text-decoration: none;
+  font-size: 13px;
+}
+.site-arxiv-back a:hover {
+  text-decoration: underline;
+}
+
+/* ===== 底栏 ===== */
+.site-arxiv-footer {
+  background: #f6f6f4;
+  color: #777;
+  font-family: "Helvetica Neue", Arial, "PingFang SC", sans-serif;
+  font-size: 12px;
+  text-align: center;
+  padding: 22px 16px;
+  border-top: 1px solid #d9d9d9;
+  line-height: 1.9;
+}
+.site-arxiv-footer a {
+  color: #2a6496;
+  text-decoration: none;
+}
+.site-arxiv-footer-meta {
+  margin-top: 4px;
+  opacity: 0.75;
+}
+
+/* ===== 404 ===== */
+.site-arxiv-notfound {
+  text-align: center;
+  padding: 80px 24px;
+  color: #555;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+}

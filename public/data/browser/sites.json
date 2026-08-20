@@ -134,5 +134,14 @@
     "pages": [
       "page-endfield-news"
     ]
+  },
+  {
+    "id": "site-ai-pdf",
+    "name": "论文AI翻译解读",
+    "baseUrl": "https://paper-ai-interpret.local/",
+    "pages": [
+      "page-ai-pdf-home",
+      "page-ai-interpret"
+    ]
   }
 ]

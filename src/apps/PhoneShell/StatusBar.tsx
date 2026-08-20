@@ -34,11 +34,13 @@ export function StatusBar() {
   return (
     <div
       style={{
-        position: 'absolute',
-        top: 0,
+        // in-flow：占据屏幕列首，下方 App 内容自然下移，不再被遮挡。
+        //（此前为 absolute overlay 盖在 App 之上，导致各 App 顶部头部被遮——BUG）
+        position: 'relative',
         left: 0,
         right: 0,
         height: 44,
+        flexShrink: 0,
         zIndex: 30,
         display: 'flex',
         alignItems: 'center',

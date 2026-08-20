@@ -2,21 +2,20 @@
  * src/apps/PhoneShell/AppRouter.tsx
  *
  * HashRouter 路由（CLAUDE.md §2 强制 HashRouter，GitHub Pages 刷新不 404）。
- * React Router v8 用 createHashRouter + <RouterProvider>，
- * 路由对象用 Component（大写，v7+ 新增，替代 v6 element）。
+ * React Router v8 用 createHashRouter + <RouterProvider>，路由对象用 Component（大写）。
+ *
+ * 重写后（玩家决策 2026-08-19）：已删引擎 initEngine/wireShellToEngine/bindNavigate。
+ * 只剩数据就绪门控（await loadGameData）+ 直接 useNavigate。
  *
  * 路由：
- *   /                     → RootLayout（PhoneShell 外壳 + engine 初始化 + 导航绑定）
- *                              内含 <Outlet/> 渲染子路由
+ *   /site/:siteId/*       → SiteRouter（全屏独立网站，无手机框，与游戏系统解耦）
+ *   /                     → RootLayout（PhoneShell 外壳 + 数据就绪门控）内含 <Outlet/>
  *   /app/:appId           → 对应 App lazy 组件（AppRegistry 聚合）
  *   index (within /)      → Desktop（桌面）
  *   *                     → NotFound（兜底回桌面）
  *
- * 关键：AppNavigationService 需要注入 useNavigate；useNavigate 必须在 RouterProvider
- * 内调用。因此 RootLayout 作为根布局组件挂在 "/" 路由下，在 router context 内执行
- * initEngine + bindNavigate + wireShellToEngine。
- *
- * AppRegistry 自动聚合 apps，路由按 appId 派发，不硬编码任何 App。
+ * main.tsx 已 await loadGameData() 再 render；RootLayout 此处再调一次为幂等缓存命中，
+ * 仅维持"数据就绪才渲染 Shell"的守卫（Shell/各App 同步查询需 loader 已加载）。
  */
 import { Suspense, useEffect, useRef, useState, type ReactElement } from 'react'
 import {
@@ -24,7 +23,6 @@ import {
   Navigate,
   Outlet,
   RouterProvider,
-  useNavigate,
   type RouteObject,
 } from 'react-router'
 import { Desktop } from '@/apps/PhoneShell/Desktop'
@@ -32,9 +30,6 @@ import { apps, appById } from '@/apps/PhoneShell/AppRegistry'
 import { PhoneShell } from '@/apps/PhoneShell/PhoneShell'
 import { Spinner } from '@/ui/Primitives'
 import { palette } from '@/ui/theme'
-import { initEngine } from '@/engine'
-import { bindNavigate, bindAppListener } from '@/engine/feedback/AppNavigationService'
-import { wireShellToEngine } from '@/utils/shellState'
 import { loadGameData } from '@/data/loader'
 
 function AppFallback() {
@@ -45,13 +40,10 @@ function AppFallback() {
   )
 }
 
-/** 根布局：PhoneShell 外壳 + 数据加载 + engine 启动 + 导航绑定。位于 router context 内。 */
+/** 根布局：PhoneShell 外壳 + 数据加载就绪门控。位于 router context 内。 */
 function RootLayout(): ReactElement {
-  const navigate = useNavigate()
   const wired = useRef(false)
-  // 数据加载 + 引擎启动状态：Shell/各App 的同步查询（getChapterById 等）需先 await loadGameData，
-  // 否则 loader.requireIndex 会抛 "GameData 未加载"。initEngine 末尾的 reevaluateChapters 也读 loader，
-  // 故顺序必须是：loadGameData() → initEngine() → 渲染 Shell。
+  // Shell/各App 的同步查询需先 await loadGameData，否则 loader.requireIndex 抛错。
   const [dataState, setDataState] = useState<{ ready: boolean; error?: string }>({ ready: false })
 
   useEffect(() => {
@@ -61,12 +53,6 @@ function RootLayout(): ReactElement {
     loadGameData()
       .then(() => {
         if (cancelled) return
-        initEngine()
-        bindNavigate((path) => navigate(path))
-        bindAppListener(() => {
-          /* 当前 App 变化由路由自身反映 */
-        })
-        wireShellToEngine()
         setDataState({ ready: true })
       })
       .catch((err: unknown) => {
@@ -76,7 +62,7 @@ function RootLayout(): ReactElement {
     return () => {
       cancelled = true
     }
-  }, [navigate])
+  }, [])
 
   if (!dataState.ready) {
     return (
@@ -122,12 +108,12 @@ function makeAppRouteComponent(appId: string): React.ComponentType {
 }
 
 const routes: RouteObject[] = [
-  // 全屏站点路由（无手机框）：调查网站作为真网页，新标签打开。
-  // 独立于 PhoneShell，SiteView 内部自调 loadGameData()。
+  // 全屏站点路由（无手机框）：独立真网站，由 SiteRouter 按 :siteId 挂载各站根。
+  // 站点自带 <Routes> 做站内导航（splat 接管子路径）。与游戏系统完全解耦。
   {
-    path: '/site/:siteId/:pageId',
+    path: '/site/:siteId/*',
     lazy: async () => {
-      const mod = await import('@/sites/SiteView')
+      const mod = await import('@/sites/SiteRouter')
       return { Component: mod.default }
     },
   },

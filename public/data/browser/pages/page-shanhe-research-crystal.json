@@ -4,8 +4,7 @@
   "url": "https://www.shanhe-med.cn/research/crystal-paper/",
   "title": "实验室发表预印本论文：从人体结晶中提取能源",
   "accessibility": {
-    "kind": "linkedOnly",
-    "fromPageId": "page-shanhe-research"
+    "kind": "public"
   },
   "blocks": [
     {
@@ -14,11 +13,11 @@
     },
     {
       "type": "paragraph",
-      "text": "陈建国教授团队预印本论文《源石结晶生物能源提取与人体内结晶生成机制研究》已上线，详见论文发表栏目。"
+      "text": "陈建国教授团队预印本论文《源石结晶生物能源提取与人体内结晶生成机制研究》已上线预印本平台。"
     },
     {
       "type": "paragraph",
-      "text": "论文链接：见“论文发表”页面 → 仿arXiv详情页。"
+      "text": "论文链接：见arxiv"
     }
   ]
 }

@@ -92,10 +92,6 @@
       "type": "callout",
       "variant": "warning",
       "text": "【实验志愿者招募】招募12-18岁青少年志愿者参与生物能源相关研究，详情见“志愿者招募”。"
-    },
-    {
-      "type": "sourceComment",
-      "comment": "<!-- 实验室管理系统后台：lab.shanhe-med.cn/admin（测试账号 admin，密码见项目基金号后6位，仅限内部） -->"
     }
   ]
 }

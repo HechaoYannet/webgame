@@ -1,0 +1,12 @@
+{
+  "id": "page-ai-pdf-home",
+  "siteId": "site-ai-pdf",
+  "url": "https://paper-ai-interpret.local/",
+  "title": "论文AI翻译解读 — 上传PDF秒懂论文",
+  "accessibility": { "kind": "public" },
+  "blocks": [
+    { "type": "hero", "heading": "论文 AI 翻译解读", "subheading": "上传英文/专业论文 PDF，AI 秒级生成中文解读摘要" },
+    { "type": "callout", "variant": "info", "text": "本工具由第三方 AI 引擎驱动，提供智能论文解读服务。当前支持预印本库收录论文。" },
+    { "type": "paragraph", "text": "使用方法：1. 下载论文 PDF；2. 点击下方“选择论文 PDF”上传；3. 校验通过后自动生成解读。" }
+  ]
+}

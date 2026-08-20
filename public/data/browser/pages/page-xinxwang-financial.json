@@ -4,8 +4,7 @@
   "url": "https://xw.zhangqiang.com.cn/admin/financial",
   "title": "新希望成长中心 — 财务记录",
   "accessibility": {
-    "kind": "loginRequired",
-    "puzzleId": "puzzle-xinxwang-backend"
+    "kind": "public"
   },
   "blocks": [
     {
@@ -41,12 +40,6 @@
           "张强个人"
         ]
       ]
-    },
-    {
-      "type": "callout",
-      "variant": "info",
-      "text": "本后台财务记录可作为额外佐证，但并非通关必需的关键证据。密码 88888888 与举报电话 0731-88888888 后8位暗合，是有意设计的巧合。"
     }
-  ],
-  "registersClueId": "clue-xinxwang-financial"
+  ]
 }

@@ -4,8 +4,7 @@
   "url": "https://www.shanhe-med.cn/research/breakthrough/",
   "title": "我校生物能源实验室在清洁能源领域取得重大突破",
   "accessibility": {
-    "kind": "linkedOnly",
-    "fromPageId": "page-shanhe-research"
+    "kind": "public"
   },
   "blocks": [
     {
@@ -20,11 +19,6 @@
     {
       "type": "paragraph",
       "text": "近日，我校生物能源与疾病控制国家重点实验室在清洁能源领域取得重大突破。陈建国教授团队研究发现，通过特殊晶体材料可在生物体内诱导能量结晶生成，并实现能源提取。"
-    },
-    {
-      "type": "callout",
-      "variant": "warning",
-      "text": "官方通稿未提及“青少年受试者”与伦理审查细节，措辞模糊。"
     }
   ]
 }

@@ -4,8 +4,7 @@
   "url": "https://www.shanhe-med.cn/news/energy-award/",
   "title": "实验室获“能源创新奖”",
   "accessibility": {
-    "kind": "linkedOnly",
-    "fromPageId": "page-shanhe-research"
+    "kind": "public"
   },
   "blocks": [
     {

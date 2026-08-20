@@ -4,22 +4,14 @@
     "type": "password",
     "title": "登录李桥瑞的QQ",
     "chapterId": "ch-prologue",
-    "answer": "0328",
+    "answer": "1128",
     "matchStrategy": {
       "kind": "oneOf",
-      "accepted": ["0328", "20260328"]
-    },
-    "attemptsToHint": 3,
-    "riskPerWrongAttempt": 5,
-    "hintIds": ["hint-qq-password"],
-    "onSuccess": [
-      { "type": "collectEvidence", "evidenceId": "ev-qq-chat-plan" },
-      { "type": "advanceChapter", "toChapterId": "ch-1" }
-    ],
-    "onFailure": [
-      { "type": "addRisk", "amount": 5 }
-    ],
-    "unlocksThreadIds": ["thread-li-yan-qq", "thread-yan-lin-qq"]
+      "accepted": [
+        "1128",
+        "20251128"
+      ]
+    }
   },
   {
     "id": "puzzle-lvzhong-internal",
@@ -30,24 +22,7 @@
     "matchStrategy": {
       "kind": "exact",
       "trim": true
-    },
-    "attemptsToHint": 3,
-    "riskPerWrongAttempt": 5,
-    "hintIds": ["hint-lvzhong-password"],
-    "onSuccess": [
-      { "type": "collectEvidence", "evidenceId": "ev-lvzhong-agreement" },
-      { "type": "registerClue", "clueId": "clue-lvzhong-internal-contact" },
-      { "type": "collectEvidence", "evidenceId": "ev-xinxwang-lab-news" },
-      { "type": "advanceChapter", "toChapterId": "ch-3" }
-    ],
-    "onFailure": [
-      { "type": "addRisk", "amount": 5 }
-    ],
-    "unlocksPageIds": [
-      "page-lvzhong-agreement",
-      "page-lvzhong-screening-pdf",
-      "page-lvzhong-contact"
-    ]
+    }
   },
   {
     "id": "puzzle-pdf-screening",
@@ -57,34 +32,17 @@
     "answer": "0312",
     "matchStrategy": {
       "kind": "exact"
-    },
-    "hintIds": [],
-    "onSuccess": [
-      { "type": "registerClue", "clueId": "clue-screening-list" }
-    ],
-    "onFailure": [
-      { "type": "addRisk", "amount": 3 }
-    ]
+    }
   },
   {
     "id": "puzzle-xinxwang-backend",
     "type": "password",
-    "title": "登录新希望成长中心后台（红鲱鱼）",
+    "title": "登录新希望成长中心后台）",
     "chapterId": "ch-3",
     "answer": "88888888",
     "matchStrategy": {
       "kind": "exact"
-    },
-    "attemptsToHint": 3,
-    "riskPerWrongAttempt": 3,
-    "hintIds": ["hint-xinxwang-password"],
-    "onSuccess": [
-      { "type": "registerClue", "clueId": "clue-xinxwang-financial" }
-    ],
-    "onFailure": [
-      { "type": "addRisk", "amount": 3 }
-    ],
-    "unlocksPageIds": ["page-xinxwang-financial"]
+    }
   },
   {
     "id": "puzzle-upload-paper",
@@ -94,14 +52,7 @@
     "answer": "paper-source-crystal.pdf",
     "matchStrategy": {
       "kind": "exact"
-    },
-    "hintIds": [],
-    "onSuccess": [
-      { "type": "collectEvidence", "evidenceId": "ev-paper-pdf" },
-      { "type": "registerClue", "clueId": "clue-lab-backend-address" },
-      { "type": "advanceChapter", "toChapterId": "ch-5" }
-    ],
-    "unlocksAssetIds": ["paper-source-crystal.pdf"]
+    }
   },
   {
     "id": "puzzle-lab-backend",
@@ -111,22 +62,7 @@
     "answer": "123456",
     "matchStrategy": {
       "kind": "exact"
-    },
-    "attemptsToHint": 3,
-    "riskPerWrongAttempt": 10,
-    "hintIds": ["hint-lab-password"],
-    "onSuccess": [
-      { "type": "collectEvidence", "evidenceId": "ev-lab-funding-report" },
-      { "type": "collectEvidence", "evidenceId": "ev-lab-upload-log" },
-      { "type": "advanceChapter", "toChapterId": "ch-finale" }
-    ],
-    "onFailure": [
-      { "type": "addRisk", "amount": 10 }
-    ],
-    "unlocksPageIds": [
-      "page-lab-funding-report",
-      "page-lab-subject-list"
-    ]
+    }
   },
   {
     "id": "puzzle-evidence-finale",
@@ -149,11 +85,7 @@
         "ev-paper-pdf",
         "ev-lab-funding-report"
       ],
-      "minLength": 5
-    },
-    "hintIds": [],
-    "onSuccess": [
-      { "type": "advanceChapter", "toChapterId": "ch-finale" }
-    ]
+      "minLength": 2
+    }
   }
 ]

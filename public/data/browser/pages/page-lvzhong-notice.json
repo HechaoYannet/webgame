@@ -58,18 +58,6 @@
           "date": "2025-12-30"
         }
       ]
-    },
-    {
-      "type": "sourceComment",
-      "comment": "<!-- 心理筛查通知详情页 URL 异常：/notice/screening/ → 管理员测试目录 /qiangzhang 仅校长账号可访问（账号: zhangqiang） -->"
     }
-  ],
-  "discoverableBy": [
-    {
-      "type": "urlSuffix",
-      "basePageId": "page-lvzhong-notice-screening",
-      "suffix": "/qiangzhang"
-    }
-  ],
-  "registersClueId": "clue-lvzhong-hidden-url"
+  ]
 }

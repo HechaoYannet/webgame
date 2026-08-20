@@ -1,77 +1,67 @@
 /**
  * src/apps/AlbumApp/AlbumApp.tsx — 相册（含证据库视图，终章核心）
  *
- * - 相册：玩家查看过的关键页面自动截图入"证据"文件夹（engine ClueRegistry 调 ScreenshotService
- *   产出 screenshotAssetId；本 Agent 直接消费 engine store 的 collectedEvidenceIds）。
- * - 证据库视图（终章）：列出已收集证据（collectedEvidenceIds + evidence-registry.json），
- *   玩家勾选 ≥5 项关键证据 → 调 engine usePuzzle().submit({ selected }) →
- *   引擎 evidenceSet 校验（requiredEvidenceIds 5项, minLength 5）→ 通过则可拨举报电话（真结局）；
- *   不足普通结局。
- *
- * strict: 答案不硬编码——requiredEvidenceIds 全部从 puzzles.json puzzle-evidence-finale 读，
- * 本组件只做 UI 勾选与提交，校验由 engine PuzzleService 完成（submit 内部已执行 onSuccess）。
- *
- * 迁移说明：原 ../PhoneApp/runtime 已删除。证据/谜题/章节状态走 @/engine/hooks，
- * 反馈走 @/engine/feedback，App 切换走 @/engine/feedback/AppNavigationService。
+ * 迁移后（玩家决策 2026-08-19 去引擎化）：
+ * - 证据收集改为荣誉制：相册列出全部证据，玩家自行勾选 toggleEvidence；
+ *   不再有"查看即取证/注册线索"的自动机制（view 已是 no-op）。
+ * - 证据库视图去章节门控：全时可见可勾选。
+ * - 终章证据勾选提交：checkAnswer('puzzle-evidence-finale', { selected }) 判定，
+ *   达标 -> markPuzzleSolved + pushEnding('good')；不达标 -> pushEnding('normal')。
+ * - 勾选 ev-lab-funding-report 后显示"启动举报倒计时"按钮 ->
+ *   startCountdown('countdown-finale', 180) + advanceChapter('ch-finale') +
+ *   deliverSms('sms-zhangqiang-threat') + deliverDoorbell('doorbell-dao-visit')
+ *   （后两者来自 utils/shellState，自动推通知/震屏/红边/音频）。
+ * - 数据用 data/loader 同步 getter（main.tsx 已 await loadGameData）。
+ * - 动力源全部来自 game/gameStore + game/answerCheck + utils/shellState；
+ *   不再 import src/engine。
  */
 
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import type { ReactNode } from 'react';
+import { useNavigate } from 'react-router';
+import { useGameStore } from '@/game/gameStore';
+import { checkAnswer } from '@/game/answerCheck';
+import { listAll, getRequiredForFinale } from '@/game/evidence';
+import { getPuzzleById } from '@/data/loader';
 import {
-  loadEvidence,
-  loadPuzzles,
-} from '../PhoneApp/data';
-import { usePuzzle } from '@/engine/hooks/usePuzzle';
-import { useGameStore } from '@/engine/store/gameStore';
-import * as HapticsService from '@/engine/feedback/HapticsService';
-import { toast as engineToast } from '@/engine/feedback/AlertService';
-import { openApp } from '@/engine/feedback/AppNavigationService';
-import type { Evidence, EvidenceId, Puzzle } from '@/types';
+  showToast,
+  deliverSms,
+  deliverDoorbell,
+} from '@/utils/shellState';
+import type { Evidence, EvidenceId, EndingId } from '@/types';
 
 const FINALE_PUZZLE_ID = 'puzzle-evidence-finale';
+const FUNDING_REPORT_EVIDENCE_ID: EvidenceId = 'ev-lab-funding-report';
+const COUNTDOWN_FINALE_ID = 'countdown-finale';
+const SMS_THREAT_ID = 'sms-zhangqiang-threat';
+const DOORBELL_DAO_ID = 'doorbell-dao-visit';
 
 type View = 'album' | 'vault';
 
+/** 轻量震屏反馈（取代已废 HapticsService）。 */
+function vibrate(pattern: number | number[]): void {
+  try {
+    navigator.vibrate?.(pattern);
+  } catch {
+    // 忽略：某些环境没有振动 API
+  }
+}
+
 export default function AlbumApp(): ReactNode {
-  const [evidences, setEvidences] = useState<Evidence[]>([]);
-  const [puzzles, setPuzzles] = useState<Puzzle[]>([]);
-  const [loadErr, setLoadErr] = useState<string | null>(null);
   const [view, setView] = useState<View>('album');
 
   const collectedEvidenceIds = useGameStore((s) => s.collectedEvidenceIds);
-  const finaleSolved = useGameStore((s) => s.solvedPuzzleIds.includes(FINALE_PUZZLE_ID));
-  const currentChapterId = useGameStore((s) => s.currentChapterId);
 
-  useEffect(() => {
-    let mounted = true;
-    Promise.all([loadEvidence(), loadPuzzles()])
-      .then(([evs, ps]) => {
-        if (!mounted) return;
-        setEvidences(evs);
-        setPuzzles(ps);
-      })
-      .catch((e: unknown) => {
-        if (!mounted) return;
-        setLoadErr(e instanceof Error ? e.message : String(e));
-      });
-    return () => {
-      mounted = false;
-    };
-  }, []);
+  // loader 已在 main.tsx await 过，同步 getter 安全。
+  const allEvidences = useMemo<Evidence[]>(() => listAll(), []);
 
-  const finalePuzzle = useMemo(
-    () => puzzles.find((p) => p.id === FINALE_PUZZLE_ID),
-    [puzzles],
+  const collectedEvidences = useMemo<Evidence[]>(
+    () => {
+      const collected = new Set(collectedEvidenceIds);
+      return allEvidences.filter((e) => collected.has(e.id));
+    },
+    [allEvidences, collectedEvidenceIds],
   );
-
-  const collectedEvidences = useMemo(
-    () => evidences.filter((e) => collectedEvidenceIds.includes(e.id)),
-    [evidences, collectedEvidenceIds],
-  );
-
-  if (loadErr) {
-    return <div style={{ padding: 24, color: '#f88' }}>证据加载失败：{loadErr}</div>;
-  }
 
   return (
     <div style={wrapStyle}>
@@ -94,14 +84,7 @@ export default function AlbumApp(): ReactNode {
       </div>
 
       {view === 'album' && <AlbumView evidences={collectedEvidences} />}
-      {view === 'vault' && (
-        <VaultView
-          evidences={collectedEvidences}
-          finalePuzzle={finalePuzzle}
-          finaleSolved={finaleSolved}
-          inFinale={currentChapterId === 'ch-finale' || currentChapterId === 'ch-5'}
-        />
-      )}
+      {view === 'vault' && <VaultView evidences={allEvidences} />}
     </div>
   );
 }
@@ -130,72 +113,89 @@ function AlbumView({ evidences }: { evidences: Evidence[] }): ReactNode {
 
 interface VaultViewProps {
   evidences: Evidence[];
-  finalePuzzle: Puzzle | undefined;
-  finaleSolved: boolean;
-  inFinale: boolean;
 }
-function VaultView({ evidences, finalePuzzle, finaleSolved, inFinale }: VaultViewProps): ReactNode {
-  const [selected, setSelected] = useState<Set<EvidenceId>>(new Set());
+function VaultView({ evidences }: VaultViewProps): ReactNode {
+  const navigate = useNavigate();
+  const collectedEvidenceIds = useGameStore((s) => s.collectedEvidenceIds);
+  const finaleSolved = useGameStore((s) => s.solvedPuzzleIds.includes(FINALE_PUZZLE_ID));
+  const finished = useGameStore((s) => s.finished);
+  const toggleEvidence = useGameStore((s) => s.toggleEvidence);
+  const markPuzzleSolved = useGameStore((s) => s.markPuzzleSolved);
+  const pushEnding = useGameStore((s) => s.pushEnding);
+  const startCountdown = useGameStore((s) => s.startCountdown);
+  const advanceChapter = useGameStore((s) => s.advanceChapter);
+
+  const [selected, setSelected] = useState<Set<EvidenceId>>(new Set(collectedEvidenceIds));
   const [submitting, setSubmitting] = useState(false);
   const [result, setResult] = useState<null | { ok: boolean }>(null);
-  // engine usePuzzle(puzzleId)：submit({ selected }) 走 PuzzleService（内部已执行 onSuccess）
-  const { submit } = usePuzzle(FINALE_PUZZLE_ID);
 
-  const requiredIds = useMemo<EvidenceId[]>(() => {
-    if (finalePuzzle?.matchStrategy.kind === 'evidenceSet') {
-      return finalePuzzle.matchStrategy.requiredEvidenceIds;
-    }
-    return [];
-  }, [finalePuzzle]);
+  const finalePuzzle = useMemo(() => getPuzzleById(FINALE_PUZZLE_ID), []);
+
+  const requiredIds = useMemo<EvidenceId[]>(
+    () => (finalePuzzle?.matchStrategy.kind === 'evidenceSet'
+      ? finalePuzzle.matchStrategy.requiredEvidenceIds
+      : getRequiredForFinale()),
+    [finalePuzzle],
+  );
   const minLength = finalePuzzle?.matchStrategy.kind === 'evidenceSet'
     ? finalePuzzle.matchStrategy.minLength
     : 5;
 
-  const toggle = (id: EvidenceId) =>
+  const toggle = (id: EvidenceId): void => {
     setSelected((s) => {
       const n = new Set(s);
       if (n.has(id)) n.delete(id);
       else n.add(id);
       return n;
     });
+    // 荣誉制：勾选即写入 gameStore.collectedEvidenceIds（供 AlbumView/终章判定读）
+    toggleEvidence(id);
+  };
 
   const requiredSelectedCount = useMemo(
     () => requiredIds.filter((id) => selected.has(id)).length,
     [selected, requiredIds],
   );
 
-  const canSubmit = inFinale && collectedCount(evidences) >= minLength && selected.size >= minLength;
+  const canSubmit = collectedCount(evidences) >= minLength && selected.size >= minLength;
   function collectedCount(ev: Evidence[]): number {
     return ev.length;
   }
 
-  const handleSubmit = () => {
-    if (!finalePuzzle) return;
+  const fundingReportChecked = selected.has(FUNDING_REPORT_EVIDENCE_ID);
+  const countdownStarted = !!useGameStore((s) => s.countdowns?.[COUNTDOWN_FINALE_ID]);
+
+  /** 启动举报倒计时：勾选经费报告后可见。触发倒计时 + 推进终章 + 推威胁短信 + 推刀哥门铃。 */
+  const handleStartCountdown = (): void => {
+    startCountdown(COUNTDOWN_FINALE_ID, 180);
+    advanceChapter('ch-finale');
+    deliverSms(SMS_THREAT_ID);
+    deliverDoorbell(DOORBELL_DAO_ID);
+    vibrate(30);
+    showToast('举报倒计时已启动！威胁短信与门铃已到达', 'danger');
+  };
+
+  const handleSubmit = (): void => {
     setSubmitting(true);
-    // engine submit({ selected })：内部已执行 onSuccess（advanceChapter ch-finale）
-    const r = submit({ selected: Array.from(selected) });
-    setResult({ ok: r.success });
+    const ok = checkAnswer(FINALE_PUZZLE_ID, { selected: Array.from(selected) });
+    setResult({ ok });
     setSubmitting(false);
-    HapticsService.vibrate(r.success ? 'long' : 'double');
-    if (r.success) {
-      engineToast('证据已提交，去电话 App 拨打 0731-88888888', 'success');
+    vibrate(ok ? 30 : [30, 40, 30]);
+    if (ok) {
+      markPuzzleSolved(FINALE_PUZZLE_ID);
+      showToast('证据充分，已立案举报', 'success');
+      // 达标 -> 真结局（拨打电话的分支由 PhoneApp 处理；此处直接落真结局）
+      pushEnding('good' as EndingId);
     } else {
-      engineToast('证据不足，无法立案。继续收集关键证据。', 'warning');
+      showToast('证据不足，无法立案。继续收集关键证据。', 'warning');
+      // 不达标 -> 普通结局
+      pushEnding('normal' as EndingId);
     }
   };
 
-  const goCallPolice = () => {
-    // engine AppNavigationService：HashRouter 路由跳转（phone-shell 已 bindNavigate）
-    openApp('phone');
+  const goCallPolice = (): void => {
+    navigate('/app/phone');
   };
-
-  if (!inFinale) {
-    return (
-      <div style={{ padding: 24, color: '#778', fontSize: 13, textAlign: 'center' }}>
-        证据库将在第五章解锁——届时你需在此整理证据并拨打举报电话。
-      </div>
-    );
-  }
 
   return (
     <div style={vaultWrapStyle}>
@@ -203,8 +203,16 @@ function VaultView({ evidences, finalePuzzle, finaleSolved, inFinale }: VaultVie
         勾选至少 {minLength} 项关键证据（含全部 {requiredIds.length} 项必选）才能立案举报
       </div>
       <div style={{ fontSize: 11, color: '#789', padding: '0 12px' }}>
-        已选 {selected.size} / 已收集 {evidences.length} / 必选已勾 {requiredSelectedCount}/{requiredIds.length}
+        已选 {selected.size} / 可选 {evidences.length} / 必选已勾 {requiredSelectedCount}/{requiredIds.length}
       </div>
+
+      {fundingReportChecked && !countdownStarted && !finished && (
+        <div style={countdownCtaRow}>
+          <button style={countdownCtaBtn} onClick={handleStartCountdown}>
+            ⏱ 整理证据，启动举报倒计时（3 分钟）
+          </button>
+        </div>
+      )}
 
       <div style={vaultListStyle}>
         {evidences.length === 0 && (
@@ -233,7 +241,7 @@ function VaultView({ evidences, finalePuzzle, finaleSolved, inFinale }: VaultVie
                   {ev.description}
                 </div>
                 <div style={{ fontSize: 10, color: '#566', marginTop: 4, fontFamily: 'monospace' }}>
-                  {ev.id} · {ev.source.kind}
+                  {ev.id}
                 </div>
               </div>
             </label>
@@ -242,7 +250,7 @@ function VaultView({ evidences, finalePuzzle, finaleSolved, inFinale }: VaultVie
       </div>
 
       <div style={actionBar}>
-        {!finaleSolved ? (
+        {!finaleSolved && !finished ? (
           <button
             style={primaryBtn(canSubmit && !submitting)}
             disabled={!canSubmit || submitting}
@@ -426,4 +434,19 @@ const callBtn: React.CSSProperties = {
   fontSize: 13,
   cursor: 'pointer',
   fontWeight: 600,
+};
+const countdownCtaRow: React.CSSProperties = {
+  padding: '8px 12px',
+  display: 'flex',
+  justifyContent: 'center',
+};
+const countdownCtaBtn: React.CSSProperties = {
+  padding: '8px 14px',
+  borderRadius: 8,
+  border: 'none',
+  background: '#c0392b',
+  color: '#fff',
+  fontSize: 12,
+  fontWeight: 600,
+  cursor: 'pointer',
 };

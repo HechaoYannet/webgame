@@ -1,0 +1,314 @@
+/**
+ * site-news 视觉：经典地市级新闻门户。
+ * 顶部红底通栏 + Logo、横向主导航、白底正文、底部灰底版权。
+ */
+.site-news-root {
+  width: 100%;
+  min-width: 100%;
+  min-height: 100vh;
+  background: #f4f5f7;
+  color: #1f2329;
+  font-family: "Microsoft YaHei", "PingFang SC", "Helvetica Neue", Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.75;
+}
+
+/* ===== 顶部通栏（品牌色红） ===== */
+.site-news-topbar {
+  background: #c8161d;
+  color: #fff;
+  border-bottom: 3px solid #8a0f14;
+}
+.site-news-topbar-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 18px 24px 16px;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.site-news-brand {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+.site-news-brand-name {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+.site-news-brand-slogan {
+  font-size: 13px;
+  opacity: 0.85;
+  letter-spacing: 1px;
+}
+.site-news-topbar-meta {
+  font-size: 12px;
+  opacity: 0.8;
+  text-align: right;
+}
+
+/* ===== 主导航条 ===== */
+.site-news-nav {
+  background: #fff;
+  border-bottom: 1px solid #e3e6ea;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+}
+.site-news-nav-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  gap: 4px;
+  overflow-x: auto;
+}
+.site-news-nav-link {
+  display: inline-block;
+  padding: 14px 18px;
+  font-size: 15px;
+  color: #2b2f36;
+  text-decoration: none;
+  white-space: nowrap;
+  border-bottom: 3px solid transparent;
+  transition: color 0.12s, border-color 0.12s;
+}
+.site-news-nav-link:hover {
+  color: #c8161d;
+}
+.site-news-nav-link.is-active {
+  color: #c8161d;
+  border-bottom-color: #c8161d;
+  font-weight: 600;
+}
+
+/* ===== 主体容器 ===== */
+.site-news-main {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 28px 24px 56px;
+}
+.site-news-loading {
+  padding: 60px 0;
+  text-align: center;
+  color: #8a919c;
+}
+
+/* ===== 面包屑 ===== */
+.site-news-crumb {
+  font-size: 13px;
+  color: #8a919c;
+  margin-bottom: 16px;
+}
+.site-news-crumb a {
+  color: #8a919c;
+  text-decoration: none;
+}
+.site-news-crumb a:hover {
+  color: #c8161d;
+}
+
+/* ===== 文章主体 ===== */
+.site-news-article-head {
+  border-bottom: 1px solid #e3e6ea;
+  padding-bottom: 18px;
+  margin-bottom: 24px;
+}
+.site-news-article-title {
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 1.4;
+  margin: 0 0 12px;
+  color: #1f2329;
+}
+.site-news-article-meta {
+  font-size: 13px;
+  color: #8a919c;
+}
+
+/* ===== 首页 hero ===== */
+.site-news-hero {
+  background: linear-gradient(135deg, #c8161d 0%, #8a0f14 100%);
+  color: #fff;
+  padding: 44px 32px;
+  border-radius: 6px;
+  margin-bottom: 28px;
+}
+.site-news-hero-heading {
+  font-size: 40px;
+  font-weight: 800;
+  margin: 0 0 10px;
+  letter-spacing: 3px;
+}
+.site-news-hero-sub {
+  font-size: 18px;
+  opacity: 0.9;
+  margin: 0;
+  letter-spacing: 2px;
+}
+
+/* ===== 文章列表 ===== */
+.site-news-list-title {
+  font-size: 20px;
+  font-weight: 700;
+  border-left: 4px solid #c8161d;
+  padding-left: 10px;
+  margin: 0 0 18px;
+}
+.site-news-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  background: #fff;
+  border: 1px solid #e3e6ea;
+  border-radius: 6px;
+  overflow: hidden;
+}
+.site-news-list-item {
+  border-bottom: 1px solid #eef0f3;
+}
+.site-news-list-item:last-child {
+  border-bottom: none;
+}
+.site-news-list-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 20px;
+  text-decoration: none;
+  color: #1f2329;
+  transition: background 0.12s;
+}
+.site-news-list-link:hover {
+  background: #fafbfc;
+}
+.site-news-list-title-text {
+  font-size: 16px;
+  font-weight: 500;
+  flex: 1;
+}
+.site-news-list-link:hover .site-news-list-title-text {
+  color: #c8161d;
+}
+.site-news-list-date {
+  font-size: 13px;
+  color: #9aa0a8;
+  white-space: nowrap;
+}
+
+/* ===== 内容块 ===== */
+.site-news-paragraph {
+  margin: 16px 0;
+  color: #2b2f36;
+  text-indent: 2em;
+}
+.site-news-paragraph.is-meta {
+  text-indent: 0;
+  font-size: 13px;
+  color: #8a919c;
+  border-left: 3px solid #d9dce1;
+  padding-left: 12px;
+  margin: 20px 0;
+}
+.site-news-callout {
+  margin: 20px 0;
+  padding: 14px 18px;
+  border-radius: 4px;
+  font-size: 15px;
+  border-left: 4px solid #c8161d;
+  background: #fdeeee;
+  color: #6a1418;
+}
+.site-news-callout.is-warning {
+  background: #fff7e6;
+  border-left-color: #d48806;
+  color: #874d00;
+}
+.site-news-callout.is-danger {
+  background: #fff1f0;
+  border-left-color: #cf1322;
+  color: #820014;
+}
+.site-news-callout.is-info {
+  background: #e6f4ff;
+  border-left-color: #1677ff;
+  color: #003a8c;
+}
+.site-news-image {
+  margin: 22px 0;
+}
+.site-news-image .site-news-image-img {
+  width: 100%;
+  border-radius: 4px;
+  display: block;
+}
+.site-news-image-caption {
+  font-size: 13px;
+  color: #8a919c;
+  text-align: center;
+  margin-top: 6px;
+}
+.site-news-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: 14px;
+  background: #fff;
+  border: 1px solid #e3e6ea;
+}
+.site-news-table th,
+.site-news-table td {
+  border: 1px solid #e3e6ea;
+  padding: 10px 12px;
+  text-align: left;
+}
+.site-news-table th {
+  background: #f4f5f7;
+  font-weight: 600;
+}
+.site-news-source {
+  margin: 28px 0 0;
+  padding: 12px 0 0;
+  border-top: 1px dashed #d9dce1;
+  font-size: 13px;
+  color: #9aa0a8;
+}
+.site-news-source a {
+  color: #c8161d;
+  text-decoration: none;
+}
+
+/* ===== 返回列表 ===== */
+.site-news-back {
+  margin-top: 32px;
+  padding-top: 18px;
+  border-top: 1px solid #e3e6ea;
+}
+.site-news-back a {
+  color: #c8161d;
+  text-decoration: none;
+  font-size: 14px;
+}
+.site-news-back a:hover {
+  text-decoration: underline;
+}
+
+/* ===== 底栏 ===== */
+.site-news-footer {
+  background: #2b2f36;
+  color: #9aa0a8;
+  font-size: 12px;
+  text-align: center;
+  padding: 24px 16px;
+  line-height: 1.9;
+}
+.site-news-footer a {
+  color: #9aa0a8;
+  text-decoration: none;
+}
+.site-news-footer-icp {
+  margin-top: 4px;
+  opacity: 0.7;
+}

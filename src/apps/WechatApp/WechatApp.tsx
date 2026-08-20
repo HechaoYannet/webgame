@@ -1,30 +1,79 @@
 /**
  * WechatApp/WechatApp.tsx — 微信 App 主入口
  *
- * - 底部 Tab：聊天 / 朋友圈 / 公众号 / 通讯录（交互设计 §二）。
- * - 启动时一次性加载 meta/characters.json（人物反查，供各 Tab 复用）。
- * - 挂载 useEngineBridge 监听引擎回推。
+ * - 底部 Tab：微信 / 公众号 / 发现 / 我（WeChat 风格）。
+ * - 启动时 await loadGameData()（loader 幂等缓存），保证同步 getter 安全；
+ *   人物通过 @/data/loader getAllCharacters() 同步取（main.tsx 已 await 过）。
+ * - 挂载 useEngineBridge（重写后 no-op，保留调用面）。
  *
  * 技术栈（CLAUDE.md §2）：React + TS；HashRouter 路由由 PhoneShell 的 AppRouter 管，
- * 本组件只渲染内容；import.meta.env.BASE_URL 在 data.ts 中原样出现。
+ * 本组件只渲染内容；import.meta.env.BASE_URL 在 loader 内部出现。
  */
 import { useEffect, useState } from "react";
 import type { Character } from "@/types";
-import { loadCharacters } from "./data";
+import { getAllCharacters, loadGameData } from "@/data/loader";
 import "./WechatApp.css";
 import { useEngineBridge } from "./wechatEngine";
 import { ChatTab } from "./ChatTab";
 import { MomentsTab } from "./MomentsTab";
 import { OfficialTab } from "./OfficialTab";
-import { ContactsTab } from "./ContactsTab";
+import { ProfileTab } from "./ProfileTab";
 
-type TabKey = "chat" | "moments" | "official" | "contacts";
+type TabKey = "chat" | "official" | "discover" | "me";
 
-const TABS: Array<{ key: TabKey; label: string; icon: string }> = [
-  { key: "chat", label: "聊天", icon: "💬" },
-  { key: "moments", label: "朋友圈", icon: "🌟" },
-  { key: "official", label: "公众号", icon: "📰" },
-  { key: "contacts", label: "通讯录", icon: "👥" },
+interface TabDef {
+  key: TabKey;
+  label: string;
+  /** SVG icon as JSX (uses currentColor for active state). */
+  icon: JSX.Element;
+}
+
+/* SVG tab icons — clean outlines matching WeChat design. */
+function TabIconChat(): JSX.Element {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
+    </svg>
+  );
+}
+
+function TabIconOfficial(): JSX.Element {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="3" y="4" width="18" height="16" rx="2" />
+      <line x1="7" y1="9" x2="17" y2="9" />
+      <line x1="7" y1="13" x2="17" y2="13" />
+      <line x1="7" y1="17" x2="13" y2="17" />
+    </svg>
+  );
+}
+
+function TabIconDiscover(): JSX.Element {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="12" r="10" />
+      <line x1="12" y1="2" x2="12" y2="6" />
+      <line x1="12" y1="18" x2="12" y2="22" />
+      <line x1="2" y1="12" x2="6" y2="12" />
+      <line x1="18" y1="12" x2="22" y2="12" />
+    </svg>
+  );
+}
+
+function TabIconMe(): JSX.Element {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="8" r="4" />
+      <path d="M19 21v-2a4 4 0 00-4-4H9a4 4 0 00-4 4v2" />
+    </svg>
+  );
+}
+
+const TABS: TabDef[] = [
+  { key: "chat", label: "微信", icon: <TabIconChat /> },
+  { key: "official", label: "公众号", icon: <TabIconOfficial /> },
+  { key: "discover", label: "发现", icon: <TabIconDiscover /> },
+  { key: "me", label: "我", icon: <TabIconMe /> },
 ];
 
 export default function WechatApp(): JSX.Element {
@@ -35,12 +84,20 @@ export default function WechatApp(): JSX.Element {
 
   useEffect(() => {
     let cancelled = false;
-    loadCharacters()
-      .then((c) => {
-        if (!cancelled) setCharacters(c);
+    // loader 幂等：loadGameData main.tsx 已 await 过，这里再 await 确保同步 getter 安全，
+    // 然后同步读 characters 快照。
+    loadGameData()
+      .then(() => {
+        if (cancelled) return;
+        try {
+          setCharacters(getAllCharacters());
+          setCharsError(null);
+        } catch (e: unknown) {
+          setCharsError(e instanceof Error ? e.message : String(e));
+        }
       })
       .catch((e: unknown) => {
-        if (!cancelled)
+        if (cancelled)
           setCharsError(e instanceof Error ? e.message : String(e));
       });
     return () => {
@@ -55,9 +112,9 @@ export default function WechatApp(): JSX.Element {
           <div className="wc-app-warn">人物加载失败：{charsError}</div>
         )}
         {tab === "chat" && <ChatTab characters={characters} />}
-        {tab === "moments" && <MomentsTab characters={characters} />}
         {tab === "official" && <OfficialTab characters={characters} />}
-        {tab === "contacts" && <ContactsTab characters={characters} />}
+        {tab === "discover" && <MomentsTab characters={characters} />}
+        {tab === "me" && <ProfileTab characters={characters} />}
       </div>
       <nav className="wc-tabbar" aria-label="微信底部导航">
         {TABS.map((t) => (

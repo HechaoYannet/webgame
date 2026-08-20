@@ -4,7 +4,10 @@
     "platform": "wechat",
     "type": "single",
     "title": "李桥瑞",
-    "participantCharacterIds": ["char-linzhe", "char-liqiaorui"],
+    "participantCharacterIds": [
+      "char-linzhe",
+      "char-liqiaorui"
+    ],
     "lastMessageAt": "2026-03-13T15:10:00+08:00",
     "unreadCount": 0,
     "messageFile": "data/wechat/messages/thread-li-lin-wechat.json"
@@ -46,7 +49,10 @@
     "platform": "wechat",
     "type": "single",
     "title": "王老师",
-    "participantCharacterIds": ["char-linzhe", "char-wangshufen"],
+    "participantCharacterIds": [
+      "char-linzhe",
+      "char-wangshufen"
+    ],
     "lastMessageAt": "2026-03-13T15:13:00+08:00",
     "unreadCount": 1,
     "messageFile": "data/wechat/messages/thread-lin-wang-wechat.json"
@@ -56,7 +62,10 @@
     "platform": "wechat",
     "type": "single",
     "title": "刘叔",
-    "participantCharacterIds": ["char-linzhe", "char-liushu"],
+    "participantCharacterIds": [
+      "char-linzhe",
+      "char-liushu"
+    ],
     "lastMessageAt": "2026-03-13T15:30:00+08:00",
     "unreadCount": 0,
     "messageFile": "data/wechat/messages/thread-lin-liushu-wechat.json"
@@ -66,7 +75,10 @@
     "platform": "wechat",
     "type": "single",
     "title": "张校长",
-    "participantCharacterIds": ["char-linzhe", "char-zhangqiang"],
+    "participantCharacterIds": [
+      "char-linzhe",
+      "char-zhangqiang"
+    ],
     "lastMessageAt": "2026-03-14T10:08:00+08:00",
     "unreadCount": 2,
     "messageFile": "data/wechat/messages/thread-lin-zhangqiang-wechat.json"
@@ -76,7 +88,10 @@
     "platform": "wechat",
     "type": "single",
     "title": "妈妈",
-    "participantCharacterIds": ["char-linzhe", "char-mom"],
+    "participantCharacterIds": [
+      "char-linzhe",
+      "char-mom"
+    ],
     "lastMessageAt": "2026-03-13T18:00:00+08:00",
     "unreadCount": 0,
     "messageFile": "data/wechat/messages/thread-lin-mom-wechat.json"
@@ -86,7 +101,10 @@
     "platform": "wechat",
     "type": "single",
     "title": "爸",
-    "participantCharacterIds": ["char-linzhe", "char-dad"],
+    "participantCharacterIds": [
+      "char-linzhe",
+      "char-dad"
+    ],
     "lastMessageAt": "2026-03-01T20:00:00+08:00",
     "unreadCount": 0,
     "messageFile": "data/wechat/messages/thread-lin-dad-wechat.json"
@@ -96,7 +114,10 @@
     "platform": "wechat",
     "type": "single",
     "title": "周明",
-    "participantCharacterIds": ["char-linzhe", "char-zhouming"],
+    "participantCharacterIds": [
+      "char-linzhe",
+      "char-zhouming"
+    ],
     "lastMessageAt": "2026-03-13T16:20:00+08:00",
     "unreadCount": 0,
     "messageFile": "data/wechat/messages/thread-lin-zhouming-wechat.json"
@@ -106,7 +127,10 @@
     "platform": "wechat",
     "type": "single",
     "title": "陈雨桐",
-    "participantCharacterIds": ["char-linzhe", "char-chenyutong"],
+    "participantCharacterIds": [
+      "char-linzhe",
+      "char-chenyutong"
+    ],
     "lastMessageAt": "2026-03-13T16:40:00+08:00",
     "unreadCount": 0,
     "messageFile": "data/wechat/messages/thread-lin-chenyutong-wechat.json"
@@ -116,7 +140,10 @@
     "platform": "wechat",
     "type": "single",
     "title": "赵天宇",
-    "participantCharacterIds": ["char-linzhe", "char-zhaotianyu"],
+    "participantCharacterIds": [
+      "char-linzhe",
+      "char-zhaotianyu"
+    ],
     "lastMessageAt": "2026-03-11T21:10:00+08:00",
     "unreadCount": 0,
     "messageFile": "data/wechat/messages/thread-lin-zhaotianyu-wechat.json"
@@ -126,7 +153,10 @@
     "platform": "wechat",
     "type": "single",
     "title": "李桥瑞妈妈",
-    "participantCharacterIds": ["char-linzhe", "char-liqiaorui-mom"],
+    "participantCharacterIds": [
+      "char-linzhe",
+      "char-liqiaorui-mom"
+    ],
     "lastMessageAt": "2026-03-13T15:45:00+08:00",
     "unreadCount": 0,
     "messageFile": "data/wechat/messages/thread-lin-liqiaorui-mom-wechat.json"
@@ -136,7 +166,10 @@
     "platform": "wechat",
     "type": "group",
     "title": "绿中二手交易群",
-    "participantCharacterIds": ["char-yanxinze", "char-linzhe"],
+    "participantCharacterIds": [
+      "char-yanxinze",
+      "char-linzhe"
+    ],
     "lastMessageAt": "2026-03-12T19:30:00+08:00",
     "unreadCount": 4,
     "messageFile": "data/wechat/messages/thread-ershou-wechat.json"

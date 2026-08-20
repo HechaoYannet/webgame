@@ -2,98 +2,65 @@
  * src/apps/DoorbellApp/DoorbellApp.tsx — 智能门铃 / 摄像头（终章倒计时核心）
  *
  * 读 phone/doorbell-events.json doorbell-dao-visit：
- *  - 事件由 engine EffectExecutor.pushDoorbell 触发（page-lab-funding-report.onViewEffects）→
- *    DoorbellService 内部已启循环敲门音频 + 震屏 + 全屏告警 + 推送通知
- *  - App 监听 DoorbellService.subscribe：activeId 非空时展示实时画面（光头壮汉刀哥按门铃）
- *  - 倒计时 useCountdown('countdown-finale')（engine CountdownService 真值，与 PhoneShell 状态栏同源）
- *  - 倒计时归零 → engine CountdownService.tick() 自动 expireCountdown + pushEnding('bad')
+ *  - 事件由 @/utils/shellState.deliverDoorbell 触发（AlbumApp 高潮动作：勾选经费报告后
+ *    启动举报倒计时 + deliverSms(sms-zhangqiang-threat) + deliverDoorbell(doorbell-dao-visit)）
+ *  - deliverDoorbell 内部已启循环敲门音频 + 震屏 + 红边 + 推送通知
+ *  - App 读 useDoorbellState()：deliveredIds 含本事件时展示实时画面（光头壮汉刀哥按门铃）
+ *  - 倒计时 useCountdown('countdown-finale')（@/utils/shellState，与 PhoneShell 状态栏同源）
+ *  - 倒计时归零 → @/utils/shellState.watchCountdownExpiry 自动 pushEnding('bad')
  *    （本组件不再手动 pushEnding；仅订阅 countdownExpired 做黑屏 UI）
  *
- * 迁移说明：原 ../PhoneApp/runtime 已删除。门铃推送/倒计时/反馈全部走 @/engine。
+ * 迁移说明：动力源已从 @/engine 切到 @/game + @/utils/shellState + @/data/loader。
+ * 门铃事件数据用 @/data/loader 的同步 getter getDoorbellEventById（main.tsx 已 await 过）。
  * 仅保留 notifClosed（UI 局部态）。
  */
 
-import { useEffect, useMemo, useState } from 'react';
-import { useSyncExternalStore } from 'react';
+import { useEffect, useState } from 'react';
 import type { ReactNode } from 'react';
-import { loadDoorbell, type DoorbellEvent } from '../PhoneApp/data';
-import { useCountdown } from '@/engine/hooks/useCountdown';
-import { useGameStore } from '@/engine/store/gameStore';
-import * as AudioService from '@/engine/feedback/AudioService';
-import * as DoorbellService from '@/engine/feedback/DoorbellService';
-import { on } from '@/engine/eventBus';
+import type { DoorbellEvent } from '@/types';
+import { getDoorbellEventById } from '@/data/loader';
+import { useGameStore } from '@/game/gameStore';
+import { useCountdown, useDoorbellState } from '@/utils/shellState';
 
 const COUNTDOWN_ID = 'countdown-finale';
 const DOORBELL_EVENT_ID = 'doorbell-dao-visit';
 
-// 订阅 engine DoorbellService 的 deliveredIds（内存态真源，由 pushDoorbell 写入）
-function useDeliveredDoorbellIds(): string[] {
-  return useSyncExternalStore(
-    (cb) => DoorbellService.subscribe(cb),
-    () => DoorbellService.getDeliveredIds(),
-    () => DoorbellService.getDeliveredIds(),
-  );
-}
-
 export default function DoorbellApp(): ReactNode {
-  const [events, setEvents] = useState<DoorbellEvent[]>([]);
-  const [loadErr, setLoadErr] = useState<string | null>(null);
   const [notifClosed, setNotifClosed] = useState(false);
 
-  // 终章坏结局已达成 → 黑屏（engine store 真值）
+  // 终章坏结局已达成 → 黑屏（@/game store 真值）
   const endingId = useGameStore((s) => s.endingId);
   const finished = useGameStore((s) => s.finished);
 
-  // 门铃推送状态（engine DoorbellService 内存态）
-  const deliveredIds = useDeliveredDoorbellIds();
+  // 门铃推送状态（@/utils/shellState 内存态，由 deliverDoorbell 写入）
+  const doorbellState = useDoorbellState();
 
-  useEffect(() => {
-    let mounted = true;
-    loadDoorbell()
-      .then((evs) => {
-        if (!mounted) return;
-        setEvents(evs);
-      })
-      .catch((e: unknown) => {
-        if (!mounted) return;
-        setLoadErr(e instanceof Error ? e.message : String(e));
-      });
-    return () => {
-      mounted = false;
-    };
-  }, []);
+  // 门铃事件数据：同步 getter（main.tsx 已 await loadGameData，安全）
+  const daoEvent: DoorbellEvent | undefined = getDoorbellEventById(DOORBELL_EVENT_ID);
 
-  const daoEvent = useMemo(() => events.find((e) => e.id === DOORBELL_EVENT_ID), [events]);
+  // 是否已被推送（deliverDoorbell 触发）—— shellState.deliverDoorbell 已自动启敲门音频 + 震屏 + 全屏告警
+  const pushed = doorbellState.deliveredIds.includes(DOORBELL_EVENT_ID);
 
-  // 是否已被引擎推送（pushDoorbell 触发）—— engine DoorbellService 已自动启敲门音频 + 震屏 + 全屏告警
-  const pushed = deliveredIds.includes(DOORBELL_EVENT_ID);
+  // 倒计时状态（@/utils/shellState useCountdown：归零由 watchCountdownExpiry 自动 pushEnding('bad')）
+  const countdown = useCountdown(COUNTDOWN_ID);
+  const countdownExpired = countdown.expired;
+  const countdownActive = countdown.active;
 
-  // 倒计时状态（engine CountdownService：归零由内部 tick 自动 expire + pushEnding('bad')）
-  const {
-    info: countdown,
-    expired: countdownExpired,
-    active: countdownActive,
-  } = useCountdown(COUNTDOWN_ID);
-
-  // 本组件额外补一条周期震屏（doorbell deviceFeedback），音频由 DoorbellService 已启
+  // 本组件额外补一条周期震屏（门铃 deviceFeedback），音频由 deliverDoorbell 已启
   useEffect(() => {
     if (!pushed) return;
     const hapticInt = setInterval(() => {
-      // engine HapticsService 受 settingsStore.vibrationEnabled 控制
-      // 此处仅做桌面降级震屏代理；engine DoorbellService 已 vibrate('long') 一次
+      // @/game 无独立 HapticsService；就地降级震屏（可选，受浏览器支持限制）
+      navigator.vibrate?.(30);
     }, 2400);
     return () => {
       clearInterval(hapticInt);
     };
   }, [pushed]);
 
-  // 坏结局已达成 → 黑屏（engine countdownExpired → pushEnding('bad') 已不可回退，§6.6）
+  // 坏结局已达成 → 黑屏（countdownExpired 后 watchCountdownExpiry 推 bad，不可回退，CLAUDE.md §6.6）
   if (endingId === 'bad' || (finished && countdownExpired)) {
     return <BadEndingScreen text={daoEvent?.onTimeoutText ?? '林哲也消失了。'} />;
-  }
-
-  if (loadErr) {
-    return <div style={{ padding: 24, color: '#f88' }}>门铃数据加载失败：{loadErr}</div>;
   }
 
   if (!daoEvent) {
@@ -142,11 +109,15 @@ export default function DoorbellApp(): ReactNode {
         <div style={feedFrame}>
           <Avatar daoEvent={daoEvent} />
           <div style={feedOverlayText}>{daoEvent.liveFeed.sceneDescription}</div>
+          {/* clipAssetId 缺失优雅降级：无视频流，仅展示占位剪影 + 场景描述 */}
+          {!daoEvent.liveFeed.clipAssetId && (
+            <div style={offlineBadge}>实时画面不可用</div>
+          )}
         </div>
       </div>
 
       {/* 倒计时悬浮（CLAUDE.md §6.3 不可回退） */}
-      {countdown && (
+      {(countdownActive || countdownExpired) && (
         <div style={countdownBar(countdownExpired)}>
           <div style={{ fontSize: 11, color: '#ffd6d6' }}>
             {daoEvent.countdownBar?.alertText ?? '倒计时'}
@@ -154,11 +125,6 @@ export default function DoorbellApp(): ReactNode {
           <div style={countdownText(countdownExpired)}>
             {fmtCountdown(countdown.remainingSec)}
           </div>
-        </div>
-      )}
-      {countdownActive && !countdown && (
-        <div style={countdownBar(false)}>
-          <div style={{ fontSize: 11, color: '#ffd6d6' }}>倒计时启动中…</div>
         </div>
       )}
 
@@ -170,7 +136,7 @@ export default function DoorbellApp(): ReactNode {
 }
 
 function Avatar({ daoEvent }: { daoEvent: DoorbellEvent }): ReactNode {
-  // 占位头像：光头壮汉剪影
+  // 占位头像：光头壮汉剪影（视频 clipAssetId 缺失时的占位图）
   void daoEvent;
   return (
     <svg width="120" height="140" viewBox="0 0 120 140" style={{ opacity: 0.85 }}>
@@ -222,10 +188,6 @@ function fmtCountdown(sec: number): string {
   const ss = String(s % 60).padStart(2, '0');
   return `${mm}:${ss}`;
 }
-
-// 防止 lint 报告 unused（on 引用占位，未来可订阅 countdownExpired 做额外效果）
-void on;
-void AudioService;
 
 // ===== styles =====
 const wrapStyle: React.CSSProperties = {
@@ -293,6 +255,17 @@ const feedOverlayText: React.CSSProperties = {
   textAlign: 'center',
   lineHeight: 1.5,
   padding: '0 12px 12px',
+};
+const offlineBadge: React.CSSProperties = {
+  position: 'absolute',
+  top: 8,
+  right: 8,
+  fontSize: 10,
+  color: '#7a3030',
+  background: 'rgba(40,8,8,0.7)',
+  padding: '2px 6px',
+  borderRadius: 4,
+  border: '1px solid #4d2a2a',
 };
 function countdownBar(expired: boolean): React.CSSProperties {
   return {

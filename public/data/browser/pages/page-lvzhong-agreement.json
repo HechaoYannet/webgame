@@ -4,8 +4,7 @@
   "url": "https://www.lvzhong-edu.cn/internal/agreement/",
   "title": "绿草中学 — 合作协议",
   "accessibility": {
-    "kind": "loginRequired",
-    "puzzleId": "puzzle-lvzhong-internal"
+    "kind": "public"
   },
   "blocks": [
     {
@@ -50,12 +49,6 @@
           "本协议自2026年3月12日起生效，有效期三年。"
         ]
       ]
-    },
-    {
-      "type": "callout",
-      "variant": "danger",
-      "text": "协议原件扫描件清楚显示“每推荐一人返20万”条款，以及与“实验室”的三方合作表述。"
     }
-  ],
-  "containsAssetId": "scan-agreement-xh2026-0312"
+  ]
 }

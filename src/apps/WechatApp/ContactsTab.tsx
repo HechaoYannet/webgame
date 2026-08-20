@@ -4,16 +4,15 @@
  * 读 wechat/contacts.json 按 characters 反查信息，按字母/星标排序展示；
  * 点击联系人可发起会话跳转（通过回调上抛）。失联联系人灰显并标注状态。
  */
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { Character, WechatContact } from "@/types";
 import { Avatar } from "./Avatar";
 import {
   buildCharacterDictionary,
   displayName,
-  loadWechatContacts,
   type CharacterDictionary,
 } from "./data";
-import { useEffect } from "react";
+import { getAllWechatContacts } from "@/data/loader";
 
 export interface ContactsTabProps {
   characters: Character[];
@@ -32,23 +31,18 @@ export function ContactsTab({
     [characters],
   );
 
+  // loader 已在 main.tsx await 过，getAllWechatContacts 同步安全；
+  // 但 characters prop 可能尚未注入（WechatApp useEffect 内 setCharacters），
+  // 故仍用本地 loading 占位，待 characters 与 contacts 同步就绪。
   useEffect(() => {
-    let cancelled = false;
-    setLoading(true);
-    loadWechatContacts()
-      .then((c) => {
-        if (!cancelled) setContacts(c);
-      })
-      .catch((e: unknown) => {
-        if (!cancelled)
-          setError(e instanceof Error ? e.message : String(e));
-      })
-      .finally(() => {
-        if (!cancelled) setLoading(false);
-      });
-    return () => {
-      cancelled = true;
-    };
+    try {
+      setContacts(getAllWechatContacts());
+      setError(null);
+    } catch (e: unknown) {
+      setError(e instanceof Error ? e.message : String(e));
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
   // 排序：星标高在前，公众号在后，其余按昵称拼音/字符序

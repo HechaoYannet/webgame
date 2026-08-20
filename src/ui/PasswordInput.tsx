@@ -24,7 +24,7 @@ export interface PasswordInputProps {
   submitLabel?: string
   /** 当前剩余尝试次数（来自 engine attemptsToHint / lockoutAfterAttempts）。 */
   remainingAttempts?: number
-  /** 是否数字键盘（QQ 0328 / PDF 0312 等纯数字）。 */
+  /** 是否数字键盘（QQ 20251128 / PDF 0312 等纯数字）。 */
   numeric?: boolean
   /** 输入框 autoComplete 透传（默认 off）。 */
   autoComplete?: string

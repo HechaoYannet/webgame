@@ -4,8 +4,7 @@
   "url": "https://www.xinxwang-center.com/news/lab-coop/",
   "title": "我中心与山河医科大实验室签署合作协议",
   "accessibility": {
-    "kind": "linkedOnly",
-    "fromPageId": "page-xinxwang-news"
+    "kind": "public"
   },
   "blocks": [
     {
@@ -22,9 +21,8 @@
       "text": "1月25日，新希望成长中心与山河医科大学生物能源与疾病控制国家重点实验室正式签署战略合作协议。实验室主任陈建国教授、中心创始人张强先生出席签约仪式。双方将在青少年身心健康纵向干预研究领域开展长期合作，由中心提供研究样本与场地支持。"
     },
     {
-      "type": "callout",
-      "variant": "danger",
-      "text": "该新闻明确“由中心提供研究样本与场地支持”——结合后续实验室受试者名单，可证机构向实验室输送青少年受试者。"
+      "type": "paragraph",
+      "text": "相关新闻：《我校生物能源实验室在清洁能源领域取得重大突破》"
     }
   ]
 }

@@ -4,8 +4,7 @@
   "url": "https://lab.shanhe-med.cn/admin/funding-report",
   "title": "实验室后台 — 经费申请报告",
   "accessibility": {
-    "kind": "loginRequired",
-    "puzzleId": "puzzle-lab-backend"
+    "kind": "public"
   },
   "blocks": [
     {
@@ -73,14 +72,7 @@
     {
       "type": "callout",
       "variant": "danger",
-      "text": "受试者名单明确列出李桥瑞、闫欣泽，来源为绿草中学高二一班（经新希望成长中心转介），3月13日入组——与二人失联时间完全吻合。打开此报告触发3分钟倒计时+威胁短信+刀哥上门。"
+      "text": "受试者名单明确列出李桥瑞、闫欣泽，来源为绿草中学高二一班（经新希望成长中心转介），3月13日入组。"
     }
-  ],
-  "registersClueId": "clue-lab-funding-report",
-  "onViewEffects": [
-    { "type": "startCountdown", "durationSec": 180, "id": "countdown-finale" },
-    { "type": "pushSms", "smsEventId": "sms-zhangqiang-threat" },
-    { "type": "pushDoorbell", "doorbellEventId": "doorbell-dao-visit" },
-    { "type": "playAudio", "assetId": "audio-heartbeat", "loop": true }
   ]
 }

@@ -8,9 +8,12 @@
 import { useNavigate } from 'react-router'
 import type { CSSProperties } from 'react'
 import { useVisibleApps, type AppEntry } from '@/apps/PhoneShell/AppRegistry'
-import { AppGlyph } from '@/ui/icons'
+import { AppGlyph, hasAppIconImg, needsIconTile } from '@/ui/icons'
 import { appColor, palette, radius, spacing } from '@/ui/theme'
 import { EmptyState } from '@/ui/Primitives'
+import { openSitePage } from '@/sites/sitePage'
+// 玩家提供的手机壁纸（src/assets/phone/wallpaper.jpg）作为桌面背景。
+import wallpaperUrl from '@/assets/phone/wallpaper.jpg?url'
 
 export function Desktop() {
   const visible = useVisibleApps()
@@ -23,7 +26,13 @@ export function Desktop() {
         width: '100%',
         height: '100%',
         overflow: 'auto',
-        background: `radial-gradient(120% 80% at 50% 0%, ${palette.bgScreen} 0%, ${palette.bgDarkest} 100%)`,
+        // 玩家提供的壁纸铺满桌面（cover 居中裁剪），壁纸之上叠一层暗色渐变保证
+        // 图标文字可读。StatusBar 由 PhoneShell 注入 overlay，此处仍留 paddingTop。
+        backgroundImage: `linear-gradient(180deg, rgba(10,10,15,0.35) 0%, rgba(10,10,15,0.55) 100%), url(${wallpaperUrl})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        backgroundColor: palette.bgDarkest,
         paddingTop: 56, // 给 StatusBar 让位
         paddingBottom: spacing.xl,
       }}
@@ -39,6 +48,49 @@ export function Desktop() {
           {visible.map((app) => (
             <DesktopIcon key={app.appId} app={app} onOpen={() => navigate(`/app/${app.appId}`)} />
           ))}
+          {/* 搜索（百度站入口）：伪浏览器 App 已删除，玩家靠此"一级站点"图标打开百度，
+              在百度站搜关键词跳各官网。剧情大纲"搜索湖南绿草中学官网"由它承载。 */}
+          <button
+            type="button"
+            onClick={() => openSitePage('page-baidu-search')}
+            aria-label="打开百度搜索"
+            style={{
+              background: 'none',
+              border: 'none',
+              padding: `${spacing.sm}px 2px`,
+              cursor: 'pointer',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: 4,
+              color: palette.textPrimary,
+            }}
+          >
+            {/* 百度品牌 SVG：512×512 自带白底蓝掌印，全填满图标块（圆角裁剪） */}
+            <div
+              style={{
+                width: 56,
+                height: 56,
+                borderRadius: radius.lg,
+                overflow: 'hidden',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <AppGlyph id="baidu" size={56} fallbackLabel="百度" />
+            </div>
+            <span
+              style={{
+                fontSize: 11,
+                color: palette.textPrimary,
+                textAlign: 'center',
+                textShadow: '0 1px 2px rgba(0,0,0,0.6)',
+              }}
+            >
+              百度一下
+            </span>
+          </button>
         </div>
       )}
 
@@ -79,6 +131,10 @@ const gridStyle: CSSProperties = {
 }
 
 function DesktopIcon({ app, onOpen }: { app: AppEntry; onOpen: () => void }) {
+  // 品牌图标是否自带不透明背景（wechat/qq/phone/sms/baidu 这类全彩 SVG）。
+  // 自带背景 → full-bleed 铺满 56×56 图标块（仅圆角裁剪，不再套色 tile）。
+  // 线条图标（doorbell 无背景）或非 IMG 图标 → 套色 tile + 居中小图标。
+  const isFullBleed = hasAppIconImg(app.icon) && !needsIconTile(app.icon)
   return (
     <button
       type="button"
@@ -96,20 +152,36 @@ function DesktopIcon({ app, onOpen }: { app: AppEntry; onOpen: () => void }) {
         color: palette.textPrimary,
       }}
     >
-      <div
-        style={{
-          width: 56,
-          height: 56,
-          borderRadius: radius.lg,
-          background: appColor(app.appId) + '22',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          boxShadow: `0 2px 8px ${appColor(app.appId)}22`,
-        }}
-      >
-        <AppGlyph id={app.icon} size={40} color={appColor(app.appId)} fallbackLabel={app.title} />
-      </div>
+      {isFullBleed ? (
+        <div
+          style={{
+            width: 56,
+            height: 56,
+            borderRadius: radius.lg,
+            overflow: 'hidden',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <AppGlyph id={app.icon} size={56} fallbackLabel={app.title} />
+        </div>
+      ) : (
+        <div
+          style={{
+            width: 56,
+            height: 56,
+            borderRadius: radius.lg,
+            background: appColor(app.appId) + '22',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            boxShadow: `0 2px 8px ${appColor(app.appId)}22`,
+          }}
+        >
+          <AppGlyph id={app.icon} size={40} color={appColor(app.appId)} fallbackLabel={app.title} />
+        </div>
+      )}
       <span
         style={{
           fontSize: 11,
@@ -129,6 +201,32 @@ function DesktopIcon({ app, onOpen }: { app: AppEntry; onOpen: () => void }) {
 }
 
 function DockIcon({ app, onOpen }: { app: AppEntry; onOpen: () => void }) {
+  // 桌面底部 dock：与桌面图标同样的 full-bleed / tile 策略（dock 块 50×50）。
+  const isFullBleed = hasAppIconImg(app.icon) && !needsIconTile(app.icon)
+  if (isFullBleed) {
+    return (
+      <button
+        type="button"
+        onClick={onOpen}
+        aria-label={`打开 ${app.title}`}
+        style={{
+          background: 'transparent',
+          border: 'none',
+          padding: 0,
+          cursor: 'pointer',
+          width: 50,
+          height: 50,
+          borderRadius: radius.lg,
+          overflow: 'hidden',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <AppGlyph id={app.icon} size={50} fallbackLabel={app.title} />
+      </button>
+    )
+  }
   return (
     <button
       type="button"

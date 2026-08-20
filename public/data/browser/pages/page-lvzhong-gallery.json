@@ -30,13 +30,8 @@
     {
       "type": "image",
       "assetId": "photo-principal-office",
-      "caption": "校长办公室一瞥（右下角可见文件袋）",
+      "caption": "校长办公室一瞥",
       "zoomable": true
-    },
-    {
-      "type": "callout",
-      "variant": "info",
-      "text": "放大校长办公室照片右下角，文件袋上隐约可见“新希望”字样。"
     }
   ]
 }

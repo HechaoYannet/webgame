@@ -3,152 +3,42 @@
     "id": "ch-prologue",
     "index": 0,
     "title": "序幕：失联的周五",
-    "enterCondition": { "kind": "gameStart" },
-    "introMonologueId": "mono-prologue",
-    "onEnterEffects": [],
-    "objectives": [
-      {
-        "id": "obj-prologue-read-wechat",
-        "description": "查看李桥瑞的微信留言与朋友圈",
-        "completionClueId": "clue-li-moments-endfield"
-      },
-      {
-        "id": "obj-prologue-login-qq",
-        "description": "登录李桥瑞的QQ",
-        "completionPuzzleId": "puzzle-qq-login"
-      }
-    ]
+    "introMonologueId": "mono-prologue"
   },
   {
     "id": "ch-1",
     "index": 1,
     "title": "QQ里的秘密计划",
-    "enterCondition": { "kind": "puzzleSolved", "puzzleId": "puzzle-qq-login" },
-    "introMonologueId": "mono-ch1",
-    "onEnterEffects": [],
-    "objectives": [
-      {
-        "id": "obj-ch1-read-yan-chat",
-        "description": "阅读李桥瑞与闫欣泽的QQ聊天记录",
-        "completionEvidenceId": "ev-qq-chat-plan"
-      },
-      {
-        "id": "obj-ch1-find-lvzhong-url",
-        "description": "发现绿中官网隐藏入口",
-        "completionClueId": "clue-lvzhong-hidden-url"
-      }
-    ]
+    "introMonologueId": "mono-ch1"
   },
   {
     "id": "ch-2",
     "index": 2,
     "title": "绿中官网与内部系统",
-    "enterCondition": { "kind": "puzzleSolved", "puzzleId": "puzzle-qq-login" },
-    "introMonologueId": "mono-ch2",
-    "onEnterEffects": [],
-    "objectives": [
-      {
-        "id": "obj-ch2-login-internal",
-        "description": "登录绿中内部系统",
-        "completionPuzzleId": "puzzle-lvzhong-internal"
-      },
-      {
-        "id": "obj-ch2-read-agreement",
-        "description": "查看合作协议与通讯录",
-        "completionEvidenceId": "ev-lvzhong-agreement"
-      },
-      {
-        "id": "obj-ch2-decrypt-pdf",
-        "description": "解密心理筛查名单PDF",
-        "completionPuzzleId": "puzzle-pdf-screening"
-      }
-    ]
+    "introMonologueId": "mono-ch2"
   },
   {
     "id": "ch-3",
     "index": 3,
     "title": "新希望成长中心与实验室关联",
-    "enterCondition": { "kind": "puzzleSolved", "puzzleId": "puzzle-lvzhong-internal" },
-    "introMonologueId": "mono-ch3",
-    "onEnterEffects": [],
-    "objectives": [
-      {
-        "id": "obj-ch3-read-xinxwang",
-        "description": "查看新希望官网合作单位与新闻",
-        "completionEvidenceId": "ev-xinxwang-lab-news"
-      },
-      {
-        "id": "obj-ch3-tianyancha",
-        "description": "通过天眼查确认张强与陈建国股权关系",
-        "completionClueId": "clue-tianyancha"
-      }
-    ]
+    "introMonologueId": "mono-ch3"
   },
   {
     "id": "ch-4",
     "index": 4,
     "title": "论文与真相",
-    "enterCondition": {
-      "kind": "and",
-      "conditions": [
-        { "kind": "puzzleSolved", "puzzleId": "puzzle-lvzhong-internal" },
-        { "kind": "evidenceCollected", "evidenceId": "ev-xinxwang-lab-news" }
-      ]
-    },
-    "introMonologueId": "mono-ch4",
-    "onEnterEffects": [],
-    "objectives": [
-      {
-        "id": "obj-ch4-download-paper",
-        "description": "下载预印本论文PDF",
-        "completionClueId": "clue-paper-pdf"
-      },
-      {
-        "id": "obj-ch4-ai-interpret",
-        "description": "上传论文获取AI解读",
-        "completionPuzzleId": "puzzle-upload-paper"
-      }
-    ]
+    "introMonologueId": "mono-ch4"
   },
   {
     "id": "ch-5",
     "index": 5,
     "title": "实验室后台与倒计时",
-    "enterCondition": { "kind": "puzzleSolved", "puzzleId": "puzzle-upload-paper" },
-    "introMonologueId": "mono-ch5",
-    "onEnterEffects": [],
-    "objectives": [
-      {
-        "id": "obj-ch5-login-lab",
-        "description": "登录实验室后台",
-        "completionPuzzleId": "puzzle-lab-backend"
-      },
-      {
-        "id": "obj-ch5-read-funding",
-        "description": "打开经费申请报告",
-        "completionEvidenceId": "ev-lab-funding-report",
-        "hidden": true
-      }
-    ]
+    "introMonologueId": "mono-ch5"
   },
   {
     "id": "ch-finale",
     "index": 6,
     "title": "证据链与多结局",
-    "enterCondition": { "kind": "puzzleSolved", "puzzleId": "puzzle-lab-backend" },
-    "introMonologueId": "mono-finale",
-    "onEnterEffects": [],
-    "objectives": [
-      {
-        "id": "obj-finale-select-evidence",
-        "description": "勾选关键证据",
-        "completionPuzzleId": "puzzle-evidence-finale"
-      },
-      {
-        "id": "obj-finale-call-police",
-        "description": "拨打举报电话 0731-88888888",
-        "hidden": true
-      }
-    ]
+    "introMonologueId": "mono-finale"
   }
 ]

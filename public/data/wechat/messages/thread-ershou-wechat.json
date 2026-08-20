@@ -3,7 +3,7 @@
     "id": "msg-ershou-001",
     "threadId": "thread-ershou-wechat",
     "direction": "received",
-    "authorCharacterId": "char-yanxinze",
+    "authorCharacterId": "char-yanxinze-nickname",
     "timestamp": "2026-03-08T15:00:00+08:00",
     "kind": "text",
     "text": "出 华为watch GT4，95新，1000元"
@@ -12,7 +12,7 @@
     "id": "msg-ershou-002",
     "threadId": "thread-ershou-wechat",
     "direction": "received",
-    "authorCharacterId": "char-linzhe",
+    "authorCharacterId": "char-linzhe-nickname",
     "timestamp": "2026-03-08T15:05:00+08:00",
     "kind": "text",
     "text": "便宜点"
@@ -21,7 +21,7 @@
     "id": "msg-ershou-003",
     "threadId": "thread-ershou-wechat",
     "direction": "received",
-    "authorCharacterId": "char-yanxinze",
+    "authorCharacterId": "char-yanxinze-nickname",
     "timestamp": "2026-03-08T15:06:00+08:00",
     "kind": "text",
     "text": "不刀"
@@ -30,7 +30,7 @@
     "id": "msg-ershou-004",
     "threadId": "thread-ershou-wechat",
     "direction": "received",
-    "authorCharacterId": "char-linzhe",
+    "authorCharacterId": "char-linzhe-nickname",
     "timestamp": "2026-03-08T15:10:00+08:00",
     "kind": "text",
     "text": "@匿名 你是不是高二一的闫欣泽？你之前不是在用这款吗"
@@ -39,7 +39,7 @@
     "id": "msg-ershou-005",
     "threadId": "thread-ershou-wechat",
     "direction": "received",
-    "authorCharacterId": "char-yanxinze",
+    "authorCharacterId": "char-yanxinze-nickname",
     "timestamp": "2026-03-08T15:11:00+08:00",
     "kind": "text",
     "text": "不是，我是朋友"
@@ -48,7 +48,7 @@
     "id": "msg-ershou-006",
     "threadId": "thread-ershou-wechat",
     "direction": "received",
-    "authorCharacterId": "char-linzhe",
+    "authorCharacterId": "char-linzhe-nickname",
     "timestamp": "2026-03-08T15:12:00+08:00",
     "kind": "text",
     "text": "哦"
@@ -57,7 +57,7 @@
     "id": "msg-ershou-007",
     "threadId": "thread-ershou-wechat",
     "direction": "received",
-    "authorCharacterId": "char-linzhe",
+    "authorCharacterId": "char-linzhe-nickname",
     "timestamp": "2026-03-12T19:00:00+08:00",
     "kind": "text",
     "text": "谁有校长办公室后窗的钥匙？有偿"
@@ -66,7 +66,7 @@
     "id": "msg-ershou-008",
     "threadId": "thread-ershou-wechat",
     "direction": "received",
-    "authorCharacterId": "char-linzhe",
+    "authorCharacterId": "char-linzhe-nickname",
     "timestamp": "2026-03-12T19:10:00+08:00",
     "kind": "text",
     "text": "你要干嘛？"
@@ -75,7 +75,7 @@
     "id": "msg-ershou-009",
     "threadId": "thread-ershou-wechat",
     "direction": "received",
-    "authorCharacterId": "char-linzhe",
+    "authorCharacterId": "char-linzhe-nickname",
     "timestamp": "2026-03-12T19:12:00+08:00",
     "kind": "text",
     "text": "私聊"
@@ -84,7 +84,7 @@
     "id": "msg-ershou-010",
     "threadId": "thread-ershou-wechat",
     "direction": "received",
-    "authorCharacterId": "char-linzhe",
+    "authorCharacterId": "char-linzhe-nickname",
     "timestamp": "2026-03-12T19:30:00+08:00",
     "kind": "text",
     "text": "我不认识你，别乱搞"

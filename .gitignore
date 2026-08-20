@@ -22,3 +22,11 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Scratch / local artifacts — NOT part of the game build
+_ab-*.png
+--full-page
+/assets/
+.claude/worktrees/
+.claude/workflows/
+.claude/projects/

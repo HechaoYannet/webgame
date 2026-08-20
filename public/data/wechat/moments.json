@@ -3,12 +3,12 @@
     "id": "moment-li-0311-endfield",
     "authorCharacterId": "char-liqiaorui",
     "createdAt": "2026-03-11T20:15:00+08:00",
-    "text": "兄弟们，终末地见！",
+    "text": "高兴",
     "assetIds": ["moments-li-0311-endfield-screenshot"],
     "link": {
-      "title": "明日方舟：终末地 全面测试资格公告",
+      "title": "《明日方舟：终末地》「全面测试」正式开启！",
       "url": "https://endfield.hypergryph.com/news/1181",
-      "pageId": "page-endfield-news"
+      "pageId": "https://endfield.hypergryph.com/news/1181"
     },
     "likes": ["char-yanxinze", "char-zhaotianyu", "char-zhouming"],
     "comments": [
@@ -19,7 +19,7 @@
       },
       {
         "authorCharacterId": "char-yanxinze",
-        "text": "3.28见",
+        "text": "没治了",
         "createdAt": "2026-03-11T20:25:00+08:00"
       }
     ],
@@ -59,7 +59,7 @@
     "id": "moment-li-0305-gacha",
     "authorCharacterId": "char-liqiaorui",
     "createdAt": "2026-03-05T19:00:00+08:00",
-    "text": "十连出货，欧气满满",
+    "text": "十连双金，高兴了",
     "assetIds": ["moments-li-0305-gacha"],
     "likes": ["char-zhaotianyu"],
     "comments": [],
@@ -69,7 +69,7 @@
     "id": "moment-li-0301-certificate",
     "authorCharacterId": "char-liqiaorui",
     "createdAt": "2026-03-01T18:20:00+08:00",
-    "text": "今天在校长办公室看到一张很奇怪的证书",
+    "text": "强哥又背着咱搞啥了",
     "assetIds": ["moments-li-0301-certificate-blur"],
     "likes": [],
     "comments": [],
@@ -89,7 +89,7 @@
     "id": "moment-li-0214-joke",
     "authorCharacterId": "char-liqiaorui",
     "createdAt": "2026-02-14T13:00:00+08:00",
-    "text": "情人节？不存在的，只有明日方舟爱我",
+    "text": "情人节？不存在的，只有粥爱我",
     "assetIds": [],
     "likes": ["char-zhouming"],
     "comments": [],

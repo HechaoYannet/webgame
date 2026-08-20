@@ -4,9 +4,7 @@
   "url": "https://xw.zhangqiang.com.cn/admin",
   "title": "新希望成长中心 — 财务后台登录",
   "accessibility": {
-    "kind": "hidden",
-    "discoverFrom": "page-lvzhong-principal-mailbox",
-    "hint": "校长信箱页源码注释中藏后台地址 xw.zhangqiang.com.cn/admin"
+    "kind": "public"
   },
   "blocks": [
     {
@@ -21,13 +19,6 @@
     {
       "type": "loginForm",
       "puzzleId": "puzzle-xinxwang-backend"
-    }
-  ],
-  "discoverableBy": [
-    {
-      "type": "sourceCodeComment",
-      "onPageId": "page-lvzhong-principal-mailbox",
-      "commentText": "xw.zhangqiang.com.cn/admin"
     }
   ]
 }

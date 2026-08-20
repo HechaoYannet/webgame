@@ -4,8 +4,7 @@
   "url": "https://www.lvzhong-edu.cn/internal/screening-pdf/",
   "title": "绿草中学 — 学生心理筛查名单（加密PDF）",
   "accessibility": {
-    "kind": "loginRequired",
-    "puzzleId": "puzzle-lvzhong-internal"
+    "kind": "public"
   },
   "blocks": [
     {
@@ -15,14 +14,11 @@
     },
     {
       "type": "paragraph",
-      "text": "本文件为加密PDF，密码为合同编号 XH2026-0312 的后4位。"
+      "text": "密码提示：合同编号后4位"
     },
     {
       "type": "pdfViewer",
-      "assetId": "pdf-screening-list",
-      "requiresPuzzleId": "puzzle-pdf-screening"
+      "assetId": "pdf-screening-list"
     }
-  ],
-  "containsAssetId": "pdf-screening-list",
-  "assetRequiresPuzzleId": "puzzle-pdf-screening"
+  ]
 }

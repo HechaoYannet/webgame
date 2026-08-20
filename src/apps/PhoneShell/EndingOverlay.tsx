@@ -25,12 +25,53 @@
  * 数据来源单一真源：public/data/meta/endings.json（loader.getEndingById 读取）。
  * 零硬编码剧情：所有文字来自 endings 数据。
  */
-import type { ReactNode } from 'react'
-import { useGameStore } from '@/engine/store/gameStore'
+import type { CSSProperties, ReactNode } from 'react'
+import { useGameStore } from '@/game/gameStore'
 import { getEndingById } from '@/data/loader'
 import type { Ending, EndingId } from '@/types'
 import { ArticleBlockRenderer } from '@/ui/RichBlocks'
 import { palette, radius, spacing } from '@/ui/theme'
+
+/**
+ * 「返回主菜单」按钮：调用 resetGame() 清空存档。
+ * resetGame 后 finished=false 且 solvedPuzzleIds 为空 →EndingOverlay 卸载，
+ * App 的 showIntro 选择器（无进度且未通关）变 true → 显示入口主站。
+ * 即"通关后想重玩 / 清存档"的唯一闭环出口（此前通关刷新会被永久锁在结局遮罩）。
+ */
+function BackToMenuButton({ tone }: { tone: 'light' | 'dark' }): ReactNode {
+  const resetGame = useGameStore((s) => s.resetGame)
+  const style: CSSProperties =
+    tone === 'dark'
+      ? {
+          marginTop: spacing.xl,
+          alignSelf: 'center',
+          background: 'transparent',
+          border: `1px solid ${palette.borderLight}`,
+          color: palette.textSecondary,
+          padding: `${spacing.sm}px ${spacing.xl}px`,
+          borderRadius: radius.pill,
+          fontSize: 14,
+          cursor: 'pointer',
+          letterSpacing: 2,
+        }
+      : {
+          marginTop: spacing.xl,
+          alignSelf: 'center',
+          background: 'transparent',
+          border: `1px solid ${palette.borderLight}`,
+          color: palette.textPrimary,
+          padding: `${spacing.sm}px ${spacing.xl}px`,
+          borderRadius: radius.pill,
+          fontSize: 14,
+          cursor: 'pointer',
+          letterSpacing: 2,
+        }
+  return (
+    <button type="button" style={style} onClick={() => resetGame()}>
+      返回主菜单
+    </button>
+  )
+}
 
 /**
  * 结局覆盖层。挂在 PhoneShell 顶层 children 外层，z-index 最高。
@@ -107,6 +148,8 @@ function GoodOrNormalEndingView({ ending }: { ending: Ending }): ReactNode {
 
         {/* good/normal 通用收尾分隔 */}
         <EndingExtraMessages ending={ending} />
+
+        <BackToMenuButton tone="light" />
       </div>
     </div>
   )
@@ -227,6 +270,8 @@ function BadEndingView({ ending }: { ending: Ending }): ReactNode {
     >
       <div style={{ flex: 1, overflow: 'auto', padding: `${spacing.xl}px ${spacing.lg}px` }}>
         <ArticleBlockRenderer blocks={ending.epilogueBlocks} ctx={{ themeColor: palette.danger }} />
+
+        <BackToMenuButton tone="dark" />
       </div>
     </div>
   )

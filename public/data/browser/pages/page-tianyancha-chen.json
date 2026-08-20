@@ -4,8 +4,7 @@
   "url": "https://www.tianyancha.com/search/key=陈建国",
   "title": "天眼查 — 陈建国 关联企业",
   "accessibility": {
-    "kind": "linkedOnly",
-    "fromPageId": "page-tianyancha"
+    "kind": "public"
   },
   "blocks": [
     {

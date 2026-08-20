@@ -4,77 +4,41 @@
     "title": "李桥瑞与闫欣泽QQ聊天记录",
     "description": "3月5日至3月13日凌晨的QQ聊天记录，证明二人调查张强与校外机构勾结，记录了潜入校长办公室的计划与失联前最后的求救信息（01:58 闫欣泽：“张强……他发现我了……快……”）。",
     "chapterId": "ch-prologue",
-    "source": {
-      "kind": "qq-thread",
-      "threadId": "thread-li-yan-qq"
-    },
-    "isKey": true,
-    "collectingCondition": "onPuzzleSolve",
-    "triggerPuzzleId": "puzzle-qq-login"
+    "isKey": true
   },
   {
     "id": "ev-lvzhong-agreement",
     "title": "绿中内部系统合作协议",
     "description": "绿草中学与新希望成长中心合作协议扫描件，合同编号 XH2026-0312，含“每推荐一人返20万”条款；附张强通讯录（含陈建国、刀哥），证明张强与机构合作输送学生。",
     "chapterId": "ch-2",
-    "source": {
-      "kind": "web-page",
-      "pageId": "page-lvzhong-agreement"
-    },
-    "isKey": true,
-    "collectingCondition": "onPuzzleSolve",
-    "triggerPuzzleId": "puzzle-lvzhong-internal"
+    "isKey": true
   },
   {
     "id": "ev-xinxwang-lab-news",
     "title": "新希望与实验室合作新闻",
     "description": "新希望成长中心官网新闻动态《我中心与山河医科大实验室签署合作协议》，证明机构与实验室勾结；配合天眼查张强/陈建国股权关系构成完整利益链。",
     "chapterId": "ch-3",
-    "source": {
-      "kind": "web-page",
-      "pageId": "page-xinxwang-cooperation"
-    },
-    "isKey": true,
-    "collectingCondition": "onView",
-    "triggerPageId": "page-xinxwang-cooperation"
+    "isKey": true
   },
   {
     "id": "ev-paper-pdf",
     "title": "论文PDF（含AI解读）",
     "description": "预印本论文《源石结晶生物能源提取与人体内结晶生成机制研究》，作者陈建国等，基金号2025YFC0123456；经“论文AI翻译解读”公众号解读后，证明非法人体实验：从青少年体内提取“源石结晶”用于能源开发，伦理审批栏为空。",
     "chapterId": "ch-4",
-    "source": {
-      "kind": "wechat-article",
-      "articleId": "article-ai-interpret"
-    },
-    "isKey": true,
-    "collectingCondition": "onPuzzleSolve",
-    "triggerPuzzleId": "puzzle-upload-paper"
+    "isKey": true
   },
   {
     "id": "ev-lab-funding-report",
     "title": "实验室后台经费申请报告",
     "description": "2026年3月最新经费申请报告，申请金额200万元，受试者名单明确列出：李桥瑞，男，17岁，绿草中学高二一班，3月13日入组；闫欣泽，男，17岁，绿草中学高二一班，3月13日入组。证明二人被列为受试者。",
     "chapterId": "ch-5",
-    "source": {
-      "kind": "web-page",
-      "pageId": "page-lab-funding-report"
-    },
-    "isKey": true,
-    "collectingCondition": "onPuzzleSolve",
-    "triggerPuzzleId": "puzzle-lab-backend"
+    "isKey": true
   },
   {
     "id": "ev-lab-upload-log",
     "title": "实验室系统日志",
     "description": "实验室后台系统日志：3月13日 02:15 用户 zhangqiang 上传受试者名单；02:30 用户 chenjianguo 审核通过。补强证据，证明张强上传名单、陈建国审核。",
     "chapterId": "ch-5",
-    "source": {
-      "kind": "web-page",
-      "pageId": "page-lab-subject-list"
-    },
-    "isKey": false,
-    "collectingCondition": "onPuzzleSolve",
-    "triggerPuzzleId": "puzzle-lab-backend"
+    "isKey": false
   }
 ]

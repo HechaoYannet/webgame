@@ -50,11 +50,6 @@
       "assetId": "paper-source-crystal.pdf"
     },
     {
-      "type": "callout",
-      "variant": "info",
-      "text": "PDF下载后内容极为专业，难以直接阅读。可将PDF上传至微信“论文AI翻译解读”公众号获取通俗解读（触发 AI 解读，揭示实验室后台地址与密码线索）。"
-    },
-    {
       "type": "paragraph",
       "text": "▌ 评论区"
     },
@@ -68,7 +63,5 @@
       "variant": "info",
       "text": "““样本量好小，不太可信，而且受试者来源没说清楚。”——匿名评论者 B”"
     }
-  ],
-  "containsAssetId": "paper-source-crystal.pdf",
-  "registersClueId": "clue-paper-pdf"
+  ]
 }

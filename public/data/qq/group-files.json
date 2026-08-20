@@ -4,7 +4,7 @@
   "groups": [
     {
       "threadId": "thread-gaoer-yiban-qq",
-      "title": "高二一班级群 · 文件",
+      "title": "2401班级群 · 文件",
       "files": [
         {
           "id": "gf-screening-notice-pdf",
@@ -14,7 +14,7 @@
           "type": "pdf",
           "sizeKB": 248,
           "relatePageId": "page-lvzhong-screening-pdf",
-          "note": "与官网隐藏入口的心理筛查通知对应，是内部系统名单的对印文件。"
+          "note": "密码为发布日期。"
         },
         {
           "id": "gf-student-handbook",
@@ -23,7 +23,7 @@
           "uploadedAt": "2026-02-20T09:00:00+08:00",
           "type": "pdf",
           "sizeKB": 1820,
-          "note": "常规校规文件，含“严禁携带电子产品”等条款。红鲱鱼细节。"
+          "note": "大家务必熟读，尤其是关于校规、纪律、奖惩的部分。"
         },
         {
           "id": "gf-final-grade-table",
@@ -32,7 +32,7 @@
           "uploadedAt": "2026-01-18T16:00:00+08:00",
           "type": "xlsx",
           "sizeKB": 64,
-          "note": "常规成绩表，含李桥瑞、闫欣泽、林哲、周明、陈雨桐、赵天宇等名单。"
+          "note": "瞅瞅你们考的什么玩意儿，期末考试成绩已出。"
         },
         {
           "id": "gf-cooperation-notice",
@@ -42,7 +42,7 @@
           "type": "pdf",
           "sizeKB": 96,
           "relatePageId": "page-lvzhong-agreement",
-          "note": "对外公告版，措辞与内部协议扫描件形成对照。"
+          "note": "没什么用，大家可以忽略。"
         },
         {
           "id": "gf-siguo-window-photo",
@@ -52,27 +52,27 @@
           "type": "image",
           "sizeKB": 1024,
           "assetId": "group-siguo-window-photo",
-          "note": "闫欣泽从校外拍，窗户开着，与潜入计划相关。",
+          "note": "铁门啊，铁窗啊，铁锁链……",
           "registersClueId": "clue-siguo-window"
         }
       ]
     },
     {
       "threadId": "thread-game-qq",
-      "title": "绿中游戏群 · 文件",
+      "title": "必须不择手段的输出（合乎粥礼） · 文件",
       "files": [
         {
           "id": "gf-endfield-reserve-link",
-          "name": "终末地公测预约链接.url",
+          "name": "高兴",
           "uploaderCharacterId": "char-zhaotianyu",
           "uploadedAt": "2026-03-09T19:40:00+08:00",
           "type": "link",
           "sizeKB": 1,
           "link": {
-            "title": "明日方舟：终末地 公测预约",
+            "title": "《明日方舟：终末地》「全面测试」正式开启！",
             "url": "https://endfield.hypergryph.com/news/1181"
           },
-          "note": "红鲱鱼，仅用于提示QQ密码来源（终末地3月28日公测）。"
+          "note": "可惜元旦不放假，只能在晚上玩了。"
         },
         {
           "id": "gf-endfield-guide",
@@ -81,7 +81,7 @@
           "uploadedAt": "2026-03-11T17:00:00+08:00",
           "type": "pdf",
           "sizeKB": 2560,
-          "note": "红鲱鱼，游戏攻略，与主线无关。"
+          "note": "终末地的太阳\\o/\\o/\\o/"
         }
       ]
     }

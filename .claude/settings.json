@@ -30,5 +30,8 @@
   },
   "env": {
     "GITHUB_PAGES": "true"
+  },
+  "worktree": {
+    "bgIsolation": "none"
   }
 }

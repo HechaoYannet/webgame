@@ -7,9 +7,9 @@
  *  1. 按 `import.meta.env.BASE_URL + 'data/...'` fetch JSON（CLAUDE.md §2，BASE_URL 必须原样出现）。
  *  2. 用 Zod schema 校验所有 JSON（开发期严格，生产期同样校验以保证契约）。
  *  3. 建内存索引：contactById / wechatContactByCharacterId / qqContactByCharacterId /
- *     puzzleById / evidenceById / clueById / clueBySource / threadById / pageById /
- *     siteById / chapterById / endingById / hintById / smsEventById / doorbellEventById /
- *     callScriptById / callRecordById / articleById / noteById / searchIndex。
+ *     puzzleById / evidenceById / threadById / pageById /
+ *     siteById / chapterById / endingById / monologueById / smsEventById / doorbellEventById /
+ *     callScriptById / callRecordById / articleById / noteById。
  *  4. 消息按 thread 拆分按需加载（getMessages(threadId)）。
  *  5. 不生成 JSON，不缓存到 localStorage（localStorage 由 persist 层负责）。
  *
@@ -25,28 +25,23 @@ import type {
   ChatMessage,
   ChatThread,
   Character,
-  Clue,
-  ClueSource,
   DoorbellEvent,
   Ending,
   Evidence,
-  Hint,
-  Monologue,
-  MomentsPost,
   OfficialAccountArticle,
   PageId,
   QqContact,
   QqGroupFile,
   QqGroupFilesEntry,
   QqGroupFilesFile,
-  RiskEventsFile,
-  SearchIndexEntry,
   Site,
   SmsEvent,
   Note,
   ThreadId,
   WebPage,
   WechatContact,
+  MomentsPost,
+  Monologue,
 } from '@/types'
 
 // ===== Zod schema（镜像 src/types/index.ts，代码即契约）=====
@@ -65,44 +60,11 @@ const articleBlockSchema: z.ZodType<ArticleBlock> = z.discriminatedUnion('type',
   z.object({ type: z.literal('callout'), variant: z.enum(['info', 'warning', 'danger']), text: z.string() }),
 ])
 
-// PuzzleEffect 联合（镜像 types/index.ts）
-const puzzleEffectSchema = z.discriminatedUnion('type', [
-  z.object({ type: z.literal('addRisk'), amount: z.number() }),
-  z.object({ type: z.literal('removeRisk'), amount: z.number() }),
-  z.object({ type: z.literal('startCountdown'), durationSec: z.number(), id: z.string() }),
-  z.object({ type: z.literal('advanceChapter'), toChapterId: idStr }),
-  z.object({ type: z.literal('pushSms'), smsEventId: z.string() }),
-  z.object({ type: z.literal('pushDoorbell'), doorbellEventId: z.string() }),
-  z.object({ type: z.literal('registerClue'), clueId: idStr }),
-  z.object({ type: z.literal('collectEvidence'), evidenceId: idStr }),
-  z.object({ type: z.literal('playAudio'), assetId: z.string(), loop: z.boolean().optional() }),
-  z.object({ type: z.literal('stopAudio'), assetId: z.string().optional() }),
-  z.object({ type: z.literal('vibrate') }),
-  z.object({ type: z.literal('fullscreenAlert'), text: z.string() }),
-  z.object({ type: z.literal('pushEnding'), endingId: z.enum(['good', 'normal', 'bad']) }),
-  z.object({ type: z.literal('openNewsApp'), endingId: z.enum(['good', 'normal', 'bad']) }),
-  z.object({ type: z.literal('openApp'), appId: z.string() }),
-])
-// 重新导出供 engine 复用
-export const PuzzleEffectSchema = puzzleEffectSchema
+// PageAccessibility：门控已废，全部 public。passthrough 容错遗留字段。
+const pageAccessibilitySchema = z.object({ kind: z.string() }).passthrough()
 
-// PageAccessibility 四类
-const pageAccessibilitySchema = z.discriminatedUnion('kind', [
-  z.object({ kind: z.literal('public') }),
-  z.object({ kind: z.literal('hidden'), discoverFrom: idStr, hint: z.string() }),
-  z.object({ kind: z.literal('loginRequired'), puzzleId: idStr }),
-  z.object({ kind: z.literal('linkedOnly'), fromPageId: idStr }),
-])
-
-// PageBlock 联合（宽松：额外字段透传，前端只消费已声明 block.type）
+// PageBlock 联合（宽松：额外字段透传，站点按 block.type 自渲染）
 const pageBlockSchema = z.object({ type: z.string() }).passthrough()
-
-// DiscoverableBy
-const discoverableBySchema = z.discriminatedUnion('type', [
-  z.object({ type: z.literal('urlSuffix'), basePageId: idStr, suffix: z.string() }),
-  z.object({ type: z.literal('sourceCodeComment'), onPageId: idStr, commentText: z.string() }),
-  z.object({ type: z.literal('search'), queryKeyword: z.string() }),
-])
 
 const webPageSchema: z.ZodType<WebPage> = z.object({
   id: idStr,
@@ -111,26 +73,7 @@ const webPageSchema: z.ZodType<WebPage> = z.object({
   title: z.string(),
   accessibility: pageAccessibilitySchema,
   blocks: z.array(pageBlockSchema),
-  discoverableBy: z.array(discoverableBySchema).optional(),
-  registersClueId: idStr.optional(),
-  triggersEvidenceId: idStr.optional(),
-  containsAssetId: z.string().optional(),
-  assetRequiresPuzzleId: idStr.optional(),
-  onViewEffects: z.array(puzzleEffectSchema).optional(),
-}) as unknown as z.ZodType<WebPage>
-
-// clue source 联合
-const clueSourceSchema: z.ZodType<ClueSource> = z.discriminatedUnion('kind', [
-  z.object({ kind: z.literal('wechat-thread'), threadId: idStr, messageId: z.string().optional() }),
-  z.object({ kind: z.literal('wechat-moment'), momentId: z.string() }),
-  z.object({ kind: z.literal('wechat-article'), articleId: z.string() }),
-  z.object({ kind: z.literal('qq-thread'), threadId: idStr, messageId: z.string().optional() }),
-  z.object({ kind: z.literal('qzone-post'), postId: z.string() }),
-  z.object({ kind: z.literal('web-page'), pageId: idStr }),
-  z.object({ kind: z.literal('sms'), smsId: z.string() }),
-  z.object({ kind: z.literal('call'), callId: z.string() }),
-  z.object({ kind: z.literal('doorbell'), eventId: z.string() }),
-]) as unknown as z.ZodType<ClueSource>
+}).passthrough() as unknown as z.ZodType<WebPage>
 
 // ===== 各文件 schema =====
 
@@ -243,57 +186,18 @@ const puzzleSchema = z.object({
   chapterId: idStr,
   answer: z.union([z.string(), z.array(z.string())]),
   matchStrategy: matchStrategySchema,
-  maxAttempts: z.number().optional(),
-  attemptsToHint: z.number().optional(),
-  riskPerWrongAttempt: z.number().optional(),
-  lockoutAfterAttempts: z.number().optional(),
-  hintIds: z.array(idStr),
-  onSuccess: z.array(puzzleEffectSchema),
-  onFailure: z.array(puzzleEffectSchema).optional(),
-  unlocksThreadIds: z.array(idStr).optional(),
-  unlocksPageIds: z.array(idStr).optional(),
-  unlocksAssetIds: z.array(z.string()).optional(),
-  registersEvidenceIds: z.array(idStr).optional(),
 })
-
-const clueSchema: z.ZodType<Clue> = z.object({
-  id: idStr,
-  chapterId: idStr,
-  title: z.string(),
-  summary: z.string(),
-  source: clueSourceSchema,
-  relatedEvidenceIds: z.array(idStr),
-  isRedHerring: z.boolean(),
-  redHerringNote: z.string().optional(),
-  autoRegisterOnView: z.boolean(),
-}) as unknown as z.ZodType<Clue>
-
 const evidenceSchema: z.ZodType<Evidence> = z.object({
   id: idStr,
   title: z.string(),
   description: z.string(),
   chapterId: idStr,
-  source: clueSourceSchema,
   isKey: z.boolean(),
-  collectingCondition: z.enum(['onView', 'onPuzzleSolve', 'onScreenshot']),
-  screenshotAssetId: z.string().optional(),
-  triggerClueId: idStr.optional(),
-  triggerPuzzleId: idStr.optional(),
-  triggerPageId: idStr.optional(),
 }) as unknown as z.ZodType<Evidence>
-
-const endingTriggerSchema = z.discriminatedUnion('kind', [
-  z.object({ kind: z.literal('evidenceSufficient'), puzzleId: idStr }),
-  z.object({ kind: z.literal('evidenceInsufficient'), puzzleId: idStr }),
-  z.object({ kind: z.literal('countdownExpired'), countdownId: idStr }),
-  z.object({ kind: z.literal('riskMaxed') }),
-  z.object({ kind: z.literal('manual'), chapterId: idStr }),
-])
 
 const endingSchema: z.ZodType<Ending> = z.object({
   id: z.enum(['good', 'normal', 'bad']),
   title: z.string(),
-  trigger: endingTriggerSchema,
   epilogueBlocks: z.array(articleBlockSchema),
   postEndingSms: z.array(z.object({ from: idStr, text: z.string() })).optional(),
   postEndingWechatMessage: z.object({
@@ -302,48 +206,12 @@ const endingSchema: z.ZodType<Ending> = z.object({
   }).optional(),
 }) as unknown as z.ZodType<Ending>
 
-const chapterConditionSchema: z.ZodType<import('@/types').ChapterCondition> = z.lazy(() => z.discriminatedUnion('kind', [
-  z.object({ kind: z.literal('gameStart') }),
-  z.object({ kind: z.literal('puzzleSolved'), puzzleId: idStr }),
-  z.object({ kind: z.literal('evidenceCollected'), evidenceId: idStr }),
-  z.object({ kind: z.literal('clueRegistered'), clueId: idStr }),
-  z.object({ kind: z.literal('and'), conditions: z.array(chapterConditionSchema) }),
-])) as unknown as z.ZodType<import('@/types').ChapterCondition>
-
 const chapterSchema: z.ZodType<Chapter> = z.object({
   id: idStr,
   index: z.number(),
   title: z.string(),
-  enterCondition: chapterConditionSchema,
   introMonologueId: z.string().optional(),
-  onEnterEffects: z.array(puzzleEffectSchema).optional(),
-  objectives: z.array(z.object({
-    id: z.string(),
-    description: z.string(),
-    completionPuzzleId: idStr.optional(),
-    completionEvidenceId: idStr.optional(),
-    completionClueId: idStr.optional(),
-    hidden: z.boolean().optional(),
-  })),
 }) as unknown as z.ZodType<Chapter>
-
-const hintTriggerSchema = z.discriminatedUnion('kind', [
-  z.object({ kind: z.literal('idleOnPage'), pageId: idStr, seconds: z.number() }),
-  z.object({ kind: z.literal('wrongAttempts'), puzzleId: idStr, attempts: z.number() }),
-  z.object({ kind: z.literal('viewedClue'), clueId: idStr }),
-  z.object({ kind: z.literal('chapterEntered'), chapterId: idStr }),
-  z.object({ kind: z.literal('askedContact'), characterId: idStr, keyword: z.string().optional() }),
-])
-
-const hintSchema: z.ZodType<Hint> = z.object({
-  id: idStr,
-  puzzleId: idStr.optional(),
-  trigger: hintTriggerSchema,
-  text: z.string(),
-  tier: z.union([z.literal(1), z.literal(2), z.literal(3)]),
-  cooldownSec: z.number().optional(),
-  onlyOnce: z.boolean().optional(),
-}) as unknown as z.ZodType<Hint>
 
 const monologueSchema: z.ZodType<Monologue> = z.object({
   id: idStr,
@@ -447,26 +315,6 @@ const siteSchema: z.ZodType<Site> = z.object({
   pages: z.array(idStr),
 }) as unknown as z.ZodType<Site>
 
-const searchIndexSchema: z.ZodType<SearchIndexEntry[]> = z.array(z.object({
-  keyword: z.string(),
-  pageIds: z.array(idStr),
-})) as unknown as z.ZodType<SearchIndexEntry[]>
-
-const riskEventsSchema: z.ZodType<RiskEventsFile> = z.object({
-  thresholds: z.object({
-    max: z.number(),
-    badEndingAt: z.number(),
-    redAlertAt: z.number(),
-  }),
-  events: z.array(z.object({
-    id: idStr,
-    source: z.string(),
-    amount: z.number(),
-    trigger: z.object({ kind: z.string() }).passthrough(),
-    triggerDescription: z.string().optional(),
-  })),
-}) as unknown as z.ZodType<RiskEventsFile>
-
 const qqGroupFileSchema: z.ZodType<QqGroupFile> = z.object({
   id: idStr,
   name: z.string(),
@@ -546,11 +394,6 @@ async function loadArticles(): Promise<OfficialAccountArticle[]> {
 async function loadPuzzles(): Promise<import('@/types').Puzzle[]> {
   return validate('puzzle/puzzles.json', await fetchJson('data/puzzle/puzzles.json'), z.array(puzzleSchema)) as unknown as import('@/types').Puzzle[]
 }
-async function loadClues(): Promise<Clue[]> {
-  const data = await fetchJson('data/clustering/clue-map.json')
-  const raw = (data as { clues: Clue[] }).clues
-  return validate('clustering/clue-map.json clues', raw, z.array(clueSchema)) as unknown as Clue[]
-}
 async function loadEvidence(): Promise<Evidence[]> {
   return validate('meta/evidence-registry.json', await fetchJson('data/meta/evidence-registry.json'), z.array(evidenceSchema)) as unknown as Evidence[]
 }
@@ -559,9 +402,6 @@ async function loadEndings(): Promise<Ending[]> {
 }
 async function loadChapters(): Promise<Chapter[]> {
   return validate('meta/chapters.json', await fetchJson('data/meta/chapters.json'), z.array(chapterSchema)) as unknown as Chapter[]
-}
-async function loadHints(): Promise<Hint[]> {
-  return validate('story/hints.json', await fetchJson('data/story/hints.json'), z.array(hintSchema)) as unknown as Hint[]
 }
 async function loadMonologues(): Promise<Monologue[]> {
   return validate('story/monologues.json', await fetchJson('data/story/monologues.json'), z.array(monologueSchema)) as unknown as Monologue[]
@@ -593,12 +433,6 @@ async function loadNotes(): Promise<Note[]> {
 }
 async function loadSites(): Promise<Site[]> {
   return validate('browser/sites.json', await fetchJson('data/browser/sites.json'), z.array(siteSchema)) as unknown as Site[]
-}
-async function loadSearchIndex(): Promise<SearchIndexEntry[]> {
-  return validate('browser/search-index.json', await fetchJson('data/browser/search-index.json'), searchIndexSchema) as unknown as SearchIndexEntry[]
-}
-async function loadRiskEvents(): Promise<RiskEventsFile> {
-  return validate('meta/risk-events.json', await fetchJson('data/meta/risk-events.json'), riskEventsSchema) as unknown as RiskEventsFile
 }
 async function loadQqGroupFiles(): Promise<QqGroupFilesFile> {
   return validate('qq/group-files.json', await fetchJson('data/qq/group-files.json'), qqGroupFilesSchema) as unknown as QqGroupFilesFile
@@ -634,11 +468,9 @@ interface GameDataSnapshot {
   qzone: MomentsPost[]
   articles: OfficialAccountArticle[]
   puzzles: import('@/types').Puzzle[]
-  clues: Clue[]
   evidence: Evidence[]
   endings: Ending[]
   chapters: Chapter[]
-  hints: Hint[]
   monologues: Monologue[]
   smsEvents: SmsEvent[]
   doorbellEvents: DoorbellEvent[]
@@ -646,8 +478,6 @@ interface GameDataSnapshot {
   callRecords: CallRecord[]
   notes: Note[]
   sites: Site[]
-  searchIndex: SearchIndexEntry[]
-  riskEvents: RiskEventsFile
   qqGroupFiles: QqGroupFilesFile
 }
 
@@ -659,12 +489,8 @@ export interface GameDataIndex {
   wechatThreadByTitle: Map<string, ChatThread>
   puzzleById: Map<string, import('@/types').Puzzle>
   evidenceById: Map<string, Evidence>
-  clueById: Map<string, Clue>
-  /** 按来源（kind+具体 id）反查线索。key 形如 `${kind}:${subId}`，subId 为 threadId/messageId/momentId/articleId/pageId/smsId/callId/eventId/postId */
-  clueBySource: Map<string, Clue>
   chapterById: Map<string, Chapter>
   endingById: Map<string, Ending>
-  hintById: Map<string, Hint>
   monologueById: Map<string, Monologue>
   monologueByChapterId: Map<string, Monologue>
   smsEventById: Map<string, SmsEvent>
@@ -674,8 +500,6 @@ export interface GameDataIndex {
   articleById: Map<string, OfficialAccountArticle>
   siteById: Map<string, Site>
   noteById: Map<string, Note>
-  /** 搜索关键词（小写）→ pageIds */
-  searchByKeyword: Map<string, PageId[]>
   /** QQ 群文件按 threadId 索引 */
   qqGroupFilesByThreadId: Map<string, QqGroupFilesEntry>
   /** 全部群文件扁平索引 by file id */
@@ -686,68 +510,6 @@ let _snapshot: GameDataSnapshot | null = null
 let _index: GameDataIndex | null = null
 const _messageCache = new Map<string, ChatMessage[]>()
 const _pageCache = new Map<string, WebPage>()
-
-/** clueBySource 的 key 计算规则（与 above 注释一致） */
-export function clueSourceKey(source: ClueSource): string {
-  switch (source.kind) {
-    case 'wechat-thread': return `wechat-thread:${source.threadId}${source.messageId ? ':' + source.messageId : ''}`
-    case 'wechat-moment': return `wechat-moment:${source.momentId}`
-    case 'wechat-article': return `wechat-article:${source.articleId}`
-    case 'qq-thread': return `qq-thread:${source.threadId}${source.messageId ? ':' + source.messageId : ''}`
-    case 'qzone-post': return `qzone-post:${source.postId}`
-    case 'web-page': return `web-page:${source.pageId}`
-    case 'sms': return `sms:${source.smsId}`
-    case 'call': return `call:${source.callId}`
-    case 'doorbell': return `doorbell:${source.eventId}`
-  }
-}
-
-export interface ViewPayload {
-  kind: 'message' | 'page' | 'moment' | 'article' | 'qzone' | 'sms' | 'call' | 'doorbell'
-  threadId?: string
-  messageId?: string
-  pageId?: string
-  momentId?: string
-  articleId?: string
-  postId?: string
-  smsId?: string
-  callId?: string
-  eventId?: string
-}
-
-/** 把 ViewPayload 转成 clueBySource 的查找 key（不含 messageId 时按 threadId 维度命中 thread 级线索）。 */
-export function viewPayloadToClueKeys(p: ViewPayload): string[] {
-  const keys: string[] = []
-  if (p.kind === 'message' && p.threadId) {
-    // thread 级（无 messageId）
-    const platformPrefix = p.threadId.startsWith('thread') ? guessPlatformFromThreadId(p.threadId) : 'qq'
-    const k = `${platformPrefix}-thread:${p.threadId}`
-    keys.push(k)
-    // 消息级（有 messageId）
-    if (p.messageId) keys.push(`${platformPrefix}-thread:${p.threadId}:${p.messageId}`)
-  } else if (p.kind === 'page' && p.pageId) {
-    keys.push(`web-page:${p.pageId}`)
-  } else if (p.kind === 'moment' && p.momentId) {
-    keys.push(`wechat-moment:${p.momentId}`)
-  } else if (p.kind === 'qzone' && p.postId) {
-    keys.push(`qzone-post:${p.postId}`)
-  } else if (p.kind === 'article' && p.articleId) {
-    keys.push(`wechat-article:${p.articleId}`)
-  } else if (p.kind === 'sms' && p.smsId) {
-    keys.push(`sms:${p.smsId}`)
-  } else if (p.kind === 'call' && p.callId) {
-    keys.push(`call:${p.callId}`)
-  } else if (p.kind === 'doorbell' && p.eventId) {
-    keys.push(`doorbell:${p.eventId}`)
-  }
-  return keys
-}
-
-function guessPlatformFromThreadId(tid: string): 'wechat' | 'qq' {
-  // 从 threadById 反查
-  const t = _index?.threadById.get(tid)
-  return t?.platform ?? 'qq'
-}
 
 // ===== 公共 API =====
 
@@ -760,21 +522,21 @@ export async function loadGameData(): Promise<{ data: GameDataSnapshot; index: G
 
   const [
     characters, wechatContacts, qqContacts, wechatThreads, qqThreads,
-    moments, qzone, articles, puzzles, clues, evidence, endings, chapters,
-    hints, monologues, smsEvents, doorbellEvents, callScripts, callRecords,
-    notes, sites, searchIndex, riskEvents, qqGroupFiles,
+    moments, qzone, articles, puzzles, evidence, endings, chapters,
+    monologues, smsEvents, doorbellEvents, callScripts, callRecords,
+    notes, sites, qqGroupFiles,
   ] = await Promise.all([
     loadCharacters(), loadWechatContacts(), loadQqContacts(), loadWechatThreads(), loadQqThreads(),
-    loadMoments(), loadQzone(), loadArticles(), loadPuzzles(), loadClues(), loadEvidence(), loadEndings(), loadChapters(),
-    loadHints(), loadMonologues(), loadSmsEvents(), loadDoorbellEvents(), loadCallScripts(), loadCallRecords(),
-    loadNotes(), loadSites(), loadSearchIndex(), loadRiskEvents(), loadQqGroupFiles(),
+    loadMoments(), loadQzone(), loadArticles(), loadPuzzles(), loadEvidence(), loadEndings(), loadChapters(),
+    loadMonologues(), loadSmsEvents(), loadDoorbellEvents(), loadCallScripts(), loadCallRecords(),
+    loadNotes(), loadSites(), loadQqGroupFiles(),
   ])
 
   _snapshot = {
     characters, wechatContacts, qqContacts, wechatThreads, qqThreads,
-    moments, qzone, articles, puzzles, clues, evidence, endings, chapters,
-    hints, monologues, smsEvents, doorbellEvents, callScripts, callRecords,
-    notes, sites, searchIndex, riskEvents, qqGroupFiles,
+    moments, qzone, articles, puzzles, evidence, endings, chapters,
+    monologues, smsEvents, doorbellEvents, callScripts, callRecords,
+    notes, sites, qqGroupFiles,
   }
 
   // 建索引
@@ -800,21 +562,11 @@ export async function loadGameData(): Promise<{ data: GameDataSnapshot; index: G
   const evidenceById = new Map<string, Evidence>()
   for (const e of evidence) evidenceById.set(e.id, e)
 
-  const clueById = new Map<string, Clue>()
-  const clueBySource = new Map<string, Clue>()
-  for (const cl of clues) {
-    clueById.set(cl.id, cl)
-    clueBySource.set(clueSourceKey(cl.source), cl)
-  }
-
   const chapterById = new Map<string, Chapter>()
   for (const ch of chapters) chapterById.set(ch.id, ch)
 
   const endingById = new Map<string, Ending>()
   for (const e of endings) endingById.set(e.id, e)
-
-  const hintById = new Map<string, Hint>()
-  for (const h of hints) hintById.set(h.id, h)
 
   const monologueById = new Map<string, Monologue>()
   const monologueByChapterId = new Map<string, Monologue>()
@@ -844,11 +596,6 @@ export async function loadGameData(): Promise<{ data: GameDataSnapshot; index: G
   const noteById = new Map<string, Note>()
   for (const n of notes) noteById.set(n.id, n)
 
-  const searchByKeyword = new Map<string, PageId[]>()
-  for (const e of searchIndex) {
-    searchByKeyword.set(e.keyword.toLowerCase(), e.pageIds)
-  }
-
   const qqGroupFilesByThreadId = new Map<string, QqGroupFilesEntry>()
   const qqGroupFileById = new Map<string, QqGroupFile>()
   for (const g of qqGroupFiles.groups) {
@@ -859,10 +606,10 @@ export async function loadGameData(): Promise<{ data: GameDataSnapshot; index: G
   _index = {
     contactById, wechatContactByCharacterId, qqContactByCharacterId,
     threadById, wechatThreadByTitle,
-    puzzleById, evidenceById, clueById, clueBySource,
-    chapterById, endingById, hintById, monologueById, monologueByChapterId,
+    puzzleById, evidenceById,
+    chapterById, endingById, monologueById, monologueByChapterId,
     smsEventById, doorbellEventById, callScriptById, callRecordById,
-    articleById, siteById, noteById, searchByKeyword,
+    articleById, siteById, noteById,
     qqGroupFilesByThreadId, qqGroupFileById,
   }
 
@@ -883,8 +630,16 @@ function requireSnapshot(): GameDataSnapshot {
 export function getContact(id: string): Character | undefined {
   return requireIndex().contactById.get(id)
 }
+/** 全量人物列表（meta/characters.json，WechatApp/ContactsTab 等展示用）。 */
+export function getAllCharacters(): Character[] {
+  return requireSnapshot().characters
+}
 export function getWechatContact(characterId: string): WechatContact | undefined {
   return requireIndex().wechatContactByCharacterId.get(characterId)
+}
+/** 全量微信联系条目（contacts.json，WechatApp/ContactsTab 列表展示用）。 */
+export function getAllWechatContacts(): WechatContact[] {
+  return requireSnapshot().wechatContacts
 }
 export function getQqContact(characterId: string): QqContact | undefined {
   return requireIndex().qqContactByCharacterId.get(characterId)
@@ -914,28 +669,6 @@ export function getEvidenceById(id: string): Evidence | undefined {
 export function getAllEvidence(): Evidence[] {
   return requireSnapshot().evidence
 }
-export function getClueById(id: string): Clue | undefined {
-  return requireIndex().clueById.get(id)
-}
-export function getClueBySourceKey(key: string): Clue | undefined {
-  return requireIndex().clueBySource.get(key)
-}
-export function findCluesByViewPayload(p: ViewPayload): Clue[] {
-  const idx = requireIndex()
-  const keys = viewPayloadToClueKeys(p)
-  const out: Clue[] = []
-  for (const k of keys) {
-    const c = idx.clueBySource.get(k)
-    if (c) out.push(c)
-  }
-  // dedupe
-  const seen = new Set<string>()
-  return out.filter((c) => {
-    if (seen.has(c.id)) return false
-    seen.add(c.id)
-    return true
-  })
-}
 export function getChapterById(id: string): Chapter | undefined {
   return requireIndex().chapterById.get(id)
 }
@@ -947,15 +680,6 @@ export function getEndingById(id: string): Ending | undefined {
 }
 export function getAllEndings(): Ending[] {
   return requireSnapshot().endings
-}
-export function getHintById(id: string): Hint | undefined {
-  return requireIndex().hintById.get(id)
-}
-export function getAllHints(): Hint[] {
-  return requireSnapshot().hints
-}
-export function getHintsForPuzzle(puzzleId: string): Hint[] {
-  return requireSnapshot().hints.filter((h) => h.puzzleId === puzzleId)
 }
 export function getMonologueById(id: string): Monologue | undefined {
   return requireIndex().monologueById.get(id)
@@ -996,22 +720,6 @@ export function getSiteById(id: string): Site | undefined {
 export function getAllSites(): Site[] {
   return requireSnapshot().sites
 }
-export function getSearchIndex(): SearchIndexEntry[] {
-  return requireSnapshot().searchIndex
-}
-export function searchPages(keyword: string): PageId[] {
-  const k = keyword.trim().toLowerCase()
-  if (!k) return []
-  const idx = requireIndex()
-  const direct = idx.searchByKeyword.get(k)
-  if (direct) return direct
-  // 模糊包含
-  const out: PageId[] = []
-  for (const [kw, ids] of idx.searchByKeyword) {
-    if (kw.includes(k) || k.includes(kw)) out.push(...ids)
-  }
-  return Array.from(new Set(out))
-}
 export function getNoteById(id: string): Note | undefined {
   return requireIndex().noteById.get(id)
 }
@@ -1023,9 +731,6 @@ export function getMoments(): MomentsPost[] {
 }
 export function getQzone(): MomentsPost[] {
   return requireSnapshot().qzone
-}
-export function getRiskEvents(): RiskEventsFile {
-  return requireSnapshot().riskEvents
 }
 /** QQ 群文件清单全集。 */
 export function getQqGroupFiles(): QqGroupFilesFile {

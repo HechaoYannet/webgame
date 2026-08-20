@@ -2,10 +2,6 @@
   {
     "id": "good",
     "title": "真结局：成功举报",
-    "trigger": {
-      "kind": "evidenceSufficient",
-      "puzzleId": "puzzle-evidence-finale"
-    },
     "epilogueBlocks": [
       {
         "type": "heading",
@@ -48,10 +44,6 @@
   {
     "id": "normal",
     "title": "普通结局：证据不足",
-    "trigger": {
-      "kind": "evidenceInsufficient",
-      "puzzleId": "puzzle-evidence-finale"
-    },
     "epilogueBlocks": [
       {
         "type": "heading",
@@ -80,10 +72,6 @@
   {
     "id": "bad",
     "title": "坏结局：被抓",
-    "trigger": {
-      "kind": "countdownExpired",
-      "countdownId": "countdown-finale"
-    },
     "epilogueBlocks": [
       {
         "type": "heading",

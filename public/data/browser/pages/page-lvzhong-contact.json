@@ -4,8 +4,7 @@
   "url": "https://www.lvzhong-edu.cn/internal/contact/",
   "title": "绿草中学 — 张强校长通讯录",
   "accessibility": {
-    "kind": "loginRequired",
-    "puzzleId": "puzzle-lvzhong-internal"
+    "kind": "public"
   },
   "blocks": [
     {
@@ -56,12 +55,6 @@
       "type": "callout",
       "variant": "info",
       "text": "““一个学生，新希望那边能拿到20万，实验室再给30万，我们五五分。”——张强 与 陈建国 的内部沟通记录（2026-02）”"
-    },
-    {
-      "type": "callout",
-      "variant": "danger",
-      "text": "该通讯录与对话记录证明张强向校外机构输送学生牟利，并与陈建国（实验室）、刀哥（教官）形成完整链条。"
     }
-  ],
-  "registersClueId": "clue-lvzhong-internal-contact"
+  ]
 }

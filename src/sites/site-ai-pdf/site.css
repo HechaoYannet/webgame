@@ -1,0 +1,296 @@
+/**
+ * site-ai-pdf 视觉：仿 AI 论文解读工具站。
+ * 特征——深紫蓝渐变顶栏（AI 工具感）、白底卡片主区、无衬线正文、柔和强调色、
+ * 居中窄栏内容（工具站式自适应单列布局）。
+ */
+.site-ai-pdf-root {
+  width: 100%;
+  min-height: 100vh;
+  background: #f4f6fb;
+  color: #1f2430;
+  font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  font-size: 15px;
+  line-height: 1.7;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== 顶栏（AI 工具式品牌条） ===== */
+.site-ai-pdf-topbar {
+  background: linear-gradient(135deg, #4b3b8f 0%, #6a4cc4 100%);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(40, 20, 90, 0.18);
+}
+.site-ai-pdf-topbar-inner {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.site-ai-pdf-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: #fff;
+}
+.site-ai-pdf-brand-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.22);
+  font-size: 18px;
+  font-weight: 700;
+}
+.site-ai-pdf-brand-name {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+.site-ai-pdf-brand-sub {
+  font-size: 12px;
+  opacity: 0.82;
+  margin-left: 4px;
+}
+.site-ai-pdf-nav-link {
+  color: #f0e8ff;
+  text-decoration: none;
+  font-size: 14px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  transition: background 0.12s, color 0.12s;
+}
+.site-ai-pdf-nav-link:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+}
+
+/* ===== 主区 ===== */
+.site-ai-pdf-main {
+  flex: 1;
+  width: 100%;
+}
+.site-ai-pdf-content {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 32px 24px 56px;
+}
+
+.site-ai-pdf-loading {
+  padding: 60px 0;
+  text-align: center;
+  color: #8a8f9c;
+}
+
+/* ===== hero ===== */
+.site-ai-pdf-hero {
+  margin: 0 0 24px;
+}
+.site-ai-pdf-hero-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #2a1e5e;
+  margin: 0 0 8px;
+  line-height: 1.3;
+}
+.site-ai-pdf-hero-sub {
+  font-size: 16px;
+  color: #5a6478;
+  margin: 0;
+}
+
+/* ===== 面包屑 ===== */
+.site-ai-pdf-crumb {
+  font-size: 13px;
+  color: #8a8f9c;
+  margin-bottom: 16px;
+}
+.site-ai-pdf-crumb a {
+  color: #6a4cc4;
+  text-decoration: none;
+}
+.site-ai-pdf-crumb a:hover {
+  text-decoration: underline;
+}
+.site-ai-pdf-crumb-sep {
+  margin: 0 6px;
+  color: #c4c8d2;
+}
+
+/* ===== 段落 / 标题 ===== */
+.site-ai-pdf-paragraph {
+  margin: 14px 0;
+  color: #2c3340;
+}
+.site-ai-pdf-heading {
+  color: #2a1e5e;
+  font-weight: 700;
+  margin: 24px 0 10px;
+  line-height: 1.4;
+}
+.site-ai-pdf-heading-level-1 {
+  font-size: 24px;
+}
+.site-ai-pdf-heading-level-2 {
+  font-size: 19px;
+  border-left: 4px solid #6a4cc4;
+  padding-left: 10px;
+}
+.site-ai-pdf-heading-level-3 {
+  font-size: 16px;
+}
+
+/* ===== 列表 ===== */
+.site-ai-pdf-list {
+  margin: 14px 0;
+  padding-left: 24px;
+  color: #2c3340;
+}
+.site-ai-pdf-list.is-ordered {
+  list-style: decimal;
+}
+.site-ai-pdf-list.is-unordered {
+  list-style: disc;
+}
+.site-ai-pdf-list li {
+  margin: 6px 0;
+  line-height: 1.7;
+}
+
+/* ===== callout ===== */
+.site-ai-pdf-callout {
+  margin: 16px 0;
+  padding: 14px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  line-height: 1.7;
+  border-left: 4px solid #6a4cc4;
+  background: #f0eaff;
+  color: #3a2a6a;
+}
+.site-ai-pdf-callout.is-warning {
+  background: #fff8e6;
+  border-left-color: #d48806;
+  color: #6b4a00;
+}
+.site-ai-pdf-callout.is-danger {
+  background: #fff1f0;
+  border-left-color: #cf1322;
+  color: #820014;
+}
+.site-ai-pdf-callout.is-info {
+  background: #eef2ff;
+  border-left-color: #4b3b8f;
+  color: #2a1e5e;
+}
+
+/* ===== 上传区（工具首页核心交互） ===== */
+.site-ai-pdf-upload {
+  margin: 24px 0;
+  padding: 28px;
+  border: 2px dashed #b8a8e0;
+  border-radius: 12px;
+  background: #fff;
+  text-align: center;
+  transition: border-color 0.15s, background 0.15s;
+}
+.site-ai-pdf-upload:hover {
+  border-color: #6a4cc4;
+  background: #faf8ff;
+}
+.site-ai-pdf-upload-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #2a1e5e;
+  margin: 0 0 6px;
+}
+.site-ai-pdf-upload-hint {
+  font-size: 13px;
+  color: #8a8f9c;
+  margin: 0 0 18px;
+}
+.site-ai-pdf-upload-input {
+  display: none;
+}
+.site-ai-pdf-upload-btn {
+  display: inline-block;
+  padding: 10px 24px;
+  font-size: 15px;
+  color: #fff;
+  background: #6a4cc4;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.12s;
+}
+.site-ai-pdf-upload-btn:hover {
+  background: #5638a8;
+}
+.site-ai-pdf-upload-btn:disabled {
+  background: #b8a8e0;
+  cursor: not-allowed;
+}
+.site-ai-pdf-upload-status {
+  margin-top: 14px;
+  font-size: 14px;
+  line-height: 1.7;
+}
+.site-ai-pdf-upload-file {
+  color: #5a6478;
+  word-break: break-all;
+}
+.site-ai-pdf-upload-verifying {
+  color: #6a4cc4;
+  font-weight: 600;
+}
+.site-ai-pdf-upload-error {
+  color: #cf1322;
+  padding: 8px 12px;
+  background: #fff1f0;
+  border: 1px solid #ffd6d6;
+  border-radius: 6px;
+  display: inline-block;
+}
+.site-ai-pdf-upload-placeholder-note {
+  margin-top: 18px;
+  padding: 10px 14px;
+  background: #fffbe6;
+  border: 1px solid #ffe58f;
+  border-radius: 6px;
+  font-size: 12px;
+  color: #8a6d00;
+  line-height: 1.6;
+}
+
+/* ===== 404 ===== */
+.site-ai-pdf-notfound {
+  text-align: center;
+  padding: 80px 24px;
+  color: #5a6478;
+}
+.site-ai-pdf-notfound a {
+  color: #6a4cc4;
+  text-decoration: none;
+}
+
+/* ===== 底栏 ===== */
+.site-ai-pdf-footer {
+  background: #2a1e5e;
+  color: #c8c0e8;
+  font-size: 12px;
+  text-align: center;
+  padding: 22px 16px;
+  line-height: 1.9;
+}
+.site-ai-pdf-footer-meta {
+  margin-top: 4px;
+  opacity: 0.72;
+}

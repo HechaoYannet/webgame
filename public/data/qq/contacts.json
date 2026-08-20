@@ -14,7 +14,7 @@
     "status": "offline"
   },
   {
-    "characterId": "char-yanxinze",
+    "characterId": "char-qq-group-yiban",
     "qqNumber": "10001",
     "qqNickname": "高二一班级群",
     "isGroup": true,
@@ -22,7 +22,7 @@
     "status": "online"
   },
   {
-    "characterId": "char-zhaotianyu",
+    "characterId": "char-qq-group-game",
     "qqNumber": "10002",
     "qqNickname": "绿中游戏群",
     "qqRemark": "终末地交流",

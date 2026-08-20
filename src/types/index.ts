@@ -166,25 +166,17 @@ export interface OfficialAccountArticle {
   link?: { title?: string; url?: string; pageId?: PageId };
   registersClueId?: ClueId;
   triggersEvidenceId?: EvidenceId;
-  /** 论文 AI 解读：前端检测论文 PDF 已在 FilesApp → 触发本伪解读文章（CLAUDE.md §6.5）。 */
+  /** 论文 AI 解读：site-ai-pdf 本地哈希校验通过后展示的预设解读文章（CLAUDE.md §6.5；FilesApp 已删，改为站点真实上传校验）。 */
   isGeneratedContent?: boolean;
-  /** 触发条件：玩家先解开该 uploadAndIntercept 谜题才生成本文章。 */
+  /** 触发条件：玩家先解开该 uploadAndInterpret 谜题才生成本文章。 */
   triggerUploadPuzzleId?: PuzzleId;
 }
 
 // ===== 网页 =====
-/**
- * 页面可达性四类（discriminated union）：
- *  - public：任意时刻可访问
- *  - hidden：需从某页面发现入口（hint），如 `/qiangzhang` URL 后缀
- *  - loginRequired：需解谜（puzzleId）登录后台才能访问
- *  - linkedOnly：仅能从某页面内部链接进入
- */
-export type PageAccessibility =
-  | { kind: "public" }
-  | { kind: "hidden"; discoverFrom: PageId; hint: string }
-  | { kind: "loginRequired"; puzzleId: PuzzleId }
-  | { kind: "linkedOnly"; fromPageId: PageId };
+//
+// 重写后（玩家决策 2026-08-19）：访问门控整体废除——所有页面任意访客可自由浏览。
+// PageAccessibility 退化为宽松 { kind: 'public' } 形态（站点页 JSON 仍带该字段，passthrough 容错）。
+export type PageAccessibility = { kind: "public" };
 
 export type PageBlock =
   | { type: "hero"; heading: string; subheading?: string; imageAssetId?: string }
@@ -200,35 +192,16 @@ export type PageBlock =
   | { type: "form"; formId: string; onSubmitMessage: string }
   | { type: "sourceComment"; comment: string; linkPageId?: PageId }
   | { type: "loginForm"; puzzleId: PuzzleId }
-  | { type: "pdfViewer"; assetId: string; requiresPuzzleId?: PuzzleId };
-
-/** 页面被发现的方式（用于 hint/源码注释/搜索）。 */
-export type DiscoverableBy =
-  | { type: "urlSuffix"; basePageId: PageId; suffix: string }
-  | { type: "sourceCodeComment"; onPageId: PageId; commentText: string }
-  | { type: "search"; queryKeyword: string };
+  | { type: "pdfViewer"; assetId: string };
 
 export interface WebPage {
   id: PageId;
   siteId: string;
   url: string;
   title: string;
+  /** 重写后全部 public（门控已废）。保留字段以兼容 page JSON。 */
   accessibility: PageAccessibility;
   blocks: PageBlock[];
-  discoverableBy?: DiscoverableBy[];
-  registersClueId?: ClueId;
-  triggersEvidenceId?: EvidenceId;
-  /** 页面内含某资源（如 PDF），收集需先解谜。 */
-  containsAssetId?: string;
-  assetRequiresPuzzleId?: PuzzleId;
-  /**
-   * 玩家首次查看本页时触发的关卡副作用清单（level-designer 关卡机制扩展）。
-   * 由前端引擎在页面首次访问（visitedPages 首次记录）时执行一次。
-   * 典型用途：page-lab-funding-report 首次打开触发 3 分钟倒计时 + 威胁短信 +
-   * 刀哥门铃 + 心跳音频（CLAUDE.md §6 + 交互设计 §四.2，倒计时由查看经费报告页触发，
-   * 而非登录实验室后台瞬间）。
-   */
-  onViewEffects?: PuzzleEffect[];
 }
 
 export interface Site {
@@ -254,7 +227,7 @@ export type PuzzleType =
 /**
  * 校验策略（与 answer 分离）：
  *  - exact：精确匹配（可大小写/trim）
- *  - oneOf：多个可接受答案（如 0328 容错 20260328）
+ *  - oneOf：多个可接受答案（如 20251128 容错 1128）
  *  - regex：正则
  *  - phoneNumber：归一化后取 normalizedDigits 位比较
  *  - evidenceSet：终章证据勾选，requiredEvidenceIds 5项 minLength 5
@@ -270,101 +243,43 @@ export type AnswerMatchStrategy =
       minLength: number;
     };
 
-/** 谜题副作用（解谜成功/失败触发）：清单化，前端 PuzzleEffect 执行器消费。 */
-export type PuzzleEffect =
-  | { type: "addRisk"; amount: number }
-  | { type: "removeRisk"; amount: number }
-  | { type: "startCountdown"; durationSec: number; id: string }
-  | { type: "advanceChapter"; toChapterId: ChapterId }
-  | { type: "pushSms"; smsEventId: string }
-  | { type: "pushDoorbell"; doorbellEventId: string }
-  | { type: "registerClue"; clueId: ClueId }
-  | { type: "collectEvidence"; evidenceId: EvidenceId }
-  | { type: "playAudio"; assetId: string; loop?: boolean }
-  | { type: "stopAudio"; assetId?: string }
-  | { type: "vibrate" }
-  | { type: "fullscreenAlert"; text: string }
-  | { type: "pushEnding"; endingId: EndingId }
-  | { type: "openNewsApp"; endingId: EndingId }
-  | { type: "openApp"; appId: string };
-
 export interface Puzzle {
   id: PuzzleId;
   type: PuzzleType;
   title: string;
   chapterId: ChapterId;
-  /** 答案（数据形态）；校验逻辑在 matchStrategy + 前端 engine/puzzle。 */
+  /** 答案（数据形态）；校验逻辑在 matchStrategy + src/game/answerCheck。
+   *  重写后（玩家决策 2026-08-19）：引擎副作用链已删，puzzles.json 不再带
+   *  onSuccess/onFailure/unlocks 系列字段与 effect 数组——解谜只做"怎么验"，后续动作由调用方
+   *  （网站登录揭示后台页 / 手机 App markPuzzleSolved 推进剧情 / 终章勾选判定结局）自行处理。 */
   answer: string | string[];
   matchStrategy: AnswerMatchStrategy;
-  maxAttempts?: number;
-  attemptsToHint?: number;
-  riskPerWrongAttempt?: number;
-  lockoutAfterAttempts?: number;
-  hintIds: ClueId[];
-  onSuccess: PuzzleEffect[];
-  onFailure?: PuzzleEffect[];
-  unlocksThreadIds?: ThreadId[];
-  unlocksPageIds?: PageId[];
-  unlocksAssetIds?: string[];
-  registersEvidenceIds?: EvidenceId[];
-}
-
-// ===== 线索 =====
-/** 线索来源：枚举所有信息载体的 discriminated union。 */
-export type ClueSource =
-  | { kind: "wechat-thread"; threadId: ThreadId; messageId?: string }
-  | { kind: "wechat-moment"; momentId: string }
-  | { kind: "wechat-article"; articleId: string }
-  | { kind: "qq-thread"; threadId: ThreadId; messageId?: string }
-  | { kind: "qzone-post"; postId: string }
-  | { kind: "web-page"; pageId: PageId }
-  | { kind: "sms"; smsId: string }
-  | { kind: "call"; callId: string }
-  | { kind: "doorbell"; eventId: string };
-
-export interface Clue {
-  id: ClueId;
-  chapterId: ChapterId;
-  title: string;
-  summary: string;
-  source: ClueSource;
-  relatedEvidenceIds: EvidenceId[];
-  isRedHerring: boolean;
-  redHerringNote?: string;
-  /** 查看即自动注册到线索本（无需解谜）。 */
-  autoRegisterOnView: boolean;
 }
 
 // ===== 证据 =====
+//
+// 重写后（玩家决策 2026-08-19）：线索注册/收集触发机制（ClueRegistry、collectingCondition、
+// trigger*）整体废除。证据收集 = 相册勾选·荣誉制；本接口只保留展示字段（证据库 UI 用）。
 export interface Evidence {
   id: EvidenceId;
   title: string;
   description: string;
   chapterId: ChapterId;
-  source: ClueSource;
   /** 关键证据（5 项进 requiredEvidenceIds）。 */
   isKey: boolean;
-  collectingCondition: "onView" | "onPuzzleSolve" | "onScreenshot";
-  screenshotAssetId?: string;
-  triggerClueId?: ClueId;
-  triggerPuzzleId?: PuzzleId;
-  triggerPageId?: PageId;
 }
 
 // ===== 结局 =====
 export type EndingId = "good" | "normal" | "bad";
 
-export type EndingTrigger =
-  | { kind: "evidenceSufficient"; puzzleId: PuzzleId }
-  | { kind: "evidenceInsufficient"; puzzleId: PuzzleId }
-  | { kind: "countdownExpired"; countdownId: string }
-  | { kind: "riskMaxed" }
-  | { kind: "manual"; chapterId: ChapterId };
-
+//
+// 重写后（玩家决策 2026-08-19）：结局判定不再由 EndingTrigger 联合驱动。good/normal 由终章
+// 证据勾选 + 拨号（checkAnswer('puzzle-evidence-finale')）判定，bad 由倒计时归零（watchCountdownExpiry
+// → pushEnding('bad')）。EndingOverlay 只按 endingId 取 epilogueBlocks 渲染，故 endings.json 已去掉
+// trigger 字段；本接口亦不再持 trigger。
 export interface Ending {
   id: EndingId;
   title: string;
-  trigger: EndingTrigger;
   epilogueBlocks: ArticleBlock[];
   postEndingSms?: { from: ContactId; text: string }[];
   postEndingWechatMessage?: {
@@ -373,49 +288,20 @@ export interface Ending {
   };
 }
 
-// ===== 提示 =====
-export type HintTrigger =
-  | { kind: "idleOnPage"; pageId: PageId; seconds: number }
-  | { kind: "wrongAttempts"; puzzleId: PuzzleId; attempts: number }
-  | { kind: "viewedClue"; clueId: ClueId }
-  | { kind: "chapterEntered"; chapterId: ChapterId }
-  | { kind: "askedContact"; characterId: ContactId; keyword?: string };
+// 提示系统（Hints）整体废除：线索/风险机制已废，hintValue 不再被读取。story/hints.json 已删。
 
-export interface Hint {
-  id: string;
-  puzzleId?: PuzzleId;
-  trigger: HintTrigger;
-  text: string;
-  tier: 1 | 2 | 3;
-  cooldownSec?: number;
-  onlyOnce?: boolean;
-}
 
 // ===== 章节 =====
-export type ChapterCondition =
-  | { kind: "gameStart" }
-  | { kind: "puzzleSolved"; puzzleId: PuzzleId }
-  | { kind: "evidenceCollected"; evidenceId: EvidenceId }
-  | { kind: "clueRegistered"; clueId: ClueId }
-  | { kind: "and"; conditions: ChapterCondition[] };
-
-export interface ChapterObjective {
-  id: string;
-  description: string;
-  completionPuzzleId?: PuzzleId;
-  completionEvidenceId?: EvidenceId;
-  completionClueId?: ClueId;
-  hidden?: boolean;
-}
-
+//
+// 重写后（玩家决策 2026-08-19）：章节门控/推进器（ChapterDirector、enterCondition、
+// onEnterEffects、objectives）整体废除。currentChapterId 仅作"消息出现时间表"——由收集
+// 关键证据推进（AlbumApp），只门控哪些微信/短信消息出现，不门控 App/页面访问。本接口
+// 只保留展示字段（shellState.monologue 读 introMonologueId 取章节开场独白；NotesApp 已删）。
 export interface Chapter {
   id: ChapterId;
   index: number;
   title: string;
-  enterCondition: ChapterCondition;
   introMonologueId?: string;
-  onEnterEffects?: PuzzleEffect[];
-  objectives: ChapterObjective[];
 }
 
 // ===== 游戏状态 =====

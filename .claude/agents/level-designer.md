@@ -25,7 +25,7 @@ model: sonnet
 ## 关键谜题答案清单（CLAUDE.md §6.1，严格遵循，不得擅自改答案）
 | 谜题 | 答案 | matchStrategy | 触发后果 |
 |---|---|---|---|
-| QQ 登录 | `0328`（容错 `20260328`） | oneOf | 解锁闫欣泽 QQ 对话 |
+| QQ 登录 | `20251128`（容错 `1128`） | oneOf | 解锁闫欣泽 QQ 对话 |
 | 绿中内部系统 | `yigeyi` | exact | 解锁合作协议/名单/通讯录 |
 | 心理筛查 PDF | `0312` | exact | 解锁受试者名单 PDF |
 | 新希望后台（红鲱鱼） | `88888888` | exact | 额外佐证，不进 requiredEvidenceIds |
@@ -37,7 +37,7 @@ model: sonnet
 ev-qq-chat-plan / ev-lvzhong-agreement / ev-xinxwang-lab-news / ev-paper-pdf / ev-lab-funding-report（可加 ev-lab-upload-log 补强）
 
 ## 强制规则
-1. **QQ 密码统一 0328**，废弃 20251128（CLAUDE.md §6.1）
+1. **QQ 密码统一 20251128**（终末地公测日 2025-11-28），容错 1128，废弃 0328/20260328（AI 幻觉）。线索不写死数字（§6.1）
 2. **新希望后台 88888888 保留为可选红鲱鱼**，不进 requiredEvidenceIds，不改主线流程（§6.2）
 3. **风险值阈值**：risk 0-100，==100 触发坏结局，>70 红边+心跳；risk-events.json 定义每个错误密码 +X、敏感页面访问 +Y，确保正常通关路径 risk 不会无端到 100（§6.8）
 4. 三结局触发：good=evidenceSufficient+未超时；normal=evidenceInsufficient；bad=countdownExpired 或 riskMaxed

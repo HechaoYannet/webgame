@@ -1,67 +1,45 @@
 ---
 name: frontend-browser
-description: 前端浏览器App agent。实现 src/apps/BrowserApp/**：地址栏/URL匹配器/查看源码/搜索/后台登录/PDF查看。Phase4工作。
+description: 【已退役】原"前端浏览器App agent"——src/apps/BrowserApp 从未实现，已被 src/sites/ 独立真网站模型取代。保留本文件作退役说明，勿再按旧职责派发。
 tools: Read, Write, Edit, Glob, Grep, Bash
 model: sonnet
 ---
 
-你是《张强宿舍大逃杀》网页解谜游戏的**前端浏览器 App agent**。这是机制最复杂的前端 App。启动后先读 `E:/otherProject/webgame/.claude/CLAUDE.md`（全局契约），再读 `docs/game_about/信息架构.md`（§4 浏览器信息库，含隐藏页/后台/PDF）和 `docs/game_about/剧情大纲.md`（第二/三/四章：官网调查、隐藏入口、密码、论文下载）。
+## ⚠️ 本 agent 已退役（2026-08-19 重构后）
 
-## 你的写权限目录（独占）
-- `src/apps/BrowserApp/**`（含 `manifest.ts`）
+原职责"实现 `src/apps/BrowserApp/**`（伪浏览器：地址栏/URL匹配器/查看源码/搜索/后台登录/PDF查看）"
+**整体作废**——`src/apps/BrowserApp/` 从未真正实现，伪浏览器已被玩家否决（"太像游戏"）。
 
-## 不得触碰
-- 其他 `src/apps/**`、`src/engine/**` `src/types/**` `src/ui/**` `src/main.tsx`、`public/data/**`、`docs/**`
+### 新模型：调查网站 = 独立真网页（见 .claude/CLAUDE.md §6 与 重构计划）
 
-## 依赖（只读引用）
-- `src/engine/hooks/`（usePuzzle/useClue/useEvidence/useCountdown）
-- `src/data/loader.ts` 读 `public/data/browser/**` 和 PDF asset
-- `src/ui/**` 共享组件（富文本渲染器 PageBlock、图片查看器、密码输入框）
-- `src/types/index.ts`（WebPage / PageAccessibility / PageBlock）
+- 不再有"浏览器 App"。手机通过 `openSitePage(pageId)`（`src/sites/sitePage.ts`）→ `window.open`
+  在**新标签**打开 `#/site/<siteId>/*`，由 `src/sites/SiteRouter.tsx`（`import.meta.glob` 聚合）挂载各站根组件。
+- 每个网站是 `src/sites/<siteId>/` 下的独立组件树，**自带视觉身份、自带站内 `<Routes>`**，
+  与游戏系统完全解耦（禁 import `@/engine`/`@/game`/`@/data/loader`/`@/ui`/`@/utils`/`src/apps`）。
+- 网站只显示信息，**绝不触发剧情/手机效果**（无门控、无 onViewEffects、无跨标签桥）。
+- 登录表单（绿中 internal `yigeyi` / 新希望 `88888888` / 实验室 `123456`）在站点内调
+  `checkLogin(token, password)`（`@/sites/shared/answerCheck`），成功只揭示站内后台页，无游戏副作用。
+- 高潮（3分钟倒计时+威胁短信+刀哥门铃+心跳）改由手机内动作触发（AlbumApp 勾 `ev-lab-funding-report`
+  → "启动举报倒计时"），不再由网页触发。
+- 图片一律用 `PlaceholderImage`（`@/sites/shared/placeholder`），`public/assets/` 占位，玩家后换。
 
-## 必须遵守的技术栈（CLAUDE.md §2）
-- React + TS；HashRouter；PDF 用 pdf.js 解密展示（加密PDF+密码输入框）；`import.meta.env.BASE_URL` 原样出现
+### 10 个站点（各由独立建站 sub-agent 构建，**不知是解谜游戏**）
 
-## 你的实现范围
-### manifest.ts
-```ts
-export const BrowserAppManifest: AppManifest = {
-  appId: "browser", title: "浏览器", icon: "browser.png",
-  route: "/app/browser",
-  Component: lazy(() => import("./BrowserApp")),
-  availableFrom: "ch-prologue",
-};
-```
+`site-lvzhong`(含 /qiangzhang 员工系统) / `site-xinxwang`(含 /admin 财务后台) /
+`site-shanhe-med`(含 lab/admin 实验室后台+经费报告) / `site-arxiv`(论文PDF) /
+`site-news` / `site-tianyancha` / `site-baidu`(搜索) / `site-hnedu` / `site-hnga`(举报热线0731-88888888) /
+`site-endfield`(公测日2025-11-28，QQ密码线索来源)。
 
-### BrowserApp 主界面
-- **地址栏 + 导航**：玩家输入 URL → URL 匹配器查 `browser/sites.json`+`pages/*.json` 的 `url` 字段
-- **URL 匹配器**（核心，CLAUDE.md §4.2 discoverableBy）：
-  - 公开页：直接命中 url
-  - 隐藏入口（`accessibility.kind:hidden`）：玩家在基础 URL 后加后缀（如通知公告 `/qiangzhang`）才命中——支持 `discoverableBy.urlSuffix`
-  - 查看源码动作：玩家点"查看源代码"→ 显示该页 `PageBlock` 中 `type:sourceComment` 的 HTML 注释（如校长信箱注释藏后台地址）——支持 `discoverableBy.sourceCodeComment`
-  - 搜索引擎：伪造百度，读 `search-index.json` 倒排索引返回结果页（关键词命中）——支持 `discoverableBy.search`
-- **页面渲染**：读 `pages/<pageId>.json` 的 `blocks: PageBlock[]`，用 `src/ui` 的 PageBlock 渲染器（hero/nav/articleList/paragraph/callout/image/table/form/sourceComment/loginForm/pdfViewer 各 type）
-  - `image` block 支持 `zoomable`（放大见"新希望"文件袋、后墙钥匙等隐藏细节）
-  - `table` block 用于天眼查工商信息、受试者名单
-  - `form` block 用于校长信箱假表单（提交显示"留言成功"无作用）
-  - `loginForm` block：后台登录表单，挂 `puzzleId`，调 `usePuzzle().submit`
-  - `pdfViewer` block：内嵌 pdf.js 显示 PDF，加密的挂 `requiresPuzzleId`（如筛查名单PDF需 puzzle-pdf-screening 密码0312）
-- **后台登录页**（`accessibility.kind:loginRequired`）：绿中内部系统(puzzle-lvzhong-internal,yigeyi)/实验室后台(puzzle-lab-backend,123456)/新希望后台(puzzle-xinxwang-backend,88888888红鲱鱼)。登录成功 → 调 engine → onSuccess effects 执行（实验室后台成功会触发倒计时+威胁+门铃+心跳，引擎统一执行，你只 submit）
+### 若需建站/改站，不要用本 agent
+用通用建站 Workflow（脚本见 `.claude/workflows/build-sites.js`），每站一个 sub-agent，
+按"普通组织官网"brief 派发（deceptive-but-honest），强制导入边界 grep 门控 + 占位图。
+建站约束详见 build-sites.js 脚本的 PREAMBLE。
 
-### 实验室后台经费报告页（第五章关键）
-- 玩家打开经费报告页 → 该页或其 puzzle 的 onSuccess 含 `startCountdown(180)` + pushSms + pushDoorbell + playAudio —— **由引擎执行副作用**，你只需确保页面数据正确引用 puzzleId，并监听 `useCountdown()` 在浏览器顶部/状态栏显示倒计时
-- 经费报告内容（受试者名单含李桥瑞/闫欣泽）从 JSON 读
+### 依赖契约（仅备用参考，非本 agent 职责）
+- 共享层：`src/sites/shared/{answerCheck,pageContent,placeholder}`、`src/types/index.ts`（PageBlock/SitePage）。
+- 站点取页内容：`getPageContent(pageId)`（不经游戏 loader 的全量索引）。
+- 编排层桥：`src/sites/sitePage.ts`（openSitePage）、`src/sites/SiteRouter.tsx`。
 
-## 强制规则
-1. URL 匹配器是核心机制，必须支持 urlSuffix/sourceCodeComment/search 三种发现方式，全数据驱动
-2. 后台密码校验交给 engine（你 submit，答案在 puzzles.json）；yigeyi/123456/0312/88888888 都不在前端硬编码
-3. `123456` 双重语义：绿中后台记录里写过"123456不行"是数据，实验室后台用123456成功——这是有意红鲱鱼，你照数据渲染即可（§6.7）
-4. 加密 PDF 用 pdf.js + 密码输入框纯前端解密（§6.x）
-5. 查看关键页面调 `useClue().view({kind:"page",pageId})` 自动注册线索/取证
-6. 纯前端，所有"网站"都是站内伪造页
-
-## 产出后
-报告：BrowserApp 组件清单、URL匹配器三种发现方式是否齐全、后台登录是否走 usePuzzle、PDF查看是否用 pdf.js、是否 `tsc --noEmit` 通过。
-
-## 环境约束
-WebFetch/WebSearch 被阻断，查 pdf.js/react-router 文档用 `curl https://raw.githubusercontent.com/mozilla/pdf.js/...` 等（CLAUDE.md §2.1）。
+## 环境约束（仍适用任何子代理）
+WebFetch/WebSearch 阻断，查文档用 `curl https://raw.githubusercontent.com/...`（CLAUDE.md §2.1）。
+JSDoc/块注释里禁止出现星紧接斜杠的双字符序列（会提前终止注释致编译错）。

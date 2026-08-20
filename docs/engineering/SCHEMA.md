@@ -229,7 +229,7 @@
 | kind | 字段 | 校验逻辑（前端 engine/puzzle） |
 |---|---|---|
 | `exact` | `caseSensitive?;trim?` | 精确比较（默认 trim+忽略大小写） |
-| `oneOf` | `accepted:string[]` | 玩家输入命中任一（QQ 密码 `0328` 容错 `20260328`，CLAUDE.md §6.1） |
+| `oneOf` | `accepted:string[]` | 玩家输入命中任一（QQ 密码 `20251128` 容错 `1128`，CLAUDE.md §6.1） |
 | `regex` | `pattern:string` | 正则匹配 |
 | `phoneNumber` | `normalizedDigits:number` | 归一化后取后 N 位比较（举报电话 `0731-88888888`） |
 | `evidenceSet` | `requiredEvidenceIds:EvidenceId[];minLength:number` | 终章勾选证据数 ≥ minLength 且含全部 required（5 项关键证据） |
@@ -263,7 +263,7 @@
 ### 关键谜题答案清单（CLAUDE.md §6.1，已定）
 | 谜题 | 答案 | 校验策略 | 触发后果 |
 |---|---|---|---|
-| QQ 登录 `puzzle-qq-login` | `0328`（容错 `20260328`） | oneOf | 解锁闫欣泽 QQ 对话 |
+| QQ 登录 `puzzle-qq-login` | `20251128`（容错 `1128`） | oneOf | 解锁闫欣泽 QQ 对话 |
 | 绿中内部系统 `puzzle-lvzhong-internal` | `yigeyi` | exact | 解锁合作协议/名单/通讯录 |
 | 心理筛查 PDF `puzzle-pdf-screening` | `0312`（合同号 `XH2026-0312` 后4位） | exact | 解锁受试者名单 PDF |
 | 新希望后台（红鲱鱼，可选）`puzzle-xinxwang-backend` | `88888888` | exact | 额外佐证，不进 key 证据 |

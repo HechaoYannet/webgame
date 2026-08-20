@@ -1,0 +1,565 @@
+/* 绿草中学 — 校园门户网站视觉。
+   一个普通的中国中学官网：顶部 banner + 主导航 + 内容区 + 页脚。绿白配色。 */
+
+.lv-root {
+  width: 100%;
+  min-height: 100vh;
+  background: #f4f6f5;
+  color: #2c3e2f;
+  font-family: "Microsoft YaHei", "PingFang SC", "Segoe UI", system-ui, sans-serif;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 顶部 banner */
+.lv-topbar {
+  background: linear-gradient(180deg, #1e6b3a 0%, #155a30 100%);
+  color: #fff;
+  border-bottom: 3px solid #0f4722;
+}
+.lv-topbar-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 18px 24px 14px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.lv-logo-mark {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: #fff;
+  color: #155a30;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  font-weight: 800;
+  flex-shrink: 0;
+  border: 2px solid #b8e0c5;
+}
+.lv-school-name {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  line-height: 1.2;
+}
+.lv-school-sub {
+  font-size: 12px;
+  opacity: 0.85;
+  margin-top: 2px;
+}
+
+/* 主导航条 */
+.lv-nav {
+  background: #155a30;
+  border-bottom: 1px solid #0f4722;
+}
+.lv-nav-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 12px;
+  display: flex;
+  flex-wrap: wrap;
+}
+.lv-nav a,
+.lv-nav a:visited {
+  color: #e7f3ec;
+  text-decoration: none;
+  padding: 12px 16px;
+  font-size: 15px;
+  display: block;
+  border-bottom: 3px solid transparent;
+  transition: background 0.15s, border-color 0.15s;
+}
+.lv-nav a:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-bottom-color: #6fcf97;
+}
+
+/* 通用容器 */
+.lv-main {
+  flex: 1;
+  max-width: 1100px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 28px 24px 56px;
+  box-sizing: border-box;
+}
+.lv-loading {
+  padding: 60px 0;
+  text-align: center;
+  color: #6b8a72;
+  font-size: 15px;
+}
+
+/* 面包屑 */
+.lv-crumb {
+  font-size: 13px;
+  color: #6b8a72;
+  margin-bottom: 16px;
+}
+.lv-crumb a,
+.lv-crumb a:visited {
+  color: #155a30;
+  text-decoration: none;
+}
+.lv-crumb a:hover {
+  text-decoration: underline;
+}
+
+/* 页面主体卡片 */
+.lv-card {
+  background: #fff;
+  border: 1px solid #e2e8e4;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+.lv-card-pad {
+  padding: 28px 32px 34px;
+}
+
+/* hero */
+.lv-hero {
+  position: relative;
+  margin: -28px -32px 22px;
+  border-radius: 6px 6px 0 0;
+  overflow: hidden;
+  background: linear-gradient(135deg, #1e6b3a 0%, #2d8a4f 100%);
+  color: #fff;
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 44px 28px;
+}
+.lv-hero h1 {
+  margin: 0 0 8px;
+  font-size: 30px;
+  letter-spacing: 1px;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+}
+.lv-hero .lv-hero-sub {
+  font-size: 16px;
+  opacity: 0.92;
+  margin: 0;
+}
+.lv-hero img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.45;
+}
+
+/* 段落 */
+.lv-para {
+  font-size: 16px;
+  line-height: 1.95;
+  color: #34464a;
+  margin: 12px 0;
+  white-space: pre-wrap;
+}
+
+/* callout */
+.lv-callout {
+  padding: 14px 18px;
+  border-radius: 4px;
+  margin: 18px 0;
+  font-size: 15px;
+  line-height: 1.8;
+  border-left: 4px solid #ccc;
+}
+.lv-callout-info {
+  background: #eef6f0;
+  border-left-color: #2d8a4f;
+  color: #1f4d33;
+}
+.lv-callout-warning {
+  background: #fdf6e3;
+  border-left-color: #d4a017;
+  color: #6b5310;
+}
+.lv-callout-danger {
+  background: #fdecea;
+  border-left-color: #c0392b;
+  color: #7b2018;
+}
+.lv-callout-title {
+  font-weight: 700;
+  font-size: 17px;
+  margin-bottom: 4px;
+}
+/* 以"【...】"开头的 callout 视为标题型 callout */
+.lv-callout.is-title {
+  font-size: 19px;
+  font-weight: 700;
+  text-align: center;
+  padding: 18px 20px;
+  border-left: none;
+  border-top: 2px solid #2d8a4f;
+  border-bottom: 2px solid #2d8a4f;
+  background: #f1f8f3;
+  color: #155a30;
+  margin: 0 0 22px;
+}
+
+/* 图片 */
+.lv-figure {
+  margin: 22px 0;
+  text-align: center;
+}
+.lv-figure img,
+.lv-figure .lv-ph {
+  max-width: 100%;
+  border-radius: 4px;
+  border: 1px solid #dfe6e1;
+  display: block;
+  margin: 0 auto;
+  cursor: zoom-in;
+}
+.lv-figure .lv-ph {
+  width: 100%;
+  min-height: 180px;
+  background: #eef2ef;
+  border: 1px dashed #9bb5a3;
+  color: #6b8a72;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  cursor: default;
+}
+.lv-figure figcaption {
+  margin-top: 8px;
+  font-size: 13px;
+  color: #6b8a72;
+}
+
+/* 表格 */
+.lv-table-wrap {
+  margin: 22px 0;
+  overflow-x: auto;
+}
+.lv-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+}
+.lv-table th {
+  background: #155a30;
+  color: #fff;
+  padding: 10px 14px;
+  text-align: left;
+  font-weight: 600;
+  border: 1px solid #0f4722;
+}
+.lv-table td {
+  padding: 10px 14px;
+  border: 1px solid #dfe6e1;
+  line-height: 1.7;
+  vertical-align: top;
+}
+.lv-table tr:nth-child(even) td {
+  background: #f7faf8;
+}
+
+/* 文章列表 */
+.lv-article-list {
+  list-style: none;
+  margin: 16px 0;
+  padding: 0;
+  border-top: 1px solid #e2e8e4;
+}
+.lv-article-list li {
+  border-bottom: 1px dashed #e2e8e4;
+}
+.lv-article-list a,
+.lv-article-list a:visited {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+  padding: 13px 4px;
+  text-decoration: none;
+  color: #2c3e2f;
+  transition: color 0.12s;
+}
+.lv-article-list a:hover {
+  color: #155a30;
+}
+.lv-article-list a:hover .lv-al-title {
+  text-decoration: underline;
+}
+.lv-al-title {
+  font-size: 15px;
+  flex: 1;
+}
+.lv-al-title::before {
+  content: "· ";
+  color: #2d8a4f;
+}
+.lv-al-date {
+  font-size: 13px;
+  color: #8aa390;
+  white-space: nowrap;
+}
+
+/* nav 块（站内快捷导航，通常作为面包屑外的补充） */
+.lv-page-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 20px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid #e2e8e4;
+}
+.lv-page-nav a,
+.lv-page-nav a:visited {
+  font-size: 13px;
+  color: #155a30;
+  text-decoration: none;
+  padding: 4px 12px;
+  border: 1px solid #cfe1d4;
+  border-radius: 14px;
+  background: #f4f9f5;
+}
+.lv-page-nav a:hover {
+  background: #e3f0e7;
+}
+
+/* 表单 */
+.lv-form {
+  margin: 20px 0;
+}
+.lv-form-field {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 14px;
+}
+.lv-form-field label {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #2c3e2f;
+}
+.lv-form-field input,
+.lv-form-field textarea {
+  font-family: inherit;
+  font-size: 15px;
+  padding: 9px 11px;
+  border: 1px solid #cfd8d2;
+  border-radius: 4px;
+  background: #fff;
+  color: #2c3e2f;
+  outline: none;
+  transition: border-color 0.12s;
+}
+.lv-form-field input:focus,
+.lv-form-field textarea:focus {
+  border-color: #2d8a4f;
+}
+.lv-form textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+.lv-btn {
+  font-family: inherit;
+  font-size: 15px;
+  padding: 9px 26px;
+  border: none;
+  border-radius: 4px;
+  background: #155a30;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.12s;
+}
+.lv-btn:hover {
+  background: #0f4722;
+}
+.lv-btn:disabled {
+  background: #9bb5a3;
+  cursor: not-allowed;
+}
+.lv-form-msg {
+  margin-top: 12px;
+  padding: 10px 14px;
+  border-radius: 4px;
+  font-size: 14px;
+}
+.lv-form-msg-ok {
+  background: #eef6f0;
+  color: #1f4d33;
+  border: 1px solid #b8e0c5;
+}
+.lv-form-msg-err {
+  background: #fdecea;
+  color: #7b2018;
+  border: 1px solid #f5c6c0;
+}
+
+/* 登录表单专用 */
+.lv-login-box {
+  max-width: 420px;
+  margin: 24px auto;
+  padding: 28px;
+  background: #f7faf8;
+  border: 1px solid #dfe6e1;
+  border-radius: 6px;
+}
+.lv-login-hint {
+  font-size: 13px;
+  color: #6b8a72;
+  background: #eef6f0;
+  padding: 8px 12px;
+  border-radius: 4px;
+  margin-bottom: 16px;
+  line-height: 1.7;
+}
+
+/* PDF 占位 */
+.lv-pdf-wrap {
+  margin: 22px 0;
+}
+
+/* "查看页面源码"入口 */
+.lv-source-toggle {
+  display: inline-block;
+  margin: 26px 0 0;
+  font-size: 13px;
+  color: #8aa390;
+  background: none;
+  border: none;
+  border-bottom: 1px dashed #b8c8bd;
+  cursor: pointer;
+  padding: 2px 0;
+  font-family: inherit;
+}
+.lv-source-toggle:hover {
+  color: #155a30;
+}
+.lv-source-box {
+  margin-top: 12px;
+  padding: 14px 16px;
+  background: #f6f8f7;
+  border: 1px solid #e2e8e4;
+  border-radius: 4px;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  font-size: 13px;
+  color: #6b8a72;
+  white-space: pre-wrap;
+  word-break: break-all;
+  line-height: 1.7;
+}
+.lv-source-box a,
+.lv-source-box a:visited {
+  color: #155a30;
+  text-decoration: underline;
+}
+.lv-source-meta {
+  font-size: 12px;
+  color: #9bb5a3;
+  margin-bottom: 8px;
+}
+
+/* 图片放大查看 */
+.lv-zoom-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.82);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 24px;
+  cursor: zoom-out;
+}
+.lv-zoom-overlay img,
+.lv-zoom-overlay .lv-ph {
+  max-width: 92vw;
+  max-height: 90vh;
+  border-radius: 4px;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
+}
+.lv-zoom-overlay .lv-ph {
+  width: auto;
+  min-height: 240px;
+  padding: 40px;
+  box-sizing: border-box;
+}
+.lv-zoom-caption {
+  position: fixed;
+  bottom: 24px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  color: #cfd8d2;
+  font-size: 14px;
+}
+
+/* 登录后台后的提示条 */
+.lv-admin-bar {
+  background: #fde9d9;
+  border: 1px solid #f0b27a;
+  color: #8a4b12;
+  padding: 10px 16px;
+  border-radius: 4px;
+  margin: 0 0 20px;
+  font-size: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  align-items: center;
+}
+.lv-admin-bar a,
+.lv-admin-bar a:visited {
+  color: #8a4b12;
+  text-decoration: underline;
+  font-weight: 600;
+}
+
+/* 页脚 */
+.lv-footer {
+  background: #155a30;
+  color: #cfe1d4;
+  text-align: center;
+  padding: 22px 24px;
+  font-size: 13px;
+  line-height: 1.9;
+  border-top: 3px solid #0f4722;
+}
+.lv-footer a,
+.lv-footer a:visited {
+  color: #b8e0c5;
+  text-decoration: none;
+}
+
+/* 404 */
+.lv-notfound {
+  text-align: center;
+  padding: 80px 20px;
+}
+.lv-notfound h2 {
+  color: #155a30;
+  font-size: 26px;
+  margin: 0 0 10px;
+}
+.lv-notfound p {
+  color: #6b8a72;
+  margin: 0 0 24px;
+}
+
+/* 后台页：协议要点表格、巡查记录等强调"内部" */
+.lv-internal-tag {
+  display: inline-block;
+  font-size: 12px;
+  background: #7b2018;
+  color: #fff;
+  padding: 2px 8px;
+  border-radius: 3px;
+  margin-left: 8px;
+  vertical-align: middle;
+}

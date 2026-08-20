@@ -5,11 +5,62 @@
  * App manifest 的 `icon` 字段是字符串 ID（如 'wechat' / 'qq' / 'browser'），
  * Desktop/DesktopIcon 用 <AppGlyph id={icon} /> 渲染；未知 ID 回退通用方块。
  *
+ * App 主图标（wechat/qq/phone/sms/doorbell/baidu）使用玩家提供的品牌 SVG
+ * （src/assets/phone/*.svg）经 ?url 导入，以 <img> 渲染——保留原 SVG 的背景与配色，
+ * 圆角裁剪。manifest 里 icon 可能写成带后缀形如 'wechat.png'，渲染前会去掉后缀归一化。
+ *
  * 各 App agent 也可在自己目录 manifest 里写 icon 字符串，
  * 只要本文件 export 了对应 Glyph 或 fallback 生效即可。
  * 新增 App 图标：在本文件追加 case + SVG path，无需改 types。
  */
 import type { CSSProperties } from 'react'
+
+// 玩家提供的 6 个品牌 App 图标 SVG（src/assets/phone/*.svg）。?url 取构建后带 hash 的路径。
+import wechatIconUrl from '@/assets/phone/wechat.svg?url'
+import qqIconUrl from '@/assets/phone/qq.svg?url'
+import phoneIconUrl from '@/assets/phone/phone.svg?url'
+import smsIconUrl from '@/assets/phone/sms.svg?url'
+import doorbellIconUrl from '@/assets/phone/doorbell.svg?url'
+import baiduIconUrl from '@/assets/phone/baidu.svg?url'
+
+/**
+ * manifest icon id（去后缀后）→ 品牌 SVG 图 URL。
+ * 命中即以 <img> 渲染原 SVG（保留背景/配色），不走内联 PATHS。
+ */
+const ICON_IMG: Record<string, string> = {
+  wechat: wechatIconUrl,
+  qq: qqIconUrl,
+  phone: phoneIconUrl,
+  sms: smsIconUrl,
+  doorbell: doorbellIconUrl,
+  baidu: baiduIconUrl,
+}
+
+/** 把 manifest 可能带后缀的 icon id（'wechat.png'）归一化为 'wechat'。 */
+function normalizeIconId(id: string): string {
+  return id.replace(/\.(png|svg|jpe?g)$/i, '')
+}
+
+/**
+ * 该 icon id 是否由玩家提供的品牌 SVG 渲染（命中 ICON_IMG）。
+ * 宿主（Desktop/Dock）据此决定是否给图标块加背景色 tile：
+ * 品牌图标自带背景 → 直接 full-bleed；线条图标（如 doorbell 24×24 无背景）→ 加色 tile。
+ */
+export function hasAppIconImg(id: string): boolean {
+  return normalizeIconId(id) in ICON_IMG
+}
+
+/**
+ * 命中 ICON_IMG 的图标里，哪些是无背景的线条/纯轮廓图标（自带透明背景，
+ * 直接铺到深色壁纸上会"消失"），需要宿主给它套一层色 tile。
+ * 其余品牌 SVG（wechat/qq/phone/sms/baidu）自带不透明背景，full-bleed 即可。
+ */
+const LINE_ICON_IDS = new Set(['doorbell'])
+
+/** 命中 ICON_IMG 但属无背景线条图标 → 需要宿主套色 tile。 */
+export function needsIconTile(id: string): boolean {
+  return LINE_ICON_IDS.has(normalizeIconId(id))
+}
 
 export type GlyphProps = {
   size?: number
@@ -173,7 +224,14 @@ const PATHS: Record<string, (p: GlyphProps) => React.ReactElement> = {
 
 export type AppIconId = keyof typeof PATHS | string
 
-/** App 图标渲染器：manifest.icon 字符串 → SVG。未知 ID 回退带首字母方块。 */
+/**
+ * App 图标渲染器：manifest.icon 字符串 → 图标。
+ * 优先级：
+ *  1) ICON_IMG 命中（玩家提供的品牌 SVG，去后缀归一化匹配）→ <img> 渲染原 SVG，
+ *     保留背景与配色，圆角裁剪。
+ *  2) PATHS 内联 SVG（系统级小图标信号/电量等）。
+ *  3) 回退：圆角方块 + 首字母。
+ */
 export function AppGlyph({
   id,
   size = 48,
@@ -187,6 +245,27 @@ export function AppGlyph({
   fallbackLabel?: string
   style?: CSSProperties
 }) {
+  const imgSrc = ICON_IMG[normalizeIconId(id)]
+  if (imgSrc) {
+    // 门铃 SVG 为 24×24 无背景纯线条图标，其余 5 个为 512×512 全彩带背景。
+    // 统一用 <img> 渲染：SVG 矢量缩放无损；object-fit contain 居中，圆角裁剪。
+    return (
+      <img
+        src={imgSrc}
+        alt=""
+        aria-hidden="true"
+        width={size}
+        height={size}
+        style={{
+          width: size,
+          height: size,
+          objectFit: 'contain',
+          display: 'block',
+          ...style,
+        }}
+      />
+    )
+  }
   const factory = PATHS[id]
   if (factory) return factory({ size, color, style })
   // 回退：圆角方块 + 首字母
