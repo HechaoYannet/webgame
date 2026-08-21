@@ -19,6 +19,7 @@
  *
  * 删掉 Vite 默认 App 内容（hero/计数器等）。
  */
+import { useEffect, useState } from 'react'
 import { ImageViewerProvider } from '@/ui/ImageViewer'
 import { AppRouter } from '@/apps/PhoneShell/AppRouter'
 import { IntroScreen } from '@/apps/PhoneShell/IntroScreen'
@@ -26,14 +27,26 @@ import { useGameStore } from '@/game/gameStore'
 
 function App() {
   // 依据持久化存档判断：无进度且未通关 → 显示入口；否则直接进游戏。
-  const showIntro = useGameStore(
+  const isFresh = useGameStore(
     (s) => s.solvedPuzzleIds.length === 0 && !s.finished,
   )
+
+  // entered：本局是否已点「开始游戏」/跳过进入过手机界面。
+  // 进入游戏不改存档，故 isFresh 不会因此翻转；只有 resetGame()（EndingOverlay
+  // 的「返回主菜单」，或 Landing 的「清空本地存档」）才把存档清回全新状态，
+  // 此时 effect 把 entered 复位为 false → 入口主站再次出现。
+  const [entered, setEntered] = useState(false)
+  useEffect(() => {
+    if (isFresh) setEntered(false)
+  }, [isFresh])
+
+  // 全新开局且本次还没进入 → 显示入口覆盖层；onEnter 卸载覆盖层露出下层 PhoneShell。
+  const showIntro = isFresh && !entered
 
   return (
     <ImageViewerProvider>
       <AppRouter />
-      {showIntro ? <IntroScreen onEnter={() => { /* AppRouter 已在底层挂载，覆盖层移除即进入 */ }} /> : null}
+      {showIntro ? <IntroScreen onEnter={() => setEntered(true)} /> : null}
     </ImageViewerProvider>
   )
 }
