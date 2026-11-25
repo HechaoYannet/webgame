@@ -4,7 +4,7 @@
  * 玩家输密码 → checkAnswer('puzzle-qq-login', value) 据
  * puzzles.json matchStrategy{kind:"oneOf",accepted:["20251128","1128"]} 校验 →
  * 成功 markPuzzleSolved 推进剧情；登 QQ 后会话全可见（已无 thread 门禁）。
- * 失败计 wrongAttempts，错 attemptsToHint(=3) 提示密码与李桥瑞最在意的事有关。
+ * 失败仅提示"密码错误"——真实登录页不会常驻解题提示（审核报告 2.E）。
  *
  * **密码 20251128 不在前端**——只 checkAnswer，答案在 puzzles.json。登录的是李桥瑞 QQ。
  * 线索：李桥瑞说"密码改成终末地公测那天"——公测日见终末地官网（2025-11-28），故答案 20251128（容错 1128）。
@@ -21,8 +21,6 @@ interface LoginSubmit {
   success: boolean
   /** 是否游戏已结束（finished），UI 应禁输入。 */
   locked: boolean
-  /** 本次是否触发提示（错 attemptsToHint 命中）。 */
-  hintTriggered: boolean
   /** 当前累计错误次数。 */
   wrongAttempts: number
 }
@@ -32,7 +30,7 @@ export function QqLogin() {
   const markPuzzleSolved = useGameStore((s) => s.markPuzzleSolved)
 
   const [password, setPassword] = useState('')
-  const [toast, setToast] = useState<{ kind: 'error' | 'hint'; text: string } | null>(null)
+  const [toast, setToast] = useState<string | null>(null)
   const [result, setResult] = useState<LoginSubmit | null>(null)
   const [wrongAttempts, setWrongAttempts] = useState(0)
 
@@ -53,35 +51,27 @@ export function QqLogin() {
     if (!password) return
     // 游戏已结束：直接锁定，不再处理。
     if (finished) {
-      const res: LoginSubmit = { success: false, locked: true, hintTriggered: false, wrongAttempts }
+      const res: LoginSubmit = { success: false, locked: true, wrongAttempts }
       setResult(res)
-      setToast({ kind: 'error', text: '游戏已结束，无法登录。' })
+      setToast('游戏已结束，无法登录。')
       return
     }
     const ok = checkAnswer(PUZZLE_QQ_LOGIN, password.trim())
     if (ok) {
       // 记录已解；QqApp 顶层据 solvedPuzzleIds 自动切到主界面。
       markPuzzleSolved(PUZZLE_QQ_LOGIN)
-      const res: LoginSubmit = { success: true, locked: false, hintTriggered: false, wrongAttempts }
+      const res: LoginSubmit = { success: true, locked: false, wrongAttempts }
       setResult(res)
       setPassword('')
       return
     }
-    // 失败分支：计错次（提示触发器 attemptsToHint 已随引擎精简移除）。
+    // 失败分支：仅计错次并提示密码错误；不再给出解题提示。
     const nextAttempts = wrongAttempts + 1
     setWrongAttempts(nextAttempts)
-    const hintTriggered = false
-    const res: LoginSubmit = { success: false, locked: false, hintTriggered, wrongAttempts: nextAttempts }
+    const res: LoginSubmit = { success: false, locked: false, wrongAttempts: nextAttempts }
     setResult(res)
     setPassword('')
-    if (hintTriggered) {
-      setToast({
-        kind: 'hint',
-        text: `密码错误（第 ${nextAttempts} 次）。提示密码与李桥瑞最在意的事有关。`,
-      })
-    } else {
-      setToast({ kind: 'error', text: '密码错误，请重试。' })
-    }
+    setToast('密码错误，请重试。')
   }
 
   return (
@@ -122,11 +112,7 @@ export function QqLogin() {
           />
         </label>
 
-        {toast && (
-          <div className={`qq-toast ${toast.kind === 'hint' ? 'hint' : 'error'}`}>
-            {toast.text}
-          </div>
-        )}
+        {toast && <div className="qq-toast error">{toast}</div>}
 
         <button
           type="submit"
@@ -135,10 +121,6 @@ export function QqLogin() {
         >
           登 录
         </button>
-
-        <p className="qq-login-hint">
-          提示：密码与李桥瑞关心的事有关。输错 3 次会有进一步线索。
-        </p>
       </form>
     </div>
   )

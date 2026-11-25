@@ -43,7 +43,13 @@
           "sizeKB": 96,
           "relatePageId": "page-lvzhong-agreement",
           "note": "没什么用，大家可以忽略。"
-        },
+        }
+      ]
+    },
+    {
+      "threadId": "thread-game-qq",
+      "title": "必须不择手段的输出（合乎粥礼） · 文件",
+      "files": [
         {
           "id": "gf-siguo-window-photo",
           "name": "3月12日晚 思过室窗户.jpg",
@@ -54,16 +60,10 @@
           "assetId": "group-siguo-window-photo",
           "note": "铁门啊，铁窗啊，铁锁链……",
           "registersClueId": "clue-siguo-window"
-        }
-      ]
-    },
-    {
-      "threadId": "thread-game-qq",
-      "title": "必须不择手段的输出（合乎粥礼） · 文件",
-      "files": [
+        },
         {
           "id": "gf-endfield-reserve-link",
-          "name": "高兴",
+          "name": "终末地公测预约链接.url",
           "uploaderCharacterId": "char-zhaotianyu",
           "uploadedAt": "2026-03-09T19:40:00+08:00",
           "type": "link",

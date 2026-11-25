@@ -170,10 +170,10 @@
 | `url?` | `string` | | 外链（仅显示，伪造不跳转） |
 | `registersClueId?` | `ClueId` | | 关卡钩子 |
 | `triggersEvidenceId?` | `EvidenceId` | | 关卡钩子 |
-| `isGeneratedContent?` | `boolean` | | 论文 AI 解读标记（CLAUDE.md §6.5） |
-| `triggerUploadPuzzleId?` | `PuzzleId` | | 先解开此 uploadAndInterpret 谜题才生成本文章 |
+| `isGeneratedContent?` | `boolean` | | **已废弃**：历史字段，当前数据无任何文章使用。不要再用它把 AI 解读塞进微信（CLAUDE.md §6.5） |
+| `triggerUploadPuzzleId?` | `PuzzleId` | | **已废弃**（同上）；上传谜题由站点自行校验并 `reportPuzzleSolved` |
 
-**设计理由**：论文 AI 解读伪造成"前端检测论文 PDF 已在 FilesApp → 触发 `isGeneratedContent:true` 的预设解读文章"，无需真实上传解析（CLAUDE.md §6.5）。
+**设计理由（2026-08 修订）**：论文 AI 解读不再是"预设文章"。真实链路 = 公众号《上传PDF，秒懂论文》→ `site-ai-pdf` 首页**真实上传**论文 PDF → 站点用 `crypto.subtle.digest('SHA-256')` 与 `manifest.EXPECTED_PAPER_SHA256`（= `public/assets/paper-source-crystal.pdf` 的实算哈希）严格比对 → 通过后 `navigate('result')` + `reportPuzzleSolved('puzzle-upload-paper')` + `reportEvidenceCollected('ev-paper-pdf')`。解读**只存在于站点页 `page-ai-interpret`**。旧的"检测论文 PDF 已在 FilesApp 即触发预设解读文章"方案已废弃（FilesApp 已删除，页面 `onViewEffects` 字段亦已移除）。
 
 ---
 

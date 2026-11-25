@@ -552,6 +552,25 @@ evaluateCondition 正确处理 gameStart/puzzleSolved/evidenceCollected/clueRegi
 8. **[Phase3/frontend-engine]** L5：使 triggersEvidenceId 生效或删除该字段并 SCHEMA 标注弃用。
 9. **[Phase1 level-designer]** L6：删 puzzle-evidence-finale.registersEvidenceIds；L9：ch-2/ch-4 去掉单元素 and 或补第二条件。
 10. **[Phase4 frontend-phone-apps]** L7：PhoneApp 通话脚本在 finalePuzzle 已解时跳过 evidenceSelection。
+
+---
+
+## 五、后续修订记录（2026-09，主控直改）
+
+> 本节记录 Phase5 报告之后由主控直接完成的修复与重构。**发布判断以本节最新状态为准**；上文 §三/§四 中引用 `src/engine/**`、`BrowserApp`、`FilesApp`、`clustering/clue-map.json`、`isGeneratedContent` 的条目已被下列改动覆盖，不再作为未修项。
+
+| # | 主题 | 结论 |
+|---|---|---|
+| R1 | **架构重构（2026-08-19）** | 引擎层 `src/engine/**` 整体删除，游戏状态收敛到 `src/game/**`；`BrowserApp`/`FilesApp` 删除（站点改为独立全屏路由 `#/site/site-*`）；`clustering/clue-map.json` 与线索注册机制移除 |
+| R2 | **剧情泄露（已修）** | `public/data/wechat/official-accounts.json` 的 `article-ai-interpret` 曾把整份 AI 解读（含实验室后台地址 + 密码线索）直接列在公众号里，开局即可看到，绕过"下载→上传→出解读"链路。**已删除该文章**（37→36 条）；正确链路 = 公众号《上传PDF，秒懂论文》→ `site-ai-pdf` 首页真实上传 → `crypto.subtle` sha256 与 `EXPECTED_PAPER_SHA256`（= `paper-source-crystal.pdf` 实算值）严格比对 → `page-ai-interpret`。契约同步：`.claude/CLAUDE.md` §6.5/§6.1/§7.4/§9.3 与 `SCHEMA.md` |
+| R3 | **门铃实时画面（已实现）** | 此前 `DoorbellApp` 恒渲染占位剪影、`liveFeed.clipAssetId` 是死字段。现循环播放 `public/assets/video-doorbell-dao-loop.mp4`（1920×1080 / 5.04s / H.264 avc1），失败回落 `avatar-dao` 再回落剪影；画面角标时间戳不再写死为 `2026-03-13 18:30:07`，改为以事件 `triggeredAt` 为基准、随终场倒计时逐秒走字（新增 `formatGameFullStamp`） |
+| R4 | **资源体积（已整治）** | `public/assets` 由 111.5 MB 降到 18.3 MB：全部位图统一长边 ≤2000 + JPEG q90，16 个已被真图覆盖的占位 SVG 删除（仅保留 15 个 `avatar-*.svg`）；新增 `docs/engineering/ASSETS.md`（命名/候选扩展名/预算/完整清单/一图两用表） |
+| R5 | **AI 生成痕迹（已清理）** | 4 张图裁掉右下角"豆包AI生成"水印、1 张裁掉顶部 AI 乱码文案条、1 张裁掉左上 bilibili 水印；`scan-agreement-xh2026-0312` 由【实例】模板整张替换为真实扫描件（编号 LZ-XHW-2026-0312、绿草中学 × 新希望成长中心、双章 + 骑缝章） |
+| R6 | **站点页重复播开场动画（已修）** | 在手机里点链接新标签打开 `#/site/...` 时，`src/App.tsx` 用 `isSiteHash()` 守卫，不再渲染开场覆盖层 |
+| R7 | **文档同步** | 根 `CLAUDE.md` 的 Layer2/Layer3/不变式/设计决策已按当前架构重写；`docs/engineering/{ASSETS.md 新增, SCHEMA.md, AGENT_OWNERSHIP.md, DEPLOYMENT.md}` 与 `.claude/CLAUDE.md` §0/§2/§3/§5/§6 已同步；`docs/game_about/信息架构.md` 只做与已实现素材对齐的定点更新 |
+| R8 | **仍未做（已知缺口）** | ①`.claude/agents/*.md` 中 frontend-engine / frontend-browser / writer-browser 三份定义仍是旧架构（已在 `.claude/CLAUDE.md` §5 标注"以 `src/` 为准"）；②风险值 `risk` 为空实现（`useRisk` 恒返回 0，`meta/risk-events.json` 无消费者）；③`photo-principal-office` 缺"角落文件袋上隐约可见新希望字样"（`信息架构.md` §4.2）；④`page-lvzhong-principal-mailbox.json` 缺"校长信箱源码注释里藏新希望后台地址"（`信息架构.md` §4.2；该地址目前靠 `search-index.json` 关键词可查得） |
+
+**验证（2026-09）**：`npm run typecheck` ✅；`npm run lint` ✅（0 error，11 条既有 fast-refresh warning）；`npm run build` ✅；对 `npm run preview` 逐个 `HEAD` 探测全部 assetId 候选链——命中且 `Content-Type` 正确（0 未解析）；无头 Chrome `--dump-dom` 校验主界面、站点页与公众号数据渲染正常。
 11. **[Phase4 frontend-engine]** L8：在 solve/register/collect 成功后调 store.completeObjective，或 UI 改从派生状态；L10：ChapterDirector.enterChapter 只 emit 一次 chapterAdvanced。
 12. **[Phase1 level-designer / Phase2 writer-browser]** L11：用 collectEvidence effect 把 ev-xinxwang-lab-news 纳入解谜兜底，或在 page-xinxwang-home 加强引导。
 13. **[Phase1 level-designer]** L2：核查 page-lab-subject-list 等其它应计敏感访问页面（依附于 H4）。

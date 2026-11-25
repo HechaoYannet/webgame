@@ -40,8 +40,10 @@ export interface GameState extends MinimalCheckpoint {
 
 export interface GameStoreState extends GameState {
   // ===== actions =====
-  /** 勾选/取消勾选证据（荣誉制）。 */
+  /** 勾选/取消勾选证据（历史遗留接口；现由 collectEvidence 自动归档）。 */
   toggleEvidence: (id: EvidenceId) => void
+  /** 收集证据（查看关键内容自动归档；幂等）。 */
+  collectEvidence: (id: EvidenceId) => void
   /** 标记谜题已解（仅剧情推进，如 QQ 登录）。返回是否首次。 */
   markPuzzleSolved: (puzzleId: PuzzleId) => boolean
   /** 推进章节（由收集关键证据驱动，不改 App/页面可见性）。 */
@@ -70,6 +72,97 @@ function newGameState(): GameState {
   }
 }
 
+// ===== 跨标签同步（E2E-1 修复）=====
+// 真网站以「新标签页」打开：每个标签页各持一份 zustand 内存快照。若不合并，
+// 手机标签页会用旧快照覆盖网页侧刚归档的证据（实测：QQ 登录一次就把
+// collectedEvidenceIds 抹回空数组）。这里对 localStorage 的 storage 事件做
+// 「并集合并」——证据/已解谜题取并集，章节取更靠后，结局不可回退——再写回。
+// 合并幂等：收敛后 sameCheckpoint 为真，不再写回，不会死循环。
+// 清档用 BroadcastChannel 显式广播（并集合并无法表达"删除"）。
+
+const CHAPTER_RANK: Record<string, number> = {
+  'ch-prologue': 0,
+  'ch-1': 1,
+  'ch-2': 2,
+  'ch-3': 3,
+  'ch-4': 4,
+  'ch-5': 5,
+  'ch-finale': 6,
+}
+
+function chapterRank(id: string | undefined): number {
+  return CHAPTER_RANK[id ?? ''] ?? 0
+}
+
+function unionIds(a: readonly string[] | undefined, b: readonly string[] | undefined): string[] {
+  const s = new Set<string>(a ?? [])
+  for (const x of b ?? []) s.add(x)
+  return Array.from(s)
+}
+
+/** 合并两份检查点：并集 + 取更靠后的章节 + 结局不可回退。导出供测试。 */
+export function mergeCheckpoints(cur: MinimalCheckpoint, incoming: MinimalCheckpoint): MinimalCheckpoint {
+  const curCh = cur.currentChapterId ?? 'ch-prologue'
+  const incCh = incoming.currentChapterId ?? 'ch-prologue'
+  return {
+    collectedEvidenceIds: unionIds(cur.collectedEvidenceIds, incoming.collectedEvidenceIds),
+    solvedPuzzleIds: unionIds(cur.solvedPuzzleIds, incoming.solvedPuzzleIds),
+    currentChapterId: chapterRank(incCh) > chapterRank(curCh) ? incCh : curCh,
+    endingId: cur.endingId ?? incoming.endingId,
+    finished: Boolean(cur.finished) || Boolean(incoming.finished),
+  }
+}
+
+function sameIds(a: readonly string[], b: readonly string[]): boolean {
+  return a.length === b.length && a.every((x, i) => x === b[i])
+}
+
+function sameCheckpoint(a: MinimalCheckpoint, b: MinimalCheckpoint): boolean {
+  return (
+    a.finished === b.finished &&
+    a.endingId === b.endingId &&
+    a.currentChapterId === b.currentChapterId &&
+    sameIds(a.collectedEvidenceIds, b.collectedEvidenceIds) &&
+    sameIds(a.solvedPuzzleIds, b.solvedPuzzleIds)
+  )
+}
+
+function isEmptyCheckpoint(cp: MinimalCheckpoint): boolean {
+  return cp.collectedEvidenceIds.length === 0 && cp.solvedPuzzleIds.length === 0 && !cp.finished
+}
+
+const SYNC_CHANNEL = 'webgame-sync'
+const syncChannel: BroadcastChannel | null =
+  typeof BroadcastChannel !== 'undefined' ? new BroadcastChannel(SYNC_CHANNEL) : null
+
+/** 解析 persist 写入的 { state, version } 包装（兼容裸对象）。 */
+function readPersistedState(raw: string | null): unknown {
+  if (!raw) return null
+  try {
+    const parsed = JSON.parse(raw) as unknown
+    if (parsed && typeof parsed === 'object' && 'state' in (parsed as Record<string, unknown>)) {
+      return (parsed as Record<string, unknown>).state
+    }
+    return parsed
+  } catch {
+    return null
+  }
+}
+
+/** 把远端检查点并入本地（并集合并；空检查点视为清档）。导出供测试。 */
+export function applyRemoteCheckpoint(raw: unknown): void {
+  if (raw === null || raw === undefined) return
+  const incoming = ensureCheckpointShape(raw)
+  if (isEmptyCheckpoint(incoming)) {
+    if (!isEmptyCheckpoint(useGameStore.getState())) useGameStore.getState().resetGame()
+    return
+  }
+  const cur = useGameStore.getState()
+  const merged = mergeCheckpoints(cur, incoming)
+  if (sameCheckpoint(cur, merged)) return
+  useGameStore.setState(merged)
+}
+
 export const useGameStore = create<GameStoreState>()(
   persist(
     (set, get) => ({
@@ -83,6 +176,13 @@ export const useGameStore = create<GameStoreState>()(
               ? s.collectedEvidenceIds.filter((x) => x !== id)
               : [...s.collectedEvidenceIds, id],
           }
+        })
+      },
+
+      collectEvidence: (id) => {
+        set((s) => {
+          if (s.collectedEvidenceIds.includes(id)) return s
+          return { collectedEvidenceIds: [...s.collectedEvidenceIds, id] }
         })
       },
 
@@ -130,13 +230,15 @@ export const useGameStore = create<GameStoreState>()(
 
       resetGame: () => {
         set(() => ({ ...newGameState() }))
+        // 广播清档：并集合并无法删除，必须显式通知其它标签页。
+        syncChannel?.postMessage({ type: 'reset' })
       },
 
       getState: () => {
         const s = get()
         const {
-          toggleEvidence: _a, markPuzzleSolved: _b, advanceChapter: _c, startCountdown: _d,
-          expireCountdown: _e, pushEnding: _f, resetGame: _g, getState: _h,
+          toggleEvidence: _a, collectEvidence: _a2, markPuzzleSolved: _b, advanceChapter: _c,
+          startCountdown: _d, expireCountdown: _e, pushEnding: _f, resetGame: _g, getState: _h,
           ...rest
         } = s
         return rest as GameState
@@ -149,8 +251,8 @@ export const useGameStore = create<GameStoreState>()(
       // 持久化只存检查点 MinimalCheckpoint：剥离 actions 与内存态 countdowns。
       partialize: (s) => {
         const {
-          toggleEvidence: _a, markPuzzleSolved: _b, advanceChapter: _c, startCountdown: _d,
-          expireCountdown: _e, pushEnding: _f, resetGame: _g, getState: _h,
+          toggleEvidence: _a, collectEvidence: _a2, markPuzzleSolved: _b, advanceChapter: _c,
+          startCountdown: _d, expireCountdown: _e, pushEnding: _f, resetGame: _g, getState: _h,
           countdowns: _cd,
           ...rest
         } = s
@@ -174,3 +276,23 @@ export const useGameStore = create<GameStoreState>()(
 export function getGameStore(): GameStoreState {
   return useGameStore.getState()
 }
+
+// ===== 跨标签事件接线（模块加载即生效，每个标签页一次）=====
+if (typeof window !== 'undefined') {
+  // storage 事件只在「其它」标签页触发（写入方自己收不到），正好用作远端通知。
+  window.addEventListener('storage', (e) => {
+    if (e.key !== SAVE_KEY) return
+    if (e.newValue === null) {
+      if (!isEmptyCheckpoint(useGameStore.getState())) useGameStore.getState().resetGame()
+      return
+    }
+    applyRemoteCheckpoint(readPersistedState(e.newValue))
+  })
+}
+
+syncChannel?.addEventListener('message', (e: MessageEvent) => {
+  const data = e.data as { type?: string } | null
+  if (data?.type === 'reset') {
+    if (!isEmptyCheckpoint(useGameStore.getState())) useGameStore.getState().resetGame()
+  }
+})

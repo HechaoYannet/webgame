@@ -5,12 +5,13 @@
  * system=系统消息（居中灰条）。闫欣泽↔李桥瑞长对话(3/5–3/13)是核心线索区。
  *
  * 重写后无会话门禁：登 QQ 后所有会话可见可点（登录本身是 puzzle-qq-login）。
- * 查看消息不再注册线索 / 收集证据（查看即取证的装饰已废）。
+ * 打开「你同桌」会话即归档关键证据 ev-qq-chat-plan（查看即收集，幂等）。
  * 消息按需加载用 loader.getMessages(threadId)（带缓存）。
  */
 import { useEffect, useRef, useState } from 'react'
 import type { ChatMessage, ChatThread, ContactId } from '@/types'
 import { getMessages, getContact, getQqContact } from '@/data/loader'
+import { collectEvidence } from '@/game/evidence'
 import {
   Avatar,
   EmptyState,
@@ -31,6 +32,31 @@ export function ChatList({
   onOpen: (threadId: string) => void
 }) {
   const sorted = [...threads].sort((a, b) => b.lastMessageAt.localeCompare(a.lastMessageAt))
+
+  // 批量加载每个会话的最后一条消息，作为列表预览（未读数由角标另行体现）。
+  const [snippets, setSnippets] = useState<Record<string, string>>({})
+  useEffect(() => {
+    let cancelled = false
+    void Promise.all(
+      threads.map(async (t) => {
+        try {
+          const msgs = await getMessages(t.id)
+          const last = msgs.reduce<ChatMessage | null>(
+            (acc, m) => (!acc || m.timestamp > acc.timestamp ? m : acc),
+            null,
+          )
+          return [t.id, messagePreview(last)] as const
+        } catch {
+          return [t.id, ''] as const
+        }
+      }),
+    ).then((entries) => {
+      if (!cancelled) setSnippets(Object.fromEntries(entries))
+    })
+    return () => {
+      cancelled = true
+    }
+  }, [threads])
 
   function otherId(t: ChatThread): ContactId {
     const player = 'char-liqiaorui'
@@ -70,9 +96,12 @@ export function ChatList({
                     <span className="qq-thread-time">{formatTime(t.lastMessageAt)}</span>
                   </div>
                   <div className="qq-thread-bottom">
-                    <span className="qq-thread-unread">
-                      {t.unreadCount ? `${t.unreadCount} 条未读` : '点击查看'}
-                    </span>
+                    <span className="qq-thread-snippet">{snippets[t.id] ?? ''}</span>
+                    {t.unreadCount ? (
+                      <span className="qq-thread-badge" aria-label={`${t.unreadCount} 条未读`}>
+                        {t.unreadCount > 99 ? '99+' : t.unreadCount}
+                      </span>
+                    ) : null}
                   </div>
                 </div>
               </button>
@@ -84,7 +113,22 @@ export function ChatList({
   )
 }
 
+/** 会话列表预览：image→[图片]，link→[链接]，其它取 text 前 18 字。 */
+function messagePreview(m: ChatMessage | null): string {
+  if (!m) return ''
+  if (m.kind === 'image') return '[图片]'
+  if (m.kind === 'link') return '[链接]'
+  const text = (m.text ?? '').trim()
+  if (!text) return ''
+  return text.length > 18 ? text.slice(0, 18) + '…' : text
+}
+
 export function ChatView({ thread, onBack }: { thread: ChatThread; onBack: () => void }) {
+  // 打开李桥瑞↔闫欣泽计划聊天 → 归档关键证据 ev-qq-chat-plan（幂等）。
+  useEffect(() => {
+    if (thread.id === 'thread-li-yan-qq') collectEvidence('ev-qq-chat-plan')
+  }, [thread.id])
+
   const { data: messages, error } = useAsync(() => getMessages(thread.id), [thread.id])
   const [zoomAsset, setZoomAsset] = useState<{ assetId: string; alt: string } | null>(null)
   const scrollerRef = useRef<HTMLDivElement>(null)
@@ -126,7 +170,7 @@ export function ChatView({ thread, onBack }: { thread: ChatThread; onBack: () =>
             threadType={thread.type}
             authorName={authorName(m.authorCharacterId)}
             onView={() => handleViewMessage(m)}
-            onZoomImage={(assetId) => setZoomAsset({ assetId, alt: assetId })}
+            onZoomImage={(assetId) => setZoomAsset({ assetId, alt: '' })}
           />
         ))}
       </div>
@@ -213,9 +257,8 @@ function MessageBody({
     case 'voice':
       return (
         <div className="qq-msg-voice">
-          <button type="button" className="qq-voice-btn" disabled>
-            ▶ 语音 {m.voiceDurationSec ?? 0}"
-          </button>
+          {/* 无真实播放能力：以静态标签呈现时长，不再渲染 disabled 死按钮 */}
+          <span className="qq-voice-static">▶ 语音 {m.voiceDurationSec ?? 0}"</span>
           {m.voiceTranscript && (
             <details className="qq-voice-transcript">
               <summary>转文字</summary>
@@ -225,7 +268,7 @@ function MessageBody({
         </div>
       )
     case 'file':
-      return <div className="qq-msg-file">📎 {m.text ?? m.assetIds?.[0] ?? '文件'}</div>
+      return <div className="qq-msg-file">📎 {m.text ?? '文件'}</div>
     case 'redpacket':
       return <div className="qq-msg-redpacket">🧧 {m.text ?? '红包'}</div>
     case 'link':

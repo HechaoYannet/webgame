@@ -15,6 +15,7 @@ import {
   type CharacterDictionary,
 } from "./data";
 import { getAllArticles } from "@/data/loader";
+import { formatShortDateTime } from "@/utils/time";
 import { Avatar } from "./Avatar";
 import { ArticleBlockRenderer } from "./ArticleBlockRenderer";
 import { openSitePage } from "@/sites/sitePage";
@@ -251,7 +252,7 @@ function ArticleDetail({
   );
 }
 
+/** 统一走 @/utils/time（游戏时区 +08:00）。 */
 function formatDate(iso: string): string {
-  const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(iso);
-  return m ? `${m[1]}-${m[2]}-${m[3]}` : iso;
+  return formatShortDateTime(iso) || iso;
 }

@@ -24,6 +24,9 @@ dist-ssr
 *.sw?
 
 # Scratch / local artifacts — NOT part of the game build
+# AI 原图投放目录：只作素材来源，构建产物在 public/assets/（已压缩）。
+# 不要把几十 MB 的原图提交进仓库；需要版本化时删除下面这行。
+src/assets/img/
 _ab-*.png
 --full-page
 /assets/

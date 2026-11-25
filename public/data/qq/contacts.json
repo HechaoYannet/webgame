@@ -50,5 +50,12 @@
     "qqNickname": "周明",
     "qqRemark": "周明",
     "status": "offline"
+  },
+  {
+    "characterId": "char-liqiaorui",
+    "qqNumber": "1024385761",
+    "qqNickname": "桥瑞",
+    "qqRemark": "李桥瑞",
+    "status": "lost"
   }
 ]

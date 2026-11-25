@@ -120,7 +120,7 @@
       "id": "sms-verification-redherring",
       "pushTrigger": {
         "kind": "idleOnPage",
-        "pageId": "page-xinxwang-financial",
+        "pageId": "page-xinxwang-admin",
         "seconds": 30
       },
       "from": {
@@ -156,7 +156,7 @@
       "pushTriggerPuzzleId": "puzzle-evidence-finale",
       "pushTriggerEndingId": "good",
       "from": "char-dispatcher",
-      "receivedAt": "2026-03-13T18:45:00+08:00",
+      "receivedAt": "2026-03-13T18:33:00+08:00",
       "body": "【湖南省公安厅举报中心】您提交的线索已受理，案件编号 2026-0313-HN。请保持电话畅通，注意人身安全。感谢您的举报。",
       "footnote": null,
       "alertStyle": "success",

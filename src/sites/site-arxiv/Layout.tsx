@@ -17,7 +17,7 @@ interface LayoutProps {
 const SUBJECT_GROUPS: Array<{ title: string; items: string[] }> = [
   {
     title: '生命科学',
-    items: ['q-bio.BM 生物膜', 'q-bio.CB 细胞行为', 'q-bio.GN遗传学', 'q-bio.TO 其它'],
+    items: ['q-bio.BM 生物大分子', 'q-bio.CB 细胞行为', 'q-bio.GN 遗传学', 'q-bio.TO 组织与器官'],
   },
   {
     title: '物理科学',
@@ -25,7 +25,7 @@ const SUBJECT_GROUPS: Array<{ title: string; items: string[] }> = [
   },
   {
     title: '化学',
-    items: ['chembio 生物化学'],
+    items: ['physics.chem-ph 化学物理'],
   },
 ]
 
@@ -52,9 +52,9 @@ export function Layout({ children }: LayoutProps): ReactElement {
             <span className="site-arxiv-brand-sub">山河医科大学预印本文献库</span>
           </Link>
           <div className="site-arxiv-topbar-meta">
-            河西校区 · 湘ICP备2026000099号
+            河西校区 · 湘ICP备2021007733号
             <br />
-            reflib@arxiv.shanhe-med.cn · ISSN 2026-0228
+            reflib@arxiv.shanhe-med.cn
           </div>
         </div>
       </header>
@@ -102,7 +102,7 @@ export function Layout({ children }: LayoutProps): ReactElement {
         <div>arXiv.shanhe · 山河医科大学图书馆预印本文献库</div>
         <div>本库由山河医科大学图书馆维护 · 内容仅供学术交流，不代表机构立场</div>
         <div className="site-arxiv-footer-meta">
-          Copyright © 2020-2026 arxiv.shanhe-med.cn · 湘ICP备2026000099号 · 湘公网安备 43010002000299号
+          Copyright © 2020-2026 arxiv.shanhe-med.cn · 湘ICP备2021007733号 · 湘公网安备43010502000654号
         </div>
       </footer>
     </div>

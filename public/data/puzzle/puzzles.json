@@ -37,7 +37,7 @@
   {
     "id": "puzzle-xinxwang-backend",
     "type": "password",
-    "title": "登录新希望成长中心后台）",
+    "title": "登录新希望成长中心后台",
     "chapterId": "ch-3",
     "answer": "88888888",
     "matchStrategy": {
@@ -85,7 +85,7 @@
         "ev-paper-pdf",
         "ev-lab-funding-report"
       ],
-      "minLength": 2
+      "minLength": 5
     }
   }
 ]

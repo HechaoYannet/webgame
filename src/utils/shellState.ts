@@ -14,14 +14,15 @@
  *  4) 极简 game store 的 thin hooks（useChapter / useCountdown / useEvidence / useSolvedPuzzles）
  *     从 @/game 适配为 shell 期望形状。
  */
-import { useSyncExternalStore } from 'react'
+import { useEffect, useState, useSyncExternalStore } from 'react'
 import type { ChapterId, EndingId, EvidenceId, PuzzleId } from '@/types'
 import { useGameStore } from '@/game/gameStore'
 import * as countdown from '@/game/countdown'
 import { isFinaleSatisfied, listAll, getKeyEvidence, getRequiredForFinale } from '@/game/evidence'
 import { play as playAudio, stop as stopAudio } from '@/game/audio'
-import { getSmsEventById, getDoorbellEventById, getMonologueByChapter } from '@/data/loader'
+import { getAllSmsEvents, getSmsEventById, getDoorbellEventById, getMonologueByChapter } from '@/data/loader'
 import type { SmsEvent, DoorbellEvent, Monologue } from '@/types'
+import { gameNowMs } from '@/utils/time'
 
 // ===== shell 本地轻量 store：通知队列 + 视觉态（与剧情无关，纯 UI）=====
 export interface NotificationItem {
@@ -148,7 +149,7 @@ export function pushNotification(input: PushNotificationInput): string {
     threadId: input.threadId,
     pageId: input.pageId,
     fullscreen: input.fullscreen ?? false,
-    createdAt: Date.now(),
+    createdAt: gameNowMs(),
   }
   const next = [...runtimeState.notifications, item]
   if (next.length > 30) next.splice(0, next.length - 30)
@@ -317,7 +318,13 @@ export function deliverDoorbell(doorbellEventId: string): void {
       appId: 'doorbell',
       appIcon: 'doorbell',
     })
-    if (ev.audio?.assetId) playAudio(ev.audio.assetId, ev.audio.loop ?? true)
+    if (ev.audio?.assetId) {
+      playAudio(ev.audio.assetId, ev.audio.loop ?? true)
+      // 敲门音循环 15 秒后自动停（避免无限敲门噪音；心跳音由倒计时全程驱动）
+      if (ev.audio.loop !== false) {
+        setTimeout(() => stopAudio(ev.audio!.assetId), 15000)
+      }
+    }
   }
 }
 
@@ -327,6 +334,37 @@ export function dismissDoorbell(): void {
   setShaking(false)
   stopAudio()
 }
+
+// ===== 终局三件套（去引擎化后由"查看经费报告页"单点触发，幂等）=====
+
+/**
+ * 启动终局倒计时：3 分钟倒计时 + 威胁短信 + 刀哥门铃 + 心跳音 + 红边 + 推进终章。
+ * 幂等：倒计时已在运行则不重复触发（store.startCountdown 内部已防重）。
+ * 触发点：玩家在实验室后台打开经费申请报告页（site-shanhe-med 经 gameEvent 上报）。
+ */
+export function startFinaleCountdown(): void {
+  const store = useGameStore.getState()
+  const c = store.countdowns?.[COUNTDOWN_FINALE_ID]
+  if (c && !c.expired) return
+  countdown.startCountdown(COUNTDOWN_FINALE_ID, 180)
+  store.advanceChapter('ch-finale')
+  deliverSms('sms-zhangqiang-threat')
+  deliverDoorbell('doorbell-dao-visit')
+  playAudio('audio-heartbeat', true)
+  setRedEdgeIntensity(0.9)
+  setShaking(true)
+  pushNotification({
+    kind: 'alert',
+    title: '危险',
+    body: '倒计时已开始：尽快整理证据并报警！',
+    style: 'danger',
+    appIcon: 'album',
+    appId: 'album',
+  })
+}
+
+/** 终局倒计时 id（StatusBar/DoorbellApp/PhoneShell 共用常量）。 */
+export const COUNTDOWN_FINALE_ID = 'countdown-finale'
 
 /** 取已送达短信 id 列表（SmsApp 用）。 */
 export function getDeliveredSmsIds(): string[] {
@@ -405,10 +443,19 @@ export interface CountdownSnapshot {
 
 export function useCountdown(countdownId?: string): CountdownSnapshot {
   const id = countdownId ?? 'countdown-finale'
+  // 订阅 gameStore 的 countdowns 变化（start / expire 会触发重渲染）。
+  const entries = useGameStore((s) => s.countdowns)
+  const entry = entries?.[id]
+  const running = Boolean(entry && !entry.expired)
+  // 进行中每秒强制重算剩余秒：store 只在 start/expire 时变化，
+  // 若不 tick，UI 上的 mm:ss 会冻结在起始值、到点直接跳 expired。
+  const [, forceTick] = useState(0)
+  useEffect(() => {
+    if (!running) return
+    const t = window.setInterval(() => forceTick((n) => n + 1), 1000)
+    return () => window.clearInterval(t)
+  }, [running, id])
   const cd = countdown.getCountdownInfo(id) ?? { id, remainingSec: 0, durationSec: 0, expired: false, progress: 0 }
-  // 订阅 gameStore 的 countdowns 变化（push 到 expired / start 会触发）。
-  const _ = useGameStore((s) => s.countdowns)
-  void _
   return {
     active: cd.remainingSec > 0 && !cd.expired,
     remainingSec: cd.remainingSec,
@@ -481,6 +528,144 @@ export function watchCountdownExpiry(): void {
       useGameStore.getState().pushEnding('bad')
     }
   }, 250)
+}
+
+/**
+ * 重置 shell 运行态（换新周目时调用）。
+ *
+ * 解决：旧周目的通知横幅、已送达短信/门铃、来电、震屏会留在模块内存里，
+ * 玩家点「返回主菜单」开新局后仍能看到上一局的威胁短信（剧透）与门铃通知。
+ * 存档由 gameStore.resetGame 清空，这里负责把"不落盘的界面态"一起清干净。
+ *
+ * 注意：不清倒计时监听定时器——它每 250ms tick 一次，store 里没有倒计时就是空转，
+ * 保留它才能让新周目的终章倒计时继续被监听（watchCountdownExpiry 是幂等的）。
+ */
+export function resetShellRuntime(): void {
+  for (const t of toastTimers.values()) clearTimeout(t)
+  toastTimers.clear()
+  stopAudio()
+  runtimeState = {
+    notifications: [],
+    fullscreenAlert: { visible: false, text: '', style: 'info' },
+    toasts: [],
+    shaking: false,
+    redEdgeIntensity: 0,
+    incomingCall: null,
+    pendingAnsweredCallScriptId: null,
+    deliveredSmsIds: [],
+    deliveredDoorbellIds: [],
+    activeDoorbellId: null,
+  }
+  // 忽略"重置时仍停留在某个站点页"的活动心跳，直到玩家离开该页再回来。
+  _idleIgnorePage = readSiteActivityPage()
+  _idleSeen.clear()
+  emit()
+}
+
+/** 新周目监听：存档回到"无证据/无谜题/未结局"时清一次 shell 运行态。 */
+export function watchNewGameReset(): () => void {
+  const isFresh = (s: ReturnType<typeof useGameStore.getState>): boolean =>
+    s.collectedEvidenceIds.length === 0 &&
+    s.solvedPuzzleIds.length === 0 &&
+    !s.finished &&
+    !s.endingId
+  let wasFresh = isFresh(useGameStore.getState())
+  return useGameStore.subscribe((s) => {
+    const fresh = isFresh(s)
+    if (fresh && !wasFresh) resetShellRuntime()
+    wasFresh = fresh
+  })
+}
+
+// ===== 游戏态驱动的短信推送（sms.json 的 pushTriggerPuzzleId / pushTriggerEndingId / chapterEntered）=====
+let _smsWired = false
+
+/**
+ * 按 gameStore 状态补投短信（数据驱动，不在代码里硬编码短信 id）。
+ *
+ * 覆盖三类声明式触发：
+ *  - pushTriggerPuzzleId（可叠加 pushTriggerEndingId 门控）：谜题解开/结局达成时投递；
+ *  - chapterEntered：进入指定章节时投递；
+ *  - askedContact 由 SmsApp 的对话流程直接投递（不在此重复）；
+ *  - idleOnPage 由 watchSiteIdleSms 依据站点活动心跳投递。
+ * risk 事件（pushTriggerRiskEventId）随 RiskService 删除而永久失效，不处理。
+ */
+export function watchSmsTriggers(): void {
+  if (_smsWired) return
+  _smsWired = true
+  const evaluate = (): void => {
+    const s = useGameStore.getState()
+    for (const ev of getAllSmsEvents()) {
+      if (runtimeState.deliveredSmsIds.includes(ev.id)) continue
+      if (ev.pushTriggerPuzzleId) {
+        if (!s.solvedPuzzleIds.includes(ev.pushTriggerPuzzleId)) continue
+        if (ev.pushTriggerEndingId && s.endingId !== ev.pushTriggerEndingId) continue
+        deliverSms(ev.id)
+        continue
+      }
+      const trigger = ev.pushTrigger
+      if (trigger?.kind === 'chapterEntered' && s.currentChapterId === trigger.chapterId) {
+        deliverSms(ev.id)
+      }
+    }
+  }
+  evaluate()
+  useGameStore.subscribe(evaluate)
+  setInterval(evaluate, 2000)
+}
+
+// ===== 站点停留（idleOnPage）→ 短信 =====
+/** 站点活动心跳键（sites/shared/gameEvent 写入，手机标签页读取；同源 localStorage 跨标签可见）。 */
+export const SITE_ACTIVITY_KEY = 'webgame-site-activity'
+let _idleWired = false
+let _idleIgnorePage: string | null = null
+const _idleSeen = new Map<string, number>()
+
+function readSiteActivityPage(): string | null {
+  try {
+    const raw = localStorage.getItem(SITE_ACTIVITY_KEY)
+    if (!raw) return null
+    const parsed = JSON.parse(raw) as { pageId?: unknown }
+    return typeof parsed.pageId === 'string' ? parsed.pageId : null
+  } catch {
+    return null
+  }
+}
+
+/**
+ * 监听站点活动心跳：同一页面连续停留达到数据声明的 seconds 时投递 idleOnPage 短信。
+ * 心跳 >12s 未刷新视为已离开（站点关闭/切换），重置计时。
+ */
+export function watchSiteIdleSms(): void {
+  if (_idleWired) return
+  _idleWired = true
+  setInterval(() => {
+    interface Activity { pageId?: unknown; at?: unknown }
+    let activity: Activity | null = null
+    try {
+      activity = JSON.parse(localStorage.getItem(SITE_ACTIVITY_KEY) ?? 'null') as Activity | null
+    } catch {
+      activity = null
+    }
+    const pageId = typeof activity?.pageId === 'string' ? activity.pageId : null
+    const at = typeof activity?.at === 'number' ? activity.at : 0
+    if (!pageId || Date.now() - at > 12_000) {
+      _idleSeen.clear()
+      // 页面已关闭/心跳过期：解除"重置后忽略该页"的标记，避免以后再也收不到该页的 idle 短信。
+      _idleIgnorePage = null
+      return
+    }
+    if (_idleIgnorePage && _idleIgnorePage !== pageId) _idleIgnorePage = null
+    if (_idleIgnorePage === pageId) return
+    if (!_idleSeen.has(pageId)) _idleSeen.set(pageId, Date.now())
+    const dwellSec = (Date.now() - (_idleSeen.get(pageId) as number)) / 1000
+    for (const ev of getAllSmsEvents()) {
+      const trigger = ev.pushTrigger
+      if (trigger?.kind === 'idleOnPage' && trigger.pageId === pageId && dwellSec >= trigger.seconds) {
+        deliverSms(ev.id)
+      }
+    }
+  }, 1000)
 }
 
 /** 仅测试用：重置 shell 运行态 + 计时器。 */

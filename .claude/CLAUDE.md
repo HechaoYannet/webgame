@@ -6,7 +6,7 @@
 
 ## 0. 项目一句话
 
-一款网页解谜游戏《张强宿舍大逃杀》，玩家扮演高二学生林哲，通过模拟智能手机界面（微信/QQ/浏览器/短信/电话/门铃等 App）调查同学失联案，收集证据、破解密码、在倒计时内报警举报。部署到 GitHub Pages（纯前端、零后端）。
+一款网页解谜游戏《张强宿舍大逃杀》，玩家扮演高二学生林哲，通过模拟智能手机界面（微信/QQ/短信/电话/门铃/相册/备忘录 **7 个 App**）与**独立全屏"真实网站"路由**（`#/site/site-*`，新标签打开）调查同学失联案，收集证据、破解密码、在倒计时内报警举报。部署到 GitHub Pages（纯前端、零后端）。
 
 游戏完整设计见只读文档：
 - `docs/game_about/剧情大纲.md` — 人物、5章+终章剧情、三结局、谜题答案
@@ -36,6 +36,7 @@
 - **路由**：**HashRouter**（强制）。GitHub Pages 静态托管不支持服务端重写，BrowserRouter 刷新子路由会真 404 且需 404.html hack（官方未提供）。HashRouter URL `/<repo>/#/app/wechat`，hash 段不经服务器，刷新零 404。React Router v7：用 `createHashRouter`/`<RouterProvider>`，路由对象用 `Component`（大写，v7 新增，替代 v6 `element`）；HashRouter 下可不设 basename
 - **构建配置**：`vite.config.ts` 设 `base: '/webgame/'`（仓库名 webgame，首尾斜杠都要）。动态拼 URL 用 `import.meta.env.BASE_URL`（构建时静态替换，**必须原样出现**，`import.meta.env['BASE_URL']` 不工作）
 - **静态资源**：默认走 `import`（自动 hash+inline+套 base）；`public/` 仅放不被代码引用/保留原名的文件，用根绝对路径 `/foo.png`。PDF/音频用 `?url`；TS 需 `vite/client` 类型
+- **游戏资源（`public/assets/**`）**：数据里一律写**不带扩展名的 assetId**，文件名必须严格等于 `<assetId>.<ext>`（候选扩展名链见 `src/utils/assetUrl.ts`）；位图统一**长边 ≤2000 + JPEG q90**，AI 原图投放区 `src/assets/img/`（已 gitignore，不进构建、不进仓库）；**新增/替换任何资源必须在 `docs/engineering/ASSETS.md` 登记**。`public/assets` 总预算 ≤25 MB。
 - **数据加载**：JSON 放 `public/data/`，用 `fetch(import.meta.env.BASE_URL + 'data/...')` 按需加载；开发期用 Zod schema 校验
 - **部署**：**GitHub Actions**（非 gh-pages 包）。仓库 Settings→Pages→Source 选 "GitHub Actions"，加 `.github/workflows/deploy.yml`（官方 yaml：`npm ci && npm run build` → `upload-pages-artifact` 到 `./dist` → `deploy-pages`）
 - **包管理**：npm（与 CI 的 `npm ci` 一致），不要混用 pnpm/yarn
@@ -57,19 +58,20 @@
 
 | 路径 | 所有者 agent |
 |---|---|
-| `data/meta/**` `data/puzzle/**` `data/clustering/**` | level-designer |
+| `data/meta/**` `data/puzzle/**` | level-designer |
 | `data/wechat/**` | writer-wechat |
 | `data/qq/**` | writer-qq |
 | `data/browser/**` | writer-browser |
 | `data/phone/**` `data/story/**` | writer-phone-story |
 | `src/types/**` | doc-engineer（主）+ frontend-engine（协） |
-| `src/engine/**` `src/data/loader.ts` | frontend-engine |
-| `src/apps/PhoneShell/**` `src/ui/**` `src/main.tsx` `src/App.tsx` | frontend-phone-shell |
+| `src/data/loader.ts` | frontend-engine |
+| `src/game/**` | frontend-phone-shell（2026-08 重构后：游戏状态收敛于此） |
+| `src/apps/PhoneShell/**` `src/ui/**` `src/main.tsx` `src/App.tsx` `src/utils/{shellState,time,assetUrl}.ts` | frontend-phone-shell |
 | `src/apps/WechatApp/**` | frontend-wechat |
 | `src/apps/QqApp/**` | frontend-qq |
-| `src/apps/BrowserApp/**` | frontend-browser |
-| `src/apps/{Phone,Sms,Doorbell,Album,Files,Notes}App/**` | frontend-phone-apps |
-| `public/assets/**` | 资源 agent（主控指派） |
+| `src/apps/{Phone,Sms,Doorbell,Album,Notes}App/**` | frontend-phone-apps |
+| `src/sites/site-*/**` `src/sites/shared/**` | 各站点 agent（真实网站 = 独立全屏路由） |
+| `public/assets/**` | 资源 agent（主控指派）——清单与约定见 `docs/engineering/ASSETS.md` |
 | `docs/engineering/**` 构建配置/CI/README/SCHEMA | doc-engineer |
 | `.claude/**` | 主控 agent |
 | `docs/game_about/**` | 只读，任何人不得修改 |
@@ -82,7 +84,7 @@
 
 ### 4.1 核心原则
 1. **数据即契约**：`public/data/**/*.json` 是文案 agent 与前端 agent 之间的唯一耦合面。前端只读 JSON、不生成 JSON；文案只写 JSON、不触碰 `src/`。
-2. **"是什么"在数据，"怎么验"在代码**：谜题答案、线索触发条件的数据形态由 level-designer 定（`data/puzzle/puzzles.json` 单一真源），但密码校验/比较逻辑由前端 `engine/puzzle/` 实现，**前端不持硬编码答案**。
+2. **"是什么"在数据，"怎么验"在代码**：谜题答案、线索触发条件的数据形态由 level-designer 定（`data/puzzle/puzzles.json` 单一真源），但密码校验/比较逻辑由前端 `src/game/answerCheck.ts` 实现，**前端不持硬编码答案**（2026-08 重构后引擎层 `src/engine/**` 已删除）。
 3. **一人一目录，目录即锁**：见 §3。
 4. **纯前端、零后端**：所有"上传 PDF 解读""搜索""登录后台"均为前端伪造，数据全部 JSON 化。
 
@@ -119,7 +121,7 @@ Phase 0 契约固化  → Phase 1 骨架数据 → Phase 2 文案填充 → Phas
 - `meta/characters.json` `meta/evidence-registry.json`（5 项 `isKey` 关键证据）
 - `puzzle/puzzles.json`（答案+校验策略+effects，绑定证据ID）— 含 §6 已统一的所有谜题
 - `meta/chapters.json` + `endings.json`（触发绑定 puzzleId）
-- `meta/risk-events.json` `clustering/clue-map.json`（红鲱鱼标记）
+- `meta/risk-events.json`（历史：`clustering/clue-map.json` 已于 2026-08 随线索机制删除，红鲱鱼标记改由 `meta/evidence-registry.json` 的 `isRedHerring` 承载）
 
 ### Phase 2 — 内容填充（文案 4 agent 全并行；reviewer 实时 lint ID 引用合法性）
 - writer-wechat / writer-qq / writer-browser / writer-phone-story 各占一个 data 子目录
@@ -132,6 +134,7 @@ Phase 0 契约固化  → Phase 1 骨架数据 → Phase 2 文案填充 → Phas
 ### Phase 4 — 前端实现（前端 6 agent + 资源 agent 全并行；data/ 冻结只读）
 - frontend-engine / frontend-phone-shell / frontend-wechat / frontend-qq / frontend-browser / frontend-phone-apps
 - 各占 `src/apps/<App>` 目录，依赖 AppRegistry（`import.meta.glob('./apps/*/manifest.ts')`）自动聚合，零跨目录冲突
+- **2026-08 重构后**：引擎层已删除（游戏状态收敛到 `src/game`），浏览器 App 已删除（站点改为独立全屏路由 `src/sites/site-*`），文件 App 已删除。当前 **7 个 App**：Wechat / Qq / Phone / Sms / Doorbell / Album / Notes。`.claude/agents/*.md` 中 frontend-engine / frontend-browser / writer-browser 三份定义已过期，以 `src/` 为准。
 
 ### Phase 5 — 对抗式验证（reviewer，blind-review skill 多代理盲审）
 - 线索闭环：5 个关键证据每项是否都有从序章到终章的可达路径
@@ -150,10 +153,10 @@ Phase 0 契约固化  → Phase 1 骨架数据 → Phase 2 文案填充 → Phas
 2. **【中】新希望后台 `88888888`**：剧情大纲主线未用到。**保留为可选红鲱鱼**——玩家可登录（密码 `88888888`，与举报电话 `0731-88888888` 后 8 位暗合），得额外佐证但**不进 `requiredEvidenceIds`**。不改动主线流程。
 3. **【中】朋友圈 3/11 配文**：交互设计/信息架构写"兄弟们，终末地见！"，剧情大纲写"高兴"。**统一为"兄弟们，终末地见！"**。
 4. **【低】外部真实 URL**（鹰角官网 `endfield.hypergryph.com/...`）：标记 `link.pageId` 走站内伪造页，`url` 仅显示不真实跳转，避免外链失效与跳出沉浸。
-5. **【低】论文 AI 翻译解读**：用 `puzzle.type = "uploadAndInterpret"` 伪造——前端检测论文 PDF asset 已在 FilesApp → 触发 `isGeneratedContent:true` 的预设解读文章，无需真实上传解析。
-6. **【低】倒计时与持久化**：`CountdownService` 持久化 `startedAt` 时间戳（非剩余秒），刷新后按 `(now-startedAt)` 算真实剩余；超时切坏结局不可回退。
+5. **【低】论文 AI 翻译解读（2026-08 修订）**：真实链路 = 公众号《上传PDF，秒懂论文》→ 独立站 `site-ai-pdf`（`page-ai-pdf-home`）上传**刚从预印本站下载的那份** `paper-source-crystal.pdf` → 站点按 sha256 严格校验通过 → 跳 `page-ai-interpret` 出解读。**解读只存在于站点页，微信内不得再放解读文章**。旧设计「检测论文 PDF 已在 FilesApp → 触发 `isGeneratedContent` 预设解读文章」已废弃：FilesApp 已删除，且该做法会把解读（含实验室后台地址+密码线索）直接泄露在公众号里，绕过"下载→上传→出解读"链路。
+6. **【低】倒计时与持久化**：终章倒计时由**手机侧**在 `ev-lab-funding-report` 归档后启动（`src/utils/shellState.ts` → `src/game/countdown.ts`，180s，id 恒为 `countdown-finale`）；`startedAt` 只存内存（刷新即清，避免"刷新即坏结局"）；归零由 `watchCountdownExpiry` 调 `pushEnding('bad')`，不可回退。旧的 `CountdownService`/`WebPage.onViewEffects` 已随引擎删除。
 7. **【低】`123456` 双重语义**（绿中后台失败/实验室后台成功）：保留为有意设计（红鲱鱼+真实线索交叉），实验室后台 Hint tier1 明确指向"基金号后 6 位"。
-8. **【信息】风险值阈值**：`risk` 0-100，`==100` 触发坏结局，`>70` 红边+心跳；具体事件由 `risk-events.json`（phase1）定义，评审校验"正常通关路径 risk 不会无端到 100"。
+8. **【信息】风险值阈值（现状：占位）**：设计上 `risk` 0-100、`==100` 触发坏结局、`>70` 红边+心跳；但 2026-08 重构后 `RiskService` 已删除，`useRisk` 恒返回 `risk:0`，`meta/risk-events.json` 目前无消费者。若恢复，必须单一来源、且校验"正常通关路径 risk 不会无端到 100"。
 
 ### 6.1 关键谜题答案清单（已定，level-designer 严格遵循）
 | 谜题 | 答案 | 校验策略 | 触发后果 |
@@ -162,7 +165,7 @@ Phase 0 契约固化  → Phase 1 骨架数据 → Phase 2 文案填充 → Phas
 | 绿中内部系统 | `yigeyi` | exact（校长寄语"先挣一个亿"） | 解锁合作协议/名单/通讯录 |
 | 心理筛查 PDF | `0312`（合同号 `XH2026-0312` 后4位） | exact | 解锁受试者名单 PDF |
 | 新希望后台（红鲱鱼，可选） | `88888888` | exact | 额外佐证，不进关键证据 |
-| 论文 AI 解读 | 上传论文 PDF 触发 | uploadAndInterpret | 产出解读文章（含实验室后台地址+密码线索） |
+| 论文 AI 解读 | 上传论文 PDF 触发 | uploadAndInterpret | 站点 `page-ai-interpret` 出解读文章（含实验室后台地址+密码线索），**不入微信** |
 | 实验室后台 | `123456`（基金号 `2025YFC0123456` 后6位） | exact | 解锁受试者名单+经费报告 → **触发3分钟倒计时+威胁短信+刀哥门铃+心跳** |
 | 终章证据勾选 | ≥5 项关键证据 | evidenceSet（requiredEvidenceIds 5项, minLength 5） | 真/普通结局分支 |
 
@@ -172,7 +175,7 @@ Phase 0 契约固化  → Phase 1 骨架数据 → Phase 2 文案填充 → Phas
 1. `ev-qq-chat-plan` — 李桥瑞与闫欣泽 QQ 聊天记录（二人调查张强、失联前计划）
 2. `ev-lvzhong-agreement` — 绿中内部系统合作协议（证明张强与机构合作输送学生）
 3. `ev-xinxwang-lab-news` — 新希望成长中心与实验室合作新闻（机构与实验室勾结）
-4. `ev-paper-pdf` — 论文 PDF 或公众号解读（非法人体实验）
+4. `ev-paper-pdf` — 论文 PDF（在 AI 解读站上传校验通过或查看解读结果页时归档；非法人体实验）
 5. `ev-lab-funding-report` — 实验室后台经费申请报告（李桥瑞、闫欣泽列为受试者）
 6. （附加）`ev-lab-upload-log` — 系统日志（张强上传名单）——可作为第6项补强
 
@@ -194,7 +197,7 @@ Phase 0 契约固化  → Phase 1 骨架数据 → Phase 2 文案填充 → Phas
 
 1. `tsc --noEmit` 通过（所有 data JSON 满足 src/types 契约）
 2. Zod schema 在 loader.ts 对所有 JSON 校验通过
-3. `npm run dev` 手动走通主线：序章微信→看终末地官网/公众号得公测日(2025-11-28)→登QQ(20251128)→看闫欣泽对话→绿中官网→隐藏入口`/qiangzhang`→登内部系统(yigeyi)→看协议/名单PDF(0312)→新希望官网+天眼查→实验室官网→下载论文→公众号AI解读→实验室后台(123456)→倒计时→勾选5证据→拨打0731-88888888→真结局
+3. `npm run dev` 手动走通主线：序章微信→看终末地官网/公众号得公测日(2025-11-28)→登QQ(20251128)→看闫欣泽对话→绿中官网→隐藏入口`/qiangzhang`→登内部系统(yigeyi)→看协议/名单PDF(0312)→新希望官网+天眼查→实验室官网→下载论文→公众号《上传PDF，秒懂论文》→AI解读站上传该PDF出解读→实验室后台(123456)→倒计时→勾选5证据→拨打0731-88888888→真结局
 4. 三结局分别触发（真/普通/坏：证据不足、倒计时超时、风险值满）
 5. 红鲱鱼：登录新希望后台(88888888)能进入但不影响通关
 6. `npm run build` 产物正确带 base；推 GitHub → Actions 部署 → Pages 可访问、刷新子路由不 404（HashRouter）

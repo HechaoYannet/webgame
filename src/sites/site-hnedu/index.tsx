@@ -153,7 +153,7 @@ function HomeSidebar(): JSX.Element {
         <div className="hn-bulletin">
           <strong>举报电话</strong>
           <br />
-          教育违规办学投诉：0731-88888888
+          教育违规办学投诉：0731-84714912
           <br />
           （工作日 9:00-17:00）
         </div>
@@ -304,7 +304,7 @@ function GovInfoPage(): JSX.Element {
           </p>
           <div className="hn-callout">
             <div className="hn-callout-title">举报与投诉</div>
-            如发现民办教育机构存在违规办学、超范围经营、虚假宣传等行为，可通过举报电话 0731-88888888
+            如发现民办教育机构存在违规办学、超范围经营、虚假宣传等行为，可通过举报电话 0731-84714912
             向我厅民办教育处反映，我厅将依法核查处理。
           </div>
         </div>
@@ -644,9 +644,9 @@ function Footer(): JSX.Element {
       <div className="hn-footer-inner">
         <div>
           <div>湖南省教育厅 · 湖南省人民政府主办</div>
-          <div>地址：湖南省长沙市芙蓉区省政府院内 · 邮编：410000</div>
-          <div>举报电话：0731-88888888（工作日 9:00-17:00）</div>
-          <div className="hn-footer-copy">湘 ICP 备 00000000 号 · 湘公网安备 00000000000000 号</div>
+          <div>地址：湖南省长沙市天心区湘府东路二段238号</div>
+          <div>举报电话：0731-84714912（工作日 9:00-17:00）</div>
+          <div className="hn-footer-copy">湘ICP备05001888号 · 湘公网安备43010202000123号</div>
         </div>
         <div className="hn-footer-links">
           <Link to={base}>网站首页</Link>

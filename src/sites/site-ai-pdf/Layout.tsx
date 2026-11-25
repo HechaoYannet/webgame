@@ -37,7 +37,7 @@ export function Layout({ children }: LayoutProps): ReactElement {
       <footer className="site-ai-pdf-footer">
         <div>论文 AI 翻译解读 · 第三方 AI 引擎驱动</div>
         <div className="site-ai-pdf-footer-meta">
-          本工具使用AI提供服务 · © 2026 paper-ai-interpret.local
+          本工具使用AI提供服务 · © 2026 论文 AI 翻译解读 · 网址：www.paperai.cn
         </div>
       </footer>
     </div>

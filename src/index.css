@@ -1,12 +1,43 @@
-/* src/index.css — 全局暗色基调 + keyframes（《张强宿舍大逃杀》frontend-phone-shell）
+/* src/index.css — 全局暗色基调 + 设计 token + keyframes（《张强宿舍大逃杀》）
    交互设计 §二：PC 浏览器居中模拟手机。暗色基调，theme.ts 定义的 palette 为主色。
-   frontend-phone-shell 自有；这里替换掉 Vite 默认 index.css 以适配手机模拟外壳。 */
+   2026-11 视觉改版：加入一套"档案/监控"气质的设计 token（衬线标题、等宽标注、
+   纸色与血红），并在最前面引入氛围层样式（颗粒/暗角/低语/故障）。 */
+
+@import "./ui/atmosphere/atmosphere.css";
 
 :root {
   color-scheme: dark;
   --ui-bg: #050507;
   --ui-screen: #16161e;
   --ui-text: #f2f2f7;
+
+  /* ===== 设计 token（改版新增） ===== */
+  /* 墨色层级：从纯黑到纸面 */
+  --ink-950: #040406;
+  --ink-900: #07070a;
+  --ink-800: #0c0c11;
+  --ink-700: #12121a;
+  --ink-600: #1a1a24;
+
+  /* 纸色 / 血迹 / 信号灯 */
+  --bone: #e9e3d5;
+  --bone-dim: #a09a8e;
+  --bone-faint: #6d685f;
+  --blood: #b3241d;
+  --blood-bright: #e2382b;
+  --signal: #d9a24a;
+  --steel: #8d99a8;
+
+  /* 字体：中文衬线用于档案感标题/引文，等宽用于标注 */
+  --font-ui: system-ui, -apple-system, "Segoe UI", "PingFang SC",
+    "Microsoft YaHei", "Hiragino Sans GB", sans-serif;
+  --font-serif: "Songti SC", "Noto Serif CJK SC", "Source Han Serif SC",
+    "Source Han Serif CN", "SimSun", Georgia, serif;
+  --font-mono: ui-monospace, "Cascadia Mono", "SF Mono", Consolas,
+    "Liberation Mono", monospace;
+
+  /* 常用缓动 */
+  --ease-out-soft: cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
 * {
@@ -22,8 +53,7 @@ body,
   width: 100%;
   background: var(--ui-bg);
   color: var(--ui-text);
-  font-family: system-ui, -apple-system, "Segoe UI", "PingFang SC",
-    "Microsoft YaHei", "Hiragino Sans GB", sans-serif;
+  font-family: var(--font-ui);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow: hidden;
@@ -222,7 +252,22 @@ img {
   }
 }
 
-/* 减少动画偏好 */
+/* ===== 全局选择/焦点（改版新增） ===== */
+::selection {
+  background: rgba(179, 36, 29, 0.55);
+  color: #fff;
+}
+
+:focus-visible {
+  outline: 1px solid rgba(233, 227, 213, 0.5);
+  outline-offset: 2px;
+}
+
+button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ===== 减少动画偏好 */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

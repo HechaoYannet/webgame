@@ -48,9 +48,9 @@ export function Layout({ children }: LayoutProps): ReactElement {
             <span className="site-news-brand-slogan">聚焦三湘 · 服务民生</span>
           </div>
           <div className="site-news-topbar-meta">
-            湘ICP备2026000001号 · 湘公网安备 43010002000199号
+            湘ICP备2019004526号 · 湘公网安备43010502000321号
             <br />
-            新闻热线：0731-88888888
+            新闻热线：0731-85551234
           </div>
         </div>
       </header>
@@ -76,9 +76,9 @@ export function Layout({ children }: LayoutProps): ReactElement {
 
       <footer className="site-news-footer">
         <div>湖南新闻网 HUNAN NEWS · 主管单位：湖南省互联网信息办公室</div>
-        <div>地址：长沙市芙蓉区晚报大道一号 · 邮编：410016 · 投稿邮箱：editor@hunan-news.cn</div>
+        <div>地址：湖南省长沙市开福区芙蓉中路一段440号 · 邮编：410016 · 投稿邮箱：editor@hunan-news.cn</div>
         <div className="site-news-footer-icp">
-          湘ICP备2026000001号-1 · 互联网新闻信息服务许可证：43120200055 · Copyright © 2020-2026 hunan-news.cn
+          湘ICP备2019004526号 · 互联网新闻信息服务许可证：43120200055 · Copyright © 2020-2026 hunan-news.cn
         </div>
       </footer>
     </div>

@@ -206,24 +206,15 @@ function PageBlockItem({ block, ctx }: { block: PageBlock; ctx?: BlockRenderCont
     case 'form':
       return <BlockForm formId={block.formId} onSubmitMessage={block.onSubmitMessage} ctx={ctx} />
     case 'sourceComment':
-      // 渲染为隐藏 HTML 注释（玩家需查看源码发现），同时提供折叠"开发者注释"提示
+      // 只把线索写进隐藏 HTML 注释（玩家查看源码可见）。
+      // 原实现还额外渲染一个折叠的「开发者注释 / 线索已写入页面源码注释」提示框——
+      // 那是工序旁白，一旦接线就会把设计意图直接摊给玩家（审核报告 §3），已移除。
       return (
-        <>
-          {/* eslint-disable-next-line react/no-danger -- 数据驱动源码注释线索（CLAUDE.md §4 + PageBlock.sourceComment），内容来自 data/browser pages JSON */}
-          <div dangerouslySetInnerHTML={{ __html: `<!-- ${block.comment} -->` }} aria-hidden="true" />
-          <details
-            style={{
-              fontSize: 12,
-              color: palette.textTertiary,
-              background: palette.bgCard,
-              borderRadius: radius.sm,
-              padding: spacing.xs + 'px ' + spacing.sm + 'px',
-            }}
-          >
-            <summary style={{ cursor: 'pointer', color: palette.textTertiary }}>开发者注释</summary>
-            <p style={{ margin: `${spacing.xs}px 0 0`, color: palette.textTertiary }}>（线索已写入页面源码注释，审查源代码可见）</p>
-          </details>
-        </>
+        <div
+          // eslint-disable-next-line react/no-danger -- 数据驱动源码注释线索（CLAUDE.md §4 + PageBlock.sourceComment），内容来自 data/browser pages JSON
+          dangerouslySetInnerHTML={{ __html: `<!-- ${block.comment} -->` }}
+          aria-hidden="true"
+        />
       )
     case 'loginForm':
       return <BlockLoginForm puzzleId={block.puzzleId} ctx={ctx} />

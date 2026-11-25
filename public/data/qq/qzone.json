@@ -19,7 +19,7 @@
       },
       {
         "authorCharacterId": "char-chenyutong",
-        "text": "328公测见",
+        "text": "11月28号公测见",
         "createdAt": "2026-03-11T17:05:00+08:00"
       }
     ],
@@ -67,7 +67,7 @@
     "id": "qzone-li-202512-screenshot",
     "authorCharacterId": "char-liqiaorui",
     "createdAt": "2025-12-20T22:30:00+08:00",
-    "text": "终于抽出这个角色了",
+    "text": "重复了，不过泰还是很帅",
     "assetIds": ["qzone-li-202512-screenshot-img"],
     "likes": ["char-zhaotianyu"],
     "comments": [],
@@ -85,6 +85,22 @@
     "likes": ["char-liqiaorui"],
     "comments": [],
     "starValue": 4
+  },
+  {
+    "id": "qzone-yan-0309-key",
+    "authorCharacterId": "char-yanxinze",
+    "createdAt": "2026-03-09T20:05:00+08:00",
+    "text": "捡回来了",
+    "assetIds": ["qzone-yan-0309-key-img"],
+    "likes": ["char-liqiaorui"],
+    "comments": [
+      {
+        "authorCharacterId": "char-liqiaorui",
+        "text": "这不就是照片里那把钥匙吗",
+        "createdAt": "2026-03-09T20:12:00+08:00"
+      }
+    ],
+    "starValue": 3
   },
   {
     "id": "qzone-yan-0308-map",

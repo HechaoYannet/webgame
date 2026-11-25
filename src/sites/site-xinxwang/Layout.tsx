@@ -69,7 +69,7 @@ export function Layout({ children, hideFrame }: { children: ReactNode; hideFrame
         <div className="xw-topbar-inner">
           <span>长沙专业青少年行为矫正机构 · 诚信办学20年</span>
           <span>
-            <span>咨询热线：0731-88888888</span>
+            <span>咨询热线：0731-88220188</span>
           </span>
         </div>
       </div>
@@ -108,8 +108,8 @@ export function Layout({ children, hideFrame }: { children: ReactNode; hideFrame
           </div>
           <div>
             <h4>联系方式</h4>
-            <p>地址：长沙市某区某路168号</p>
-            <p>电话：0731-88888888</p>
+            <p>地址：湖南省长沙市望城区高塘岭街道兴业路66号</p>
+            <p>电话：0731-88220188</p>
             <p>邮箱：contact@xinxwang-center.com</p>
           </div>
           <div>
@@ -129,7 +129,7 @@ export function Layout({ children, hideFrame }: { children: ReactNode; hideFrame
           </div>
         </div>
         <div className="xw-footer-bottom">
-          © 2005-2026 新希望成长中心 · 湘ICP备XXXXXXXX号 · 湘公网安备 XXXXXXXXXXXXX号
+          © 2005-2026 新希望成长中心 · 湘ICP备2023026841号 · 湘公网安备43010402000876号
           <br />
           网站内容仅供宣传参考，入营须签订正式协议
         </div>

@@ -22,6 +22,8 @@ import { checkLogin } from '@/sites/shared/answerCheck'
 import { getCachedPageContent, getPageContent, type SitePage } from '@/sites/shared/pageContent'
 import { PlaceholderImage, PlaceholderPdf } from '@/sites/shared/placeholder'
 import { sitePath, useSiteBase } from '@/sites/shared/siteNav'
+import { getRouterPathByPageId } from '@/sites/shared/siteRegistry'
+import { reportPageViewed, reportPuzzleSolved } from '@/sites/shared/gameEvent'
 import type { PageBlock, PageId } from '@/types'
 
 export const siteId = 'site-shanhe-med'
@@ -73,8 +75,8 @@ export default function ShanheMedSite(): JSX.Element {
         <Route path="news/energy-award" element={<ContentPage pageId="page-shanhe-news-award" />} />
         <Route path="contact" element={<ContentPage pageId="page-shanhe-contact" />} />
         <Route path="admin" element={<LabAdminLogin />} />
-        <Route path="admin/funding-report" element={<LabAdminRequired><ContentPage pageId="page-lab-funding-report" /></LabAdminRequired>} />
-        <Route path="admin/subject-list" element={<LabAdminRequired><ContentPage pageId="page-lab-subject-list" /></LabAdminRequired>} />
+        <Route path="admin/funding-report" element={<LabAdminRequired><AdminNav /><ContentPage pageId="page-lab-funding-report" /></LabAdminRequired>} />
+        <Route path="admin/subject-list" element={<LabAdminRequired><AdminNav /><ContentPage pageId="page-lab-subject-list" /></LabAdminRequired>} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <SiteFooter />
@@ -112,9 +114,9 @@ function SiteFooter(): JSX.Element {
   return (
     <footer style={footerStyle}>
       <div style={footerInnerStyle}>
-        <div>地址：某省某市某区山河医科大学</div>
+        <div>地址：湖南省长沙市开福区湘雅路128号</div>
         <div>实验室邮箱：lab@shanhe-med.cn</div>
-        <div style={footerCopyStyle}>© 2026 山河医科大学 版权所有 · 科研立校 · 服务社会</div>
+        <div style={footerCopyStyle}>© 2026 山河医科大学 版权所有 · 科研立校 · 服务社会 · 湘ICP备2021007733号 · 湘公网安备43010502000654号</div>
       </div>
     </footer>
   )
@@ -143,6 +145,11 @@ function ContentPage({ pageId }: { pageId: PageId }): JSX.Element {
     }
     void getPageContent(pageId).then((p) => setPage(p))
   }, [pageId])
+
+  // 上报页面浏览：经费申请报告页为终局倒计时 + 关键证据归档点（幂等）。
+  useEffect(() => {
+    if (page) reportPageViewed(page.id)
+  }, [page])
 
   if (page === undefined) {
     return (
@@ -210,9 +217,9 @@ function BlockView({ block }: { block: PageBlock }): JSX.Element | null {
       return (
         <nav style={inlineNavStyle}>
           {block.links.map((lnk, i) => (
-            <Link key={i} to={sitePath(base, pageIdToPath(lnk.pageId))} style={inlineNavLinkStyle}>
+            <PageLink key={i} pageId={lnk.pageId} base={base} style={inlineNavLinkStyle}>
               {lnk.label}
-            </Link>
+            </PageLink>
           ))}
         </nav>
       )
@@ -221,9 +228,12 @@ function BlockView({ block }: { block: PageBlock }): JSX.Element | null {
         <ul style={articleListStyle}>
           {block.items.map((item, i) => (
             <li key={i} style={articleListItemStyle}>
-              <Link to={sitePath(base, pageIdToPath(item.pageId))} style={articleListTitleStyle}>
+              {/* 论文条目指向另一个站点（预印本库）的详情页：由 siteRegistry 解析为
+                  跨站路由；同站条目仍用站内 Link。此前一律 pageIdToPath → 未知即空串，
+                  点击会退回本站首页（死链）。 */}
+              <PageLink pageId={item.pageId} base={base} style={articleListTitleStyle}>
                 {item.title}
-              </Link>
+              </PageLink>
               {item.date && <span style={articleListDateStyle}>{item.date}</span>}
             </li>
           ))}
@@ -305,7 +315,11 @@ function TableView({ headers, rows }: { headers: string[]; rows: string[][] }): 
 function SourceCommentView({ comment, linkPageId }: { comment: string; linkPageId?: PageId }): JSX.Element | null {
   const navigate = useNavigate()
   const base = useSiteBase()
-  const targetPath = linkPageId ? sitePath(base, pageIdToPath(linkPageId)) : undefined
+  const targetPath = linkPageId
+    ? PAGE_ID_TO_PATH[linkPageId] !== undefined
+      ? sitePath(base, PAGE_ID_TO_PATH[linkPageId])
+      : getRouterPathByPageId(linkPageId)
+    : undefined
   return (
     <div style={sourceCommentWrapStyle}>
       <pre style={sourceCommentTextStyle}>{comment}</pre>
@@ -365,6 +379,8 @@ function LabAdminLogin(): JSX.Element {
     e.preventDefault()
     const ok = checkLogin(token, password)
     if (ok) {
+      // 上报谜题已解（登录实验室后台 → 手机收到监视者威胁来电；幂等）。
+      reportPuzzleSolved('puzzle-lab-backend')
       sessionStorage.setItem(SHANHE_ADMIN_KEY, '1')
       navigate(sitePath(base, 'admin/funding-report'))
     } else {
@@ -376,7 +392,7 @@ function LabAdminLogin(): JSX.Element {
     <main style={mainStyle}>
       <div style={adminLoginCardStyle}>
         <h2 style={adminLoginTitleStyle}>生物能源实验室 管理系统</h2>
-        <p style={adminLoginHintStyle}>管理员登录。测试账号：admin。密码提示：基金号 2025YFC0123456 的后 6 位。</p>
+        <p style={adminLoginHintStyle}>管理员登录。请输入账号与密码。</p>
         <form style={adminLoginFormStyle} onSubmit={onSubmit}>
           <label style={formLabelStyle}>账号</label>
           <input
@@ -407,6 +423,28 @@ function LabAdminLogin(): JSX.Element {
 
 const SHANHE_ADMIN_KEY = 'shanhe-med-admin-ok'
 
+/** 后台子导航：受试者名单页此前没有任何入口，导致其承载的系统日志证据
+ *  ev-lab-upload-log 永远拿不到（审核报告 E2E-6）。这里补一个后台内的导航条。 */
+function AdminNav(): JSX.Element {
+  const base = useSiteBase()
+  return (
+    <div style={adminNavStyle}>
+      <Link to={sitePath(base, 'admin/funding-report')} style={adminNavLinkStyle}>经费申请报告</Link>
+      <Link to={sitePath(base, 'admin/subject-list')} style={adminNavLinkStyle}>受试者名单与系统日志</Link>
+    </div>
+  )
+}
+
+const adminNavStyle: CSSProperties = {
+  display: 'flex',
+  gap: 20,
+  padding: '10px 0 12px',
+  marginBottom: 8,
+  borderBottom: '1px solid #e5e7eb',
+  fontSize: 13,
+}
+const adminNavLinkStyle: CSSProperties = { color: '#1d4ed8', textDecoration: 'none' }
+
 /** 后台守卫：未登录跳回登录页。 */
 function LabAdminRequired({ children }: { children: ReactNode }): JSX.Element {
   const base = useSiteBase()
@@ -426,9 +464,39 @@ function LabAdminRequired({ children }: { children: ReactNode }): JSX.Element {
 
 /* ============ 路由辅助 ============ */
 
-/** pageId → 站内相对路径（未知 pageId 退化为到达首页）。 */
-function pageIdToPath(pageId: PageId): string {
-  return PAGE_ID_TO_PATH[pageId] ?? ''
+/**
+ * 页面链接：同站走 <Link>（客户端路由）；跨站（如论文 → 预印本库详情）走
+ * 由 siteRegistry 解析出的绝对路由，用普通锚点触发 HashRouter 的 hashchange。
+ * 两者都不存在的未知 pageId 渲染为纯文本，避免"点了回到首页"的假链接。
+ */
+function PageLink({
+  pageId,
+  base,
+  style,
+  children,
+}: {
+  pageId: PageId
+  base: string
+  style: CSSProperties
+  children: ReactNode
+}): JSX.Element {
+  const localPath = PAGE_ID_TO_PATH[pageId]
+  if (localPath !== undefined) {
+    return (
+      <Link to={sitePath(base, localPath)} style={style}>
+        {children}
+      </Link>
+    )
+  }
+  const crossSitePath = getRouterPathByPageId(pageId)
+  if (crossSitePath) {
+    return (
+      <a href={'#' + crossSitePath} style={style}>
+        {children}
+      </a>
+    )
+  }
+  return <span style={style}>{children}</span>
 }
 
 /* ============ 样式 ============ */

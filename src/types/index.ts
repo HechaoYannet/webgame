@@ -370,6 +370,8 @@ export interface SmsEvent {
   id: string;
   pushTriggerPuzzleId?: PuzzleId;
   pushTriggerRiskEventId?: string;
+  /** 仅当结局为该值时才随 pushTriggerPuzzleId 投递（如真结局受理回执）。 */
+  pushTriggerEndingId?: EndingId;
   pushTrigger?: SmsPushTrigger;
   from: SmsFrom;
   direction?: MessageDirection;

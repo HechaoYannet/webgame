@@ -6,6 +6,7 @@
  * 最小渲染器，签名稳定，待 src/ui 落地后可切换 import）。
  */
 import type { ArticleBlock } from "@/types";
+import { AssetImage } from "./AssetImage";
 
 export interface ArticleBlockRendererProps {
   blocks: ArticleBlock[];
@@ -58,11 +59,11 @@ function renderBlock(b: ArticleBlock, i: number): JSX.Element {
         </ul>
       );
     case "image":
-      // 公众号文章配图暂以占位符展示（assetId 无对应公共资源时可由 phone-shell 替换）
+      // 真实渲染文章配图；文件缺失时中性灰块回退，不显示 assetId/「图片」调试文本。
       return (
         <figure key={i} className="wc-article-figure">
-          <div className="wc-article-img-placeholder" data-asset-id={b.assetId}>
-            [图片 {b.assetId}]
+          <div className="wc-article-img" data-asset-id={b.assetId}>
+            <AssetImage assetId={b.assetId} alt={b.caption ?? ""} />
           </div>
           {b.caption && <figcaption>{b.caption}</figcaption>}
         </figure>

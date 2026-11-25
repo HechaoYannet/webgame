@@ -25,7 +25,7 @@ export interface ArxivManifest {
 
 const pageRoutes: ArxivManifest['pageRoutes'] = [
   { pageId: 'page-arxiv-list', path: 'list' },
-  { pageId: 'page-arxiv-paper', path: 'abs/2026.0228.001' },
+  { pageId: 'page-arxiv-paper', path: 'abs/2603.01187' },
 ]
 
 export const manifest: ArxivManifest = {

@@ -170,6 +170,20 @@ const PATHS: Record<string, (p: GlyphProps) => React.ReactElement> = {
       />
     </Svg>
   ),
+  heart: (p) => (
+    <Svg {...p} viewBox="0 0 24 24">
+      <path
+        fill={p.color ?? '#ef4444'}
+        d="M12 20.6 4.6 13.4A4.9 4.9 0 0 1 11.6 6.5l.4.5.4-.5a4.9 4.9 0 0 1 7 6.9L12 20.6Z"
+      />
+    </Svg>
+  ),
+  warning: (p) => (
+    <Svg {...p} viewBox="0 0 24 24">
+      <path fill={p.color ?? '#f59e0b'} d="M12 2.6 23 21H1L12 2.6Z" />
+      <path d="M11 9.5h2v5.2h-2V9.5Zm0 6.6h2v2h-2v-2Z" fill="#191919" />
+    </Svg>
+  ),
   settings: (p) => (
     <Svg {...p} viewBox="0 0 24 24">
       <path
@@ -266,7 +280,10 @@ export function AppGlyph({
       />
     )
   }
-  const factory = PATHS[id]
+  // 归一化后再查 PATHS：manifest 里可能写 'album.png' / 'notes.png'，
+  // 此前只对品牌 SVG 归一化，PATHS 用原始 id 查 → album.png 查不到，
+  // 桌面第一项退化成「相」字方块（审核报告 D 末条 / 2.E 图标语义错）。
+  const factory = PATHS[normalizeIconId(id)]
   if (factory) return factory({ size, color, style })
   // 回退：圆角方块 + 首字母
   const letter = (fallbackLabel ?? id).trim().slice(0, 1).toUpperCase()

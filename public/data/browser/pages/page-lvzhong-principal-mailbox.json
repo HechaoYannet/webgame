@@ -29,6 +29,10 @@
       "type": "form",
       "formId": "form-principal-mailbox",
       "onSubmitMessage": "留言成功，感谢反馈！"
+    },
+    {
+      "type": "sourceComment",
+      "comment": "<!-- 新希望成长中心后台地址：xw.zhangqiang.com.cn/admin -->"
     }
   ]
 }

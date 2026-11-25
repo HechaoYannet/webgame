@@ -22,6 +22,8 @@ import {
   type CharacterDictionary,
 } from "./data";
 import { getMessages, getWechatThreads } from "@/data/loader";
+import { formatGameDay, formatGameTime, gameNowMs } from "@/utils/time";
+import { AssetImage } from "./AssetImage";
 import { useClue, useNavigateToPage } from "./wechatEngine";
 
 /* ------------------------------------------------------------------ *
@@ -114,6 +116,32 @@ function ThreadList({
   dict,
   onOpen,
 }: ThreadListProps): JSX.Element {
+  const [snippets, setSnippets] = useState<Record<string, string>>({});
+
+  // 批量加载每个会话的最后一条消息，作为列表预览（单条失败静默跳过）。
+  useEffect(() => {
+    let cancelled = false;
+    void Promise.all(
+      threads.map(async (t) => {
+        try {
+          const msgs = await getMessages(t.id);
+          const last = msgs.reduce<ChatMessage | null>(
+            (acc, m) => (!acc || m.timestamp > acc.timestamp ? m : acc),
+            null,
+          );
+          return [t.id, messagePreview(last)] as const;
+        } catch {
+          return [t.id, ""] as const;
+        }
+      }),
+    ).then((entries) => {
+      if (!cancelled) setSnippets(Object.fromEntries(entries));
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [threads]);
+
   if (threads.length === 0) {
     return <div className="wc-empty">暂无会话</div>;
   }
@@ -124,6 +152,7 @@ function ThreadList({
           key={t.id}
           thread={t}
           dict={dict}
+          snippet={snippets[t.id] ?? ""}
           onOpen={() => onOpen(t.id)}
         />
       ))}
@@ -131,13 +160,25 @@ function ThreadList({
   );
 }
 
+/** 会话列表预览：image→[图片]，link→[链接]，其它取 text 前 18 字。 */
+function messagePreview(m: ChatMessage | null): string {
+  if (!m) return "";
+  if (m.kind === "image") return "[图片]";
+  if (m.kind === "link") return "[链接]";
+  const text = (m.text ?? "").trim();
+  if (!text) return "";
+  return text.length > 18 ? text.slice(0, 18) + "…" : text;
+}
+
 interface ThreadRowProps {
   thread: ChatThread;
   dict: CharacterDictionary;
+  /** 最后一条消息的预览文本（空串则由下方回退）。 */
+  snippet: string;
   onOpen: () => void;
 }
 
-function ThreadRow({ thread, dict, onOpen }: ThreadRowProps): JSX.Element {
+function ThreadRow({ thread, dict, snippet, onOpen }: ThreadRowProps): JSX.Element {
   // 取会话对方（非主角）作为头像；群聊用标题首字符
   const other = thread.participantCharacterIds
     .filter((id) => id !== "char-linzhe")
@@ -175,7 +216,10 @@ function ThreadRow({ thread, dict, onOpen }: ThreadRowProps): JSX.Element {
           <span className="wc-thread-time">{subtitle}</span>
         </div>
         <div className="wc-thread-snippet">
-          {thread.type === "group" ? `群聊 · ${thread.participantCharacterIds.length}人` : "点击进入对话"}
+          {snippet ||
+            (thread.type === "group"
+              ? `群聊 · ${thread.participantCharacterIds.length}人`
+              : "")}
         </div>
       </div>
       {unread > 0 && (
@@ -251,7 +295,8 @@ function ThreadView({
   const handleSend = useCallback(() => {
     const text = draft.trim();
     if (!text) return;
-    const now = new Date().toISOString();
+    // 用游戏内时钟（2026-03-13 起点 + 已流逝真实时间），避免把玩家真实日期印进气泡。
+    const now = new Date(gameNowMs()).toISOString();
     const sent: ChatMessage = {
       id: `local-sent-${Date.now()}`,
       threadId: thread.id,
@@ -295,16 +340,7 @@ function ThreadView({
               : "在线"}
           </div>
         </div>
-        <button
-          type="button"
-          className="wc-chat-header-menu"
-          aria-label="更多"
-          onClick={() => {
-            /* 占位，无实际功能 */
-          }}
-        >
-          ···
-        </button>
+        <span className="wc-chat-header-spacer" aria-hidden="true" />
       </header>
 
       <div className="wc-thread-messages">
@@ -328,20 +364,8 @@ function ThreadView({
           ))}
       </div>
 
-      {/* 输入栏：mic / 输入框 / 表情 / + */}
+      {/* 输入栏：输入框 + 发送（表情/加号/语音等无功能控件已删除） */}
       <div className="wc-chat-input">
-        <button
-          type="button"
-          className={`wc-chat-input-btn ${hasText ? "wc-chat-send-btn" : "wc-chat-mic-btn"}`}
-          onClick={() => {
-            if (hasText) handleSend();
-            /* mic 按钮无实际录音功能 */
-          }}
-          aria-label={hasText ? "发送" : "语音"}
-          disabled={!hasText && false}
-        >
-          {hasText ? "发送" : "🎤"}
-        </button>
         <input
           type="text"
           className="wc-chat-input-field"
@@ -358,23 +382,12 @@ function ThreadView({
         />
         <button
           type="button"
-          className="wc-chat-input-btn wc-chat-emoji-btn"
-          aria-label="表情"
-          onClick={() => {
-            /* 占位，无实际功能 */
-          }}
+          className="wc-chat-input-btn wc-chat-send-btn"
+          onClick={handleSend}
+          aria-label="发送"
+          disabled={!hasText}
         >
-          😊
-        </button>
-        <button
-          type="button"
-          className="wc-chat-input-btn wc-chat-plus-btn"
-          aria-label="更多"
-          onClick={() => {
-            /* 占位，无实际功能 */
-          }}
-        >
-          ＋
+          发送
         </button>
       </div>
     </div>
@@ -474,20 +487,26 @@ function MessageContent({
         />
       );
 
-    case "image":
+    case "image": {
+      const ids = message.assetIds ?? [];
       return (
-        <div className="wc-msg-image" data-asset-ids={(message.assetIds ?? []).join(",")}>
-          [(图片)]
-          {(message.assetIds ?? []).length === 0 && " 无图"}
+        <div className="wc-msg-images">
+          {ids.map((aid) => (
+            <AssetImage key={aid} assetId={aid} className="wc-msg-image-thumb" />
+          ))}
+          {ids.length === 0 && (
+            <AssetImage assetId="" className="wc-msg-image-thumb" />
+          )}
         </div>
       );
+    }
 
     case "file":
       return (
         <div className="wc-msg-file">
           <span className="wc-msg-file-icon">📄</span>
           <span className="wc-msg-file-name">
-            {message.text ?? (message.assetIds?.[0] ?? "文件")}
+            {message.text ?? "文件"}
           </span>
         </div>
       );
@@ -650,51 +669,13 @@ function LinkCard({
  * 通用头部 + 骨架
  * ------------------------------------------------------------------ */
 
-/* 聊天列表顶部导航栏：搜索图标 + "微信" + "+" 按钮 */
+/* 聊天列表顶部导航栏：标题（搜索/添加等无功能按钮已删除，保留占位维持居中） */
 function ChatNavBar({ title }: { title: string }): JSX.Element {
   return (
     <header className="wc-chat-navbar">
-      <button
-        type="button"
-        className="wc-navbar-btn"
-        aria-label="搜索"
-        onClick={() => {
-          /* 占位，搜索功能未实现 */
-        }}
-      >
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <circle cx="11" cy="11" r="8" />
-          <line x1="21" y1="21" x2="16.65" y2="16.65" />
-        </svg>
-      </button>
+      <span className="wc-navbar-spacer" aria-hidden="true" />
       <span className="wc-navbar-title">{title}</span>
-      <button
-        type="button"
-        className="wc-navbar-btn"
-        aria-label="添加"
-        onClick={() => {
-          /* 占位，添加功能未实现 */
-        }}
-      >
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <line x1="12" y1="5" x2="12" y2="19" />
-          <line x1="5" y1="12" x2="19" y2="12" />
-        </svg>
-      </button>
+      <span className="wc-navbar-spacer" aria-hidden="true" />
     </header>
   );
 }
@@ -715,16 +696,15 @@ function ChatListSkeleton(): JSX.Element {
   );
 }
 
+/** 游戏内"今天"（2026-03-13，游戏时区 +08:00）的 MM-DD 形式。 */
+const GAME_TODAY_DAY = "03-13";
+
+/**
+ * 智能格式化（游戏时区）：游戏内当天只显 HH:mm，其它显 MM-DD。
+ * 不用玩家机器时区/真实当天比较，保证同一时间戳在任何机器上显示一致。
+ */
 function formatTimestamp(iso: string): string {
-  // 智能格式化：今天只显 HH:mm，今年显 MM-DD，跨年显 YYYY-MM-DD
-  const date = new Date(iso);
-  if (isNaN(date.getTime())) return iso;
-  const now = new Date();
-  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  const msgDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-  const hm = `${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}`;
-  if (msgDate.getTime() === today.getTime()) return hm;
-  const md = `${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
-  if (date.getFullYear() === now.getFullYear()) return md;
-  return `${date.getFullYear()}-${md}`;
+  const day = formatGameDay(iso);
+  if (!day) return iso;
+  return day === GAME_TODAY_DAY ? formatGameTime(iso) : day;
 }

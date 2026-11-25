@@ -5,8 +5,10 @@
  * 自动聚合到 AppRegistry（CLAUDE.md §3 + §4）。Component 用 React.lazy 包裹；
  * 类型契约里 Component 字段是 unknown（与 React 解耦），这里 cast 回 lazy 组件。
  *
- * 终章前隐藏：刀哥仅在 puzzle-lab-backend.onSuccess pushDoorbell 后才上门，
- * 桌面图标在 ch-5 起可见（玩家进入第五章时门铃 App 出现在桌面）。
+ * 常驻桌面：门铃是开场宣传的玩法之一，但 advanceChapter 全库只会写
+ * ch-prologue / ch-finale，ch-5 永远不会成为当前章节 → 原 availableFrom: 'ch-5'
+ * 使门铃 App 永远不出现（审核报告 E2E-4）。改为 prologue 常驻，
+ * 门口事件仍由终章 deliverDoorbell 触发。
  */
 import { lazy } from 'react';
 import type { AppManifest } from '@/types';
@@ -19,5 +21,5 @@ export const DoorbellAppManifest: AppManifest = {
   icon: 'doorbell.png',
   route: '/app/doorbell',
   Component: DoorbellApp as unknown as AppManifest['Component'],
-  availableFrom: 'ch-5',
+  availableFrom: 'ch-prologue',
 };

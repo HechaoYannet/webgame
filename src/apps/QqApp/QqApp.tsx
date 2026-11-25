@@ -13,6 +13,7 @@ import { useState } from 'react'
 import { loadGameData, getQqThreads } from '@/data/loader'
 import type { ChatThread } from '@/types'
 import { useGameStore } from '@/game/gameStore'
+import { showToast } from '@/utils/shellState'
 import { Avatar, ErrorState, Loading, useAsync } from './components'
 import { getContact, getQqContact } from '@/data/loader'
 import type { QqContact } from '@/types'
@@ -97,7 +98,19 @@ function ContactsPanel() {
           const char = getContact(c.characterId)
           const display = c.qqRemark || c.qqNickname
           return (
-            <li key={`${c.characterId}-${c.qqNumber}`} className="qq-contact-row">
+            <li
+              key={`${c.characterId}-${c.qqNumber}`}
+              className="qq-contact-row"
+              role="button"
+              tabIndex={0}
+              onClick={() => showToast('该联系人资料暂未开放', 'info')}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault()
+                  showToast('该联系人资料暂未开放', 'info')
+                }
+              }}
+            >
               <Avatar charId={c.characterId} name={display} isGroup={c.isGroup} />
               <div className="qq-contact-info">
                 <div className="qq-contact-name">{display}</div>

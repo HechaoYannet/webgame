@@ -14,7 +14,12 @@ import { getEvidenceById, getAllEvidence, getPuzzleById } from '@/data/loader'
 import type { Evidence, EvidenceId } from '@/types'
 import { useGameStore } from './gameStore'
 
-/** 是否已勾选。 */
+/** 收集证据（查看关键内容时自动归档；幂等）。 */
+export function collectEvidence(evidenceId: EvidenceId): void {
+  useGameStore.getState().collectEvidence(evidenceId)
+}
+
+/** 是否已收集。 */
 export function isCollected(evidenceId: EvidenceId): boolean {
   return useGameStore.getState().collectedEvidenceIds.includes(evidenceId)
 }

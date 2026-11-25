@@ -231,6 +231,7 @@ const smsEventSchema: z.ZodType<SmsEvent> = z.object({
   id: idStr,
   pushTriggerPuzzleId: idStr.optional(),
   pushTriggerRiskEventId: z.string().optional(),
+  pushTriggerEndingId: z.enum(['good', 'normal', 'bad']).optional(),
   pushTrigger: z.object({ kind: z.string() }).passthrough().optional(),
   from: smsFromSchema,
   direction: z.enum(['sent', 'received']).optional(),

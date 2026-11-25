@@ -211,7 +211,7 @@ function FullscreenAlertOverlay() {
         }}
       >
         <div style={{ fontSize: 40, color, marginBottom: spacing.md, animation: 'ui-pulse 1s infinite' }}>
-          <Glyph name="settings" size={48} color={color} />
+          <Glyph name="warning" size={48} color={color} />
         </div>
         <div style={{ fontSize: 18, fontWeight: 700, marginBottom: spacing.sm, color }}>
           {alert.style === 'danger' ? '危险' : alert.style === 'warning' ? '警告' : alert.style === 'success' ? '成功' : '提示'}
@@ -245,7 +245,9 @@ function IncomingCallOverlay() {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'space-between',
-        padding: `${spacing.xl * 2}px ${spacing.xl}`,
+        // 底部让出 Home 手势区：否则 60px 的接听/拒接圆钮会被指示条热区盖住，
+        // 玩家点"接听"实际触发"返回桌面"（终章最致命的误触）。
+        padding: `${spacing.xl * 2}px ${spacing.xl}px calc(${spacing.xl}px + var(--home-inset, 0px))`,
         color: palette.textPrimary,
       }}
     >

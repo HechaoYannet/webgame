@@ -160,3 +160,9 @@ A: `build.assetsInlineLimit` 调小（如 4096），或把大文件放 `public/a
 
 ### Q: deploy workflow 报 `npm ci` 失败
 A: `package-lock.json` 与 `package.json` 不同步。本地跑一次 `npm install` 重新生成 lockfile 并提交。
+
+### Q: 图片/音频 404，页面出现灰块占位
+A: `public/data` 里写的是**不带扩展名的 assetId**，文件名必须严格等于 `<assetId>.<ext>` 并放在 `public/assets/` 下（候选扩展名链、命名与清单见 `docs/engineering/ASSETS.md`）。assetId 写 `foo`、文件叫 `foo.png` 是对的；若数据里写成 `foo.png` 而文件叫 `foo.jpg` 则两处都命中失败。逐个验证：`curl -I http://localhost:4173/webgame/assets/<assetId>.jpg`。
+
+### Q: 仓库/产物体积失控（几十 MB 图片）
+A: 位图统一**长边 ≤2000 + JPEG q90** 后再放进 `public/assets/`（配方见 `docs/engineering/ASSETS.md` §3）；AI 生成的原始大图放 `src/assets/img/`（已 gitignore，不进构建、不进仓库）。`public/assets` 总预算 ≤25 MB。

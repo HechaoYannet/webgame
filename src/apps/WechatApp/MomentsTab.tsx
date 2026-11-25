@@ -16,8 +16,10 @@ import {
   type CharacterDictionary,
 } from "./data";
 import { getMoments } from "@/data/loader";
+import { formatShortDateTime } from "@/utils/time";
 import { useNavigateToPage } from "./wechatEngine";
 import { ImageViewer } from "./ImageViewer";
+import { MomentImage } from "./MomentImage";
 
 export interface MomentsTabProps {
   characters: Character[];
@@ -60,7 +62,6 @@ export function MomentsTab({ characters }: MomentsTabProps): JSX.Element {
         {/* 半透明标题栏 */}
         <div className="wc-moments-header-bar">
           <span className="wc-moments-header-title">朋友圈</span>
-          <span className="wc-moments-header-cam" aria-label="拍照">📷</span>
         </div>
         {/* 玩家头像 + 昵称（右下角，与 cover 底部重叠） */}
         <div className="wc-moments-profile-box">
@@ -166,7 +167,7 @@ function MomentRow({ post, dict, onZoom }: MomentRowProps): JSX.Element {
                 onClick={() => onZoom(aid, post.text)}
                 aria-label={`放大查看图片 ${idx + 1}`}
               >
-                <span className="wc-moment-image-ph">[图 {aid}]</span>
+                <MomentImage assetId={aid} />
               </button>
             ))}
           </div>
@@ -246,8 +247,7 @@ function MomentRow({ post, dict, onZoom }: MomentRowProps): JSX.Element {
   );
 }
 
+/** 统一走 @/utils/time（游戏时区 +08:00），不再用正则原样截取本地时间。 */
 function formatTimestamp(iso: string): string {
-  const m = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/.exec(iso);
-  if (!m) return iso;
-  return `${m[1]}-${m[2]}-${m[3]} ${m[4]}:${m[5]}`;
+  return formatShortDateTime(iso) || iso;
 }

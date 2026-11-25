@@ -71,19 +71,6 @@
     "messageFile": "data/wechat/messages/thread-lin-liushu-wechat.json"
   },
   {
-    "id": "thread-lin-zhangqiang-wechat",
-    "platform": "wechat",
-    "type": "single",
-    "title": "张校长",
-    "participantCharacterIds": [
-      "char-linzhe",
-      "char-zhangqiang"
-    ],
-    "lastMessageAt": "2026-03-14T10:08:00+08:00",
-    "unreadCount": 2,
-    "messageFile": "data/wechat/messages/thread-lin-zhangqiang-wechat.json"
-  },
-  {
     "id": "thread-lin-mom-wechat",
     "platform": "wechat",
     "type": "single",

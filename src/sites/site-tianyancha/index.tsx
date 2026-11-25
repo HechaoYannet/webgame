@@ -92,7 +92,7 @@ function SiteFooter(): ReactElement {
   return (
     <footer style={footerStyle}>
       <div>天眼查 · 企业工商信息查询平台</div>
-      <div style={{ marginTop: 4 }}>本站为虚构演示站点，所有数据均为演示用途。</div>
+      <div style={{ marginTop: 4 }}>数据来源：公开工商登记信息</div>
     </footer>
   )
 }

@@ -54,7 +54,7 @@ export function HomePage(): ReactElement {
         <Stat num="1000+" label="成功转化学员" />
         <Stat num="80" label="亩封闭校区" />
         <Stat num="12-18" label="岁招生对象" />
-        <Stat num="20万" label="元/学期" />
+        <Stat num="4.8万" label="元/学期" />
       </div>
 
       {/* 简介 */}

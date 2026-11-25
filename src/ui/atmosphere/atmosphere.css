@@ -1,0 +1,302 @@
+/* src/ui/atmosphere/atmosphere.css
+ *
+ * 氛围层（心理恐怖）+ 手机屏幕质感。由 index.css 统一 @import，全局生效。
+ *
+ * 设计原则（参考 Hearthly 的"越看越不对"思路，但克制、不做廉价 jumpscare）：
+ *   1) 恐怖来自"多出来的一点点"：颗粒、呼吸的暗角、扫描线、低语、多出来的录制红点；
+ *   2) 强度随章节/证据推进（--dread 0..3），不是随机吓人；
+ *   3) 所有动效尊重 prefers-reduced-motion（index.css 已全局兜底）。
+ *
+ * 层级约定（PhoneShell 内）：
+ *   30 StatusBar/通知 · 35 本层 · 40 刘海 · 44 玻璃反光 · 55 红边 · 70 toast · 100 结局
+ */
+
+/* ============================================================
+   一、颗粒 / 暗角 / 扫描线
+   ============================================================ */
+
+.atm {
+  position: absolute;
+  inset: 0;
+  z-index: 35;
+  pointer-events: none;
+  overflow: hidden;
+  border-radius: inherit;
+}
+
+/* 胶片颗粒：SVG 分形噪声，靠 transform 抖动做出"活的"噪点 */
+.atm-grain {
+  position: absolute;
+  inset: -40%;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.6'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 180px 180px;
+  opacity: calc(0.032 + var(--dread, 0) * 0.012);
+  mix-blend-mode: overlay;
+  animation: atm-grain 1.1s steps(3) infinite;
+  will-change: transform;
+}
+
+@keyframes atm-grain {
+  0% { transform: translate3d(0, 0, 0); }
+  33% { transform: translate3d(-1.5%, 1%, 0); }
+  66% { transform: translate3d(1%, -1.5%, 0); }
+  100% { transform: translate3d(0, 0, 0); }
+}
+
+/* 暗角：呼吸式明灭；dread 越高，边缘越沉 */
+.atm-vignette {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(125% 100% at 50% 44%, transparent 50%, rgba(0, 0, 0, 0.16) 80%, rgba(0, 0, 0, 0.4) 100%),
+    radial-gradient(85% 60% at 50% 108%, rgba(120, 16, 12, calc(0.04 + var(--dread, 0) * 0.05)) 0%, transparent 70%);
+  opacity: calc(0.55 + var(--dread, 0) * 0.09);
+  animation: atm-breathe 13s ease-in-out infinite;
+  will-change: opacity;
+}
+
+@keyframes atm-breathe {
+  0%, 100% { opacity: 0.55; }
+  48% { opacity: 0.72; }
+  62% { opacity: 0.6; }
+}
+
+/* 极细扫描线 + 一条缓慢下移的亮带（老监控回放感） */
+.atm-scanlines {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 0.022) 0px,
+    rgba(255, 255, 255, 0.022) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  opacity: calc(0.35 + var(--dread, 0) * 0.14);
+  mix-blend-mode: soft-light;
+}
+
+.atm-sweep {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 26%;
+  top: 0;
+  background: linear-gradient(180deg, transparent, rgba(220, 235, 255, 0.035) 45%, transparent);
+  animation: atm-sweep 9.5s linear infinite;
+}
+
+@keyframes atm-sweep {
+  from { transform: translateY(-120%); }
+  to { transform: translateY(520%); }
+}
+
+/* ============================================================
+   二、低语：偶尔浮出的半句话，2.6s 后消失
+   ============================================================ */
+
+.atm-whisper {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 76px;
+  text-align: center;
+  padding: 0 32px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.42em;
+  text-indent: 0.42em;
+  color: rgba(232, 228, 218, 0.42);
+  text-shadow: 0 0 14px rgba(0, 0, 0, 0.9);
+  animation: atm-whisper 2.8s ease-out forwards;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+@keyframes atm-whisper {
+  0% { opacity: 0; filter: blur(3px); transform: translateY(3px); }
+  18% { opacity: 1; filter: blur(0); transform: translateY(0); }
+  68% { opacity: 0.9; }
+  100% { opacity: 0; filter: blur(1px); }
+}
+
+/* ============================================================
+   三、故障：证据归档/进入终章时，整屏一瞬间错位
+   ============================================================ */
+
+.atm-glitch::before,
+.atm-glitch::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: inherit;
+  pointer-events: none;
+}
+
+.atm-glitch {
+  position: absolute;
+  inset: 0;
+  animation: atm-glitch 260ms steps(2) 1;
+  background:
+    linear-gradient(90deg, rgba(255, 40, 30, 0.05), transparent 40%, rgba(40, 200, 255, 0.04));
+  mix-blend-mode: screen;
+}
+
+@keyframes atm-glitch {
+  0% { opacity: 0; transform: translate3d(0, 0, 0); }
+  20% { opacity: 1; transform: translate3d(-2px, 1px, 0); filter: hue-rotate(-8deg) contrast(1.06); }
+  42% { opacity: 0.7; transform: translate3d(3px, -1px, 0); }
+  64% { opacity: 0.55; transform: translate3d(-1px, 0, 0); filter: contrast(1.1); }
+  100% { opacity: 0; transform: translate3d(0, 0, 0); }
+}
+
+/* ============================================================
+   四、录制红点（dread=3 时出现在状态栏）
+   ============================================================ */
+
+.atm-rec {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  color: rgba(226, 56, 43, 0.85);
+  opacity: 0.9;
+}
+
+.atm-rec-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #e2382b;
+  box-shadow: 0 0 6px rgba(226, 56, 43, 0.8);
+  animation: atm-rec 2.6s ease-in-out infinite;
+}
+
+@keyframes atm-rec {
+  0%, 100% { opacity: 0.9; }
+  45% { opacity: 0.95; }
+  55% { opacity: 0.15; }
+  65% { opacity: 0.9; }
+}
+
+/* ============================================================
+   五、手机硬件：玻璃反光 / 侧键 / 镜头幽光
+   ============================================================ */
+
+/* 屏幕玻璃：斜向柔光 + 顶部高光。pointer-events:none，永远不挡操作。 */
+.phone-glass {
+  position: absolute;
+  inset: 0;
+  z-index: 44;
+  pointer-events: none;
+  border-radius: inherit;
+  background:
+    linear-gradient(128deg, rgba(255, 255, 255, 0.075) 0%, rgba(255, 255, 255, 0.018) 16%, transparent 34%),
+    radial-gradient(120% 40% at 50% -8%, rgba(255, 255, 255, 0.10), transparent 60%);
+  mix-blend-mode: screen;
+  opacity: 0.9;
+}
+
+/* 镜头幽光：dread 高时，刘海里的摄像头极慢地"亮一下" */
+.phone-cam {
+  position: absolute;
+  top: 50%;
+  right: 18px;
+  width: 8px;
+  height: 8px;
+  margin-top: -4px;
+  border-radius: 50%;
+  background: #0a1622;
+  box-shadow: inset 0 0 3px #1a3a5a, 0 0 0 1px rgba(255, 255, 255, 0.04);
+  overflow: hidden;
+}
+
+.phone-cam::after {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, rgba(120, 200, 255, 0.5), rgba(10, 30, 60, 0.1) 70%);
+  opacity: 0.4;
+  animation: cam-glint 17s ease-in-out infinite;
+}
+
+@keyframes cam-glint {
+  0%, 88%, 100% { opacity: 0.35; }
+  90% { opacity: 0.9; }
+  92% { opacity: 0.4; }
+}
+
+/* 侧键（音量 / 电源） */
+.phone-key {
+  position: absolute;
+  width: 3px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, #2a2a33, #15151b 40%, #2a2a33);
+  box-shadow: inset 0 0 0 0.5px rgba(255, 255, 255, 0.06);
+}
+
+/* ============================================================
+   六、舞台：手机外的房间空气（背光 + 尘埃）
+   ============================================================ */
+
+.stage-haze {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(52% 46% at 50% 42%, rgba(80, 92, 120, calc(0.10 + var(--dread, 0) * 0.045)) 0%, transparent 70%),
+    radial-gradient(80% 60% at 50% 108%, rgba(90, 18, 12, calc(0.10 + var(--dread, 0) * 0.08)) 0%, transparent 72%);
+  mix-blend-mode: screen;
+}
+
+.stage-vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(75% 75% at 50% 50%, transparent 30%, rgba(0, 0, 0, 0.55) 82%, rgba(0, 0, 0, 0.85) 100%);
+}
+
+/* 极淡的取景框四角（像监控画面） */
+.stage-brackets {
+  position: absolute;
+  inset: 28px;
+  pointer-events: none;
+  opacity: calc(0.16 + var(--dread, 0) * 0.07);
+  background:
+    linear-gradient(#8d8f96, #8d8f96) left top / 22px 1px no-repeat,
+    linear-gradient(#8d8f96, #8d8f96) left top / 1px 22px no-repeat,
+    linear-gradient(#8d8f96, #8d8f96) right top / 22px 1px no-repeat,
+    linear-gradient(#8d8f96, #8d8f96) right top / 1px 22px no-repeat,
+    linear-gradient(#8d8f96, #8d8f96) left bottom / 22px 1px no-repeat,
+    linear-gradient(#8d8f96, #8d8f96) left bottom / 1px 22px no-repeat,
+    linear-gradient(#8d8f96, #8d8f96) right bottom / 22px 1px no-repeat,
+    linear-gradient(#8d8f96, #8d8f96) right bottom / 1px 22px no-repeat;
+}
+
+/* 舞台角落的静音字样：极小的 metadata，强化"被记录" */
+.stage-slug {
+  position: absolute;
+  bottom: 20px;
+  left: 24px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.28em;
+  color: rgba(190, 190, 196, 0.28);
+  text-transform: uppercase;
+  user-select: none;
+  pointer-events: none;
+}
+
+.stage-slug-right {
+  left: auto;
+  right: 24px;
+  text-align: right;
+}
+
+@media (max-width: 560px) {
+  .stage-slug { display: none; }
+}

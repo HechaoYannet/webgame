@@ -10,7 +10,7 @@
  * 站点根挂在 /site/site-arxiv 下任意子路径。站内用相对 Routes 做导航：
  *  index     → 重定向到 list
  *  list      → 论文列表（渲染 page-arxiv-list 的 articleList）
- *  abs/2026.0228.001 → 论文详情（渲染 page-arxiv-paper 的 blocks）
+ *  abs/2603.01187 → 论文详情（渲染 page-arxiv-paper 的 blocks）
  *
  * 边界（强制）: 仅 import react / react-router / @/sites/shared 子目录 / @/types / 本目录。
  * 严禁 import @/engine、@/game、@/data/loader、@/ui、@/utils、src/apps、@/sites/sitePage。
@@ -37,7 +37,7 @@ export default function ArxivSite(): ReactElement {
       <Routes>
         <Route index element={<Navigate to={sitePath(base, 'list')} replace />} />
         <Route path="list" element={<ListPage />} />
-        <Route path="abs/2026.0228.001" element={<PaperPage />} />
+        <Route path="abs/2603.01187" element={<PaperPage />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Layout>
@@ -103,14 +103,14 @@ function ListPage(): ReactElement {
                 [Submitted: {it.date ?? '—'}]
               </div>
               <h3 className="site-arxiv-list-item-title">
-                <Link to={sitePath(base, 'abs/2026.0228.001')}>{it.title}</Link>
+                <Link to={sitePath(base, 'abs/2603.01187')}>{it.title}</Link>
               </h3>
               <p className="site-arxiv-list-item-authors">
                 Authors: Chen Jianguo, et al. (Shanhe Medical University)
               </p>
               <p className="site-arxiv-list-item-subjects">
-                Subjects: q-bio.BM Biomaterials; physics.med-ph Medical Physics;
-                chembio Biochemistry
+                Subjects: q-bio.BM Biomolecules; physics.med-ph Medical Physics;
+                q-bio.TO Tissues and Organs
               </p>
             </li>
           ))}
@@ -155,7 +155,7 @@ function PaperPage(): ReactElement {
         <span className="site-arxiv-crumb-sep">›</span>
         <Link to={sitePath(base, 'list')}>论文列表</Link>
         <span className="site-arxiv-crumb-sep">›</span>
-        <span>2026.0228.001</span>
+        <span>2603.01187</span>
       </div>
 
       {page.blocks.map((b, i) => (

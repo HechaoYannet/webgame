@@ -91,20 +91,20 @@ export default function HomePage(): JSX.Element {
         <div className="hnga-card-body">
           <ul className="hnga-articlelist">
             <li>
-              <Link to={sitePath(base, 'open')}>全省公安机关夏季治安打击整治行动取得阶段性成效</Link>
-              <span className="hnga-articlelist-date">2026-08-12</span>
+              <Link to={sitePath(base, 'open')}>全省公安机关春季治安整治专项行动取得阶段性成效</Link>
+              <span className="hnga-articlelist-date">2026-03-10</span>
             </li>
             <li>
               <Link to={sitePath(base, 'open')}>省公安厅召开专题会议部署打击治理电信网络诈骗工作</Link>
-              <span className="hnga-articlelist-date">2026-08-05</span>
+              <span className="hnga-articlelist-date">2026-03-06</span>
             </li>
             <li>
               <Link to={sitePath(base, 'open')}>深化警务机制改革 持续优化营商环境</Link>
-              <span className="hnga-articlelist-date">2026-07-28</span>
+              <span className="hnga-articlelist-date">2026-02-27</span>
             </li>
             <li>
               <Link to={sitePath(base, 'open')}>深入推进禁毒"清源断流"专项行动</Link>
-              <span className="hnga-articlelist-date">2026-07-15</span>
+              <span className="hnga-articlelist-date">2026-02-18</span>
             </li>
           </ul>
         </div>

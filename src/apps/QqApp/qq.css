@@ -525,7 +525,6 @@
 .qq-qzone-item {
   padding: 14px 16px;
   border-bottom: 6px solid #1a232c;
-  cursor: pointer;
 }
 .qq-qzone-head {
   display: flex;
@@ -819,6 +818,10 @@
   gap: 12px;
   padding: 12px 14px;
   border-bottom: 1px solid #2a3441;
+  cursor: pointer;
+}
+.qq-contact-row:hover {
+  background: #2a3441;
 }
 .qq-contact-info {
   flex: 1;
@@ -854,3 +857,78 @@
   color: #4a90d9;
   border-top: 2px solid #4a90d9;
 }
+
+/* ===== 资源图片 / 头像（统一候选扩展名解析，含 .svg） ===== */
+.qq-avatar {
+  overflow: hidden;
+}
+.qq-avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+/* 全部候选资产缺失时的中性回退：无文字灰块（不显示「图片」/assetId） */
+.qq-image-fallback {
+  display: block;
+  width: 100%;
+  min-height: var(--ph-h, 80px);
+  background: #1e2833;
+  border-radius: 6px;
+}
+.qq-image-fallback.big {
+  width: 60vw;
+  max-width: 320px;
+  height: 40vh;
+  min-height: 0;
+}
+/* 图片候选成功时按钮退化为纯图容器 */
+.qq-image-placeholder.has-image {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  gap: 0;
+  overflow: hidden;
+}
+.qq-image-real {
+  width: 100%;
+  height: 100%;
+  min-height: var(--ph-h, 80px);
+  object-fit: cover;
+  display: block;
+  border-radius: 6px;
+}
+
+/* ===== 会话列表预览 / 未读角标 ===== */
+.qq-thread-snippet {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.qq-thread-badge {
+  flex-shrink: 0;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 9px;
+  background: #ff6b6b;
+  color: #fff;
+  font-size: 11px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ===== 语音（无真实播放：静态标签，不再渲染 disabled 死按钮） ===== */
+.qq-voice-static {
+  align-self: flex-start;
+  border: 1px solid #3a4655;
+  background: #28323d;
+  color: #e6eaf0;
+  padding: 6px 10px;
+  border-radius: 14px;
+  font-size: 13px;
+}
+

@@ -72,7 +72,7 @@
   },
   {
     "id": "site-arxiv",
-    "name": "预印本论文库（仿arXiv）",
+    "name": "预印本论文库 Preprints",
     "baseUrl": "https://arxiv.shanhe-med.cn/",
     "pages": [
       "page-arxiv-list",
@@ -128,17 +128,9 @@
     ]
   },
   {
-    "id": "site-endfield",
-    "name": "明日方舟：终末地 官网",
-    "baseUrl": "https://endfield.hypergryph.com/",
-    "pages": [
-      "page-endfield-news"
-    ]
-  },
-  {
     "id": "site-ai-pdf",
     "name": "论文AI翻译解读",
-    "baseUrl": "https://paper-ai-interpret.local/",
+    "baseUrl": "https://www.paperai.cn/",
     "pages": [
       "page-ai-pdf-home",
       "page-ai-interpret"

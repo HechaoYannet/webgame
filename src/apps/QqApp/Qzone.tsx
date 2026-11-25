@@ -43,13 +43,7 @@ export function Qzone() {
           const author = getContact(p.authorCharacterId)
           const authorName = author?.displayName ?? author?.name ?? '未知'
           return (
-            <li
-              key={p.id}
-              className="qq-qzone-item"
-              onClick={() => {
-                /* 重写后线索注册装饰已废：查看说说不再注册线索。 */
-              }}
-            >
+            <li key={p.id} className="qq-qzone-item">
               <div className="qq-qzone-head">
                 <Avatar charId={p.authorCharacterId} name={authorName} size={36} />
                 <div className="qq-qzone-meta">
@@ -65,7 +59,7 @@ export function Qzone() {
                       key={aid}
                       assetId={aid}
                       alt={aid}
-                      onZoom={() => setZoom({ assetId: aid, alt: aid })}
+                      onZoom={() => setZoom({ assetId: aid, alt: p.text ?? '' })}
                     />
                   ))}
                 </div>

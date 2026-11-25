@@ -15,11 +15,12 @@ import { getAllCharacters, loadGameData } from "@/data/loader";
 import "./WechatApp.css";
 import { useEngineBridge } from "./wechatEngine";
 import { ChatTab } from "./ChatTab";
+import { ContactsTab } from "./ContactsTab";
 import { MomentsTab } from "./MomentsTab";
 import { OfficialTab } from "./OfficialTab";
 import { ProfileTab } from "./ProfileTab";
 
-type TabKey = "chat" | "official" | "discover" | "me";
+type TabKey = "chat" | "contacts" | "official" | "discover" | "me";
 
 interface TabDef {
   key: TabKey;
@@ -33,6 +34,18 @@ function TabIconChat(): JSX.Element {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
+    </svg>
+  );
+}
+
+// 通讯录 Tab：此前 ContactsTab 已写好但没有任何地方渲染，wechat/contacts.json
+// 因此完全无人消费（审核报告第 3 节列的死内容）。补回真机 WeChat 的通讯录页。
+function TabIconContacts(): JSX.Element {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="9" cy="8" r="3.5" />
+      <path d="M2.5 20v-1.5A4.5 4.5 0 017 14h4a4.5 4.5 0 014.5 4.5V20" />
+      <path d="M16.5 5.2a3.5 3.5 0 010 6M18.5 20v-1.5a4.5 4.5 0 00-2.2-3.85" />
     </svg>
   );
 }
@@ -71,6 +84,7 @@ function TabIconMe(): JSX.Element {
 
 const TABS: TabDef[] = [
   { key: "chat", label: "微信", icon: <TabIconChat /> },
+  { key: "contacts", label: "通讯录", icon: <TabIconContacts /> },
   { key: "official", label: "公众号", icon: <TabIconOfficial /> },
   { key: "discover", label: "发现", icon: <TabIconDiscover /> },
   { key: "me", label: "我", icon: <TabIconMe /> },
@@ -112,6 +126,7 @@ export default function WechatApp(): JSX.Element {
           <div className="wc-app-warn">人物加载失败：{charsError}</div>
         )}
         {tab === "chat" && <ChatTab characters={characters} />}
+        {tab === "contacts" && <ContactsTab characters={characters} />}
         {tab === "official" && <OfficialTab characters={characters} />}
         {tab === "discover" && <MomentsTab characters={characters} />}
         {tab === "me" && <ProfileTab characters={characters} />}

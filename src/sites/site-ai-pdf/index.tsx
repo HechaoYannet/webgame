@@ -24,7 +24,7 @@ import { useEffect, useRef, useState, type ChangeEvent, type ReactElement } from
 import { Routes, Route, Navigate, useNavigate } from 'react-router'
 import { getPageContent, type SitePage } from '@/sites/shared/pageContent'
 import { sitePath, useSiteBase } from '@/sites/shared/siteNav'
-import { reportPuzzleSolved } from '@/sites/shared/gameEvent'
+import { reportEvidenceCollected, reportPuzzleSolved } from '@/sites/shared/gameEvent'
 import type { PageBlock } from '@/types'
 import { Layout } from './Layout'
 import { BlockView } from './BlockView'
@@ -100,6 +100,7 @@ function HomePage(): ReactElement {
         // 开发期放行任意 PDF，仅提示占位宽松通过；生产回填后严格匹配（走下方 else 分支）。
         setStatus('ok')
         reportPuzzleSolved(UPLOAD_PUZZLE_ID)
+        reportEvidenceCollected('ev-paper-pdf')
         navigate(sitePath(base, 'result'))
         return
       }
@@ -107,6 +108,7 @@ function HomePage(): ReactElement {
         // 生产态：哈希严格匹配 → 通过
         setStatus('ok')
         reportPuzzleSolved(UPLOAD_PUZZLE_ID)
+        reportEvidenceCollected('ev-paper-pdf')
         navigate(sitePath(base, 'result'))
         return
       }
@@ -171,12 +173,7 @@ function HomePage(): ReactElement {
           )}
         </div>
 
-        {isPlaceholderHash(EXPECTED_PAPER_SHA256) && (
-          <div className="site-ai-pdf-upload-placeholder-note">
-            当前为占位宽松模式（EXPECTED_PAPER_SHA256 待回填真实 sha256）：任意 PDF 均放行。
-            用户提供真 paper-source-crystal.pdf 后回填即切严格匹配。
-          </div>
-        )}
+
       </div>
     </div>
   )
@@ -196,6 +193,11 @@ function ResultPage(): ReactElement {
       alive = false
     }
   }, [])
+
+  // 查看解读结果 → 归档论文证据（幂等；上传成功路径已收集，此处兜底回看）。
+  useEffect(() => {
+    if (page) reportEvidenceCollected('ev-paper-pdf')
+  }, [page])
 
   if (page === undefined) {
     return <div className="site-ai-pdf-loading">加载中…</div>

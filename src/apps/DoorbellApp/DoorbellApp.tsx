@@ -6,6 +6,8 @@
  *    启动举报倒计时 + deliverSms(sms-zhangqiang-threat) + deliverDoorbell(doorbell-dao-visit)）
  *  - deliverDoorbell 内部已启循环敲门音频 + 震屏 + 红边 + 推送通知
  *  - App 读 useDoorbellState()：deliveredIds 含本事件时展示实时画面（光头壮汉刀哥按门铃）
+ *  - 实时画面播放 assets/video-doorbell-dao-loop.mp4（缺失时回落 liveFeed.characterAssetId
+ *    头像、再回落剪影）；角标时间戳以 triggeredAt 为基准随倒计时逐秒走字
  *  - 倒计时 useCountdown('countdown-finale')（@/utils/shellState，与 PhoneShell 状态栏同源）
  *  - 倒计时归零 → @/utils/shellState.watchCountdownExpiry 自动 pushEnding('bad')
  *    （本组件不再手动 pushEnding；仅订阅 countdownExpired 做黑屏 UI）
@@ -16,11 +18,13 @@
  */
 
 import { useEffect, useState } from 'react';
-import type { ReactNode } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 import type { DoorbellEvent } from '@/types';
 import { getDoorbellEventById } from '@/data/loader';
 import { useGameStore } from '@/game/gameStore';
 import { useCountdown, useDoorbellState } from '@/utils/shellState';
+import { imageUrlCandidates, mediaUrlCandidates } from '@/utils/assetUrl';
+import { formatGameFullStamp } from '@/utils/time';
 
 const COUNTDOWN_ID = 'countdown-finale';
 const DOORBELL_EVENT_ID = 'doorbell-dao-visit';
@@ -45,6 +49,17 @@ export default function DoorbellApp(): ReactNode {
   const countdown = useCountdown(COUNTDOWN_ID);
   const countdownExpired = countdown.expired;
   const countdownActive = countdown.active;
+
+  // 画面时间戳：以事件数据 triggeredAt 为基准，随倒计时推进逐秒走字。
+  // （游戏内时钟起点 15:00 与事件记录的 18:30 不同源，故不用 gameNowMs。）
+  const baseStampMs = daoEvent ? Date.parse(daoEvent.triggeredAt) : Number.NaN;
+  const elapsedSec =
+    daoEvent && (countdownActive || countdownExpired)
+      ? Math.max(0, countdown.totalSec - countdown.remainingSec)
+      : 0;
+  const cameraStamp = Number.isNaN(baseStampMs)
+    ? ''
+    : formatGameFullStamp(baseStampMs + elapsedSec * 1000);
 
   // 本组件额外补一条周期震屏（门铃 deviceFeedback），音频由 deliverDoorbell 已启
   useEffect(() => {
@@ -104,15 +119,22 @@ export default function DoorbellApp(): ReactNode {
         </div>
       )}
 
-      {/* 实时画面 */}
+      {/* 实时画面：优先循环播放门铃录像（clipAssetId），素材缺失时回落刀哥头像/剪影 */}
       <div style={feedArea}>
         <div style={feedFrame}>
-          <Avatar daoEvent={daoEvent} />
+          <div style={feedScreen}>
+            <LiveFeed
+              clipAssetId={daoEvent.liveFeed.clipAssetId}
+              characterAssetId={daoEvent.liveFeed.characterAssetId}
+            />
+            {/* 监控画面角标：摄像头该有的红点 + REC，而不是把素材缺失直接写成「不可用」 */}
+            <div style={liveBadge}>
+              <span style={liveDot} />
+              REC
+            </div>
+            <div style={feedTimestamp}>{cameraStamp}</div>
+          </div>
           <div style={feedOverlayText}>{daoEvent.liveFeed.sceneDescription}</div>
-          {/* clipAssetId 缺失优雅降级：无视频流，仅展示占位剪影 + 场景描述 */}
-          {!daoEvent.liveFeed.clipAssetId && (
-            <div style={offlineBadge}>实时画面不可用</div>
-          )}
         </div>
       </div>
 
@@ -129,17 +151,58 @@ export default function DoorbellApp(): ReactNode {
       )}
 
       <div style={bottomHint}>
-        整理证据 → 电话 App 拨打 0731-88888888
+        门口摄像头 · 家中网络
       </div>
     </div>
   );
 }
 
-function Avatar({ daoEvent }: { daoEvent: DoorbellEvent }): ReactNode {
-  // 占位头像：光头壮汉剪影（视频 clipAssetId 缺失时的占位图）
-  void daoEvent;
+/** 实时画面：优先循环播放门铃录像；录像不可用时回落门口人物头像，再回落剪影。 */
+function LiveFeed({
+  clipAssetId,
+  characterAssetId,
+}: {
+  clipAssetId?: string;
+  characterAssetId?: string;
+}): ReactNode {
+  const [idx, setIdx] = useState(0);
+  const clips = clipAssetId ? mediaUrlCandidates(clipAssetId) : [];
+  useEffect(() => {
+    setIdx(0);
+  }, [clipAssetId]);
+  if (idx < clips.length) {
+    return (
+      <video
+        src={clips[idx]}
+        autoPlay
+        loop
+        muted
+        playsInline
+        onError={() => setIdx((i) => i + 1)}
+        style={feedMedia}
+      />
+    );
+  }
+  return <Avatar assetId={characterAssetId} />;
+}
+
+/** 门口人物头像（liveFeed.characterAssetId）：候选扩展名逐个试，全失败才画剪影。 */
+function Avatar({ assetId }: { assetId?: string }): ReactNode {
+  const [idx, setIdx] = useState(0);
+  const candidates = assetId ? imageUrlCandidates(assetId) : [];
+  useEffect(() => {
+    setIdx(0);
+  }, [assetId]);
+  if (idx >= candidates.length) return <DaoSilhouette />;
   return (
-    <svg width="120" height="140" viewBox="0 0 120 140" style={{ opacity: 0.85 }}>
+    <img src={candidates[idx]} alt="门口画面" onError={() => setIdx((i) => i + 1)} style={feedMedia} />
+  );
+}
+
+/** 最后一道兜底：光头壮汉剪影（连头像素材都缺失时）。 */
+function DaoSilhouette(): ReactNode {
+  return (
+    <svg width="120" height="140" viewBox="0 0 120 140" style={{ opacity: 0.85, margin: '12px auto' }}>
       <circle cx="60" cy="44" r="32" fill="#3a3a3a" stroke="#777" strokeWidth="2" />
       {/* 光头高光 */}
       <ellipse cx="52" cy="34" rx="10" ry="6" fill="#5a5a5a" opacity="0.6" />
@@ -198,6 +261,7 @@ const wrapStyle: React.CSSProperties = {
   color: '#e7eef7',
   fontFamily: 'system-ui, -apple-system, "PingFang SC", sans-serif',
   position: 'relative',
+  paddingBottom: 'var(--home-inset)',
 };
 const headerStyle: React.CSSProperties = {
   height: 44,
@@ -238,16 +302,28 @@ const feedArea: React.CSSProperties = {
 const feedFrame: React.CSSProperties = {
   width: '100%',
   maxWidth: 320,
-  aspectRatio: '3/4',
   background: 'linear-gradient(180deg,#0c1118,#04070b)',
   border: '1px solid #24374d',
   borderRadius: 8,
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
-  justifyContent: 'space-between',
-  padding: '12px 0',
+  justifyContent: 'flex-start',
+  padding: '0 0 12px',
+  overflow: 'hidden',
   position: 'relative',
+};
+const feedScreen: React.CSSProperties = {
+  position: 'relative',
+  width: '100%',
+  lineHeight: 0,
+  background: '#04070b',
+  borderBottom: '1px solid #1a2838',
+};
+const feedMedia: CSSProperties = {
+  width: '100%',
+  display: 'block',
+  background: '#04070b',
 };
 const feedOverlayText: React.CSSProperties = {
   fontSize: 11,
@@ -256,16 +332,36 @@ const feedOverlayText: React.CSSProperties = {
   lineHeight: 1.5,
   padding: '0 12px 12px',
 };
-const offlineBadge: React.CSSProperties = {
+const liveBadge: React.CSSProperties = {
   position: 'absolute',
   top: 8,
   right: 8,
+  display: 'flex',
+  alignItems: 'center',
+  gap: 4,
   fontSize: 10,
-  color: '#7a3030',
-  background: 'rgba(40,8,8,0.7)',
-  padding: '2px 6px',
+  letterSpacing: 1,
+  color: '#ff9a9a',
+  background: 'rgba(30,6,6,0.72)',
+  padding: '2px 7px',
   borderRadius: 4,
   border: '1px solid #4d2a2a',
+};
+const liveDot: React.CSSProperties = {
+  width: 6,
+  height: 6,
+  borderRadius: '50%',
+  background: '#ff3b3b',
+  display: 'inline-block',
+  animation: 'ui-pulse 1.4s ease-in-out infinite',
+};
+const feedTimestamp: React.CSSProperties = {
+  position: 'absolute',
+  left: 10,
+  bottom: 8,
+  fontSize: 10,
+  color: '#8fa1b5',
+  fontVariantNumeric: 'tabular-nums',
 };
 function countdownBar(expired: boolean): React.CSSProperties {
   return {

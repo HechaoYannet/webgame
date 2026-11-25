@@ -8,7 +8,12 @@
  *
  * 模糊匹配策略：大小写不敏感，查询串与索引 keyword 互相包含即命中。
  * 命中的 pageId 去重保序，组合成结果条目。
+ *
+ * 深链：sites.json 只给"站有哪些 page"，具体 pageId → 站内路径由
+ * shared/siteRegistry（各站 manifest 的 pageRoutes 汇总）提供；结果点击因此能
+ * 直达命中页面（如 lab.shanhe-med.cn → 实验室后台登录），而不是永远落到站点首页。
  */
+import { getRouterPathByPageId, getSiteRouteByPageId } from '@/sites/shared/siteRegistry'
 
 export interface SearchIndexEntry {
   keyword: string
@@ -28,6 +33,10 @@ export interface SearchResult {
   siteName: string
   baseUrl: string
   matchedKeyword: string
+  /** 命中页面的站内路由路径（/site/<siteId>/<path>）；未登记时回退站点根。 */
+  routePath: string
+  /** 命中页面的站内路径（相对站点根的 slug，首页为空串），用于展示完整网址。 */
+  pagePath: string
 }
 
 let indexCache: SearchIndexEntry[] | null = null
@@ -89,12 +98,15 @@ export async function search(query: string): Promise<SearchResult[]> {
       const sid = pToSite?.get(pid)
       if (!sid) continue
       seen.add(pid)
+      const route = getSiteRouteByPageId(pid)
       out.push({
         pageId: pid,
         siteId: sid,
         siteName: pToSiteName?.get(pid) ?? sid,
         baseUrl: pToBaseUrl?.get(pid) ?? '',
         matchedKeyword: entry.keyword,
+        routePath: getRouterPathByPageId(pid, sid) ?? '/site/' + sid,
+        pagePath: route?.path ?? '',
       })
     }
   }

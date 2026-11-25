@@ -15,16 +15,16 @@
 | `public/data/phone/**` | level-designer¹ | SMS/通话/门铃事件骨架（见脚注） |
 | `public/data/story/**` | writer-phone-story | 独白/旁白/结局后叙事 |
 | `src/types/**` | doc-engineer（主）+ frontend-engine（协） | 类型契约，所有 agent 的依赖根 |
-| `src/engine/**` | frontend-engine | 加载器/puzzle 校验/PuzzleEffect 执行器/ClueRegistry/CountdownService |
+| ~~`src/engine/**`~~ | — | **2026-08 已删除**：旧引擎（PuzzleService/EffectExecutor/ClueRegistry/ChapterDirector/RiskService/hooks）移除，游戏状态现收敛于 `src/game/**`（见 `CLAUDE.md` Layer 2） |
 | `src/data/loader.ts` | frontend-engine | JSON 加载 + Zod 校验 |
 | `src/apps/PhoneShell/**` | frontend-phone-shell | 手机桌面壳、AppRegistry、路由 |
 | `src/ui/**` | frontend-phone-shell | 共享 UI 组件 |
 | `src/main.tsx` `src/App.tsx` | frontend-phone-shell | 入口 |
 | `src/apps/WechatApp/**` | frontend-wechat | 微信 App |
 | `src/apps/QqApp/**` | frontend-qq | QQ App |
-| `src/apps/BrowserApp/**` | frontend-browser | 浏览器 App |
-| `src/apps/{Phone,Sms,Doorbell,Album,Files,Notes}App/**` | frontend-phone-apps | 系统 App |
-| `public/assets/**` | 资源 agent（主控指派） | 图片/音频/PDF |
+| ~~`src/apps/BrowserApp/**`~~ | — | **已删除**：真实网站改为独立全屏路由 `src/sites/site-*/**`（新标签打开）；桌面保留一个"百度搜索"入口 |
+| `src/apps/{Phone,Sms,Doorbell,Album,Notes}App/**` | frontend-phone-apps | 系统 App（FilesApp 已删除） |
+| `public/assets/**` | 资源 agent（主控指派） | 图片/音频/PDF；**清单、命名与体积约定见 `docs/engineering/ASSETS.md`**（≤25 MB；位图长边 ≤2000 JPEG q90；原图投放区 `src/assets/img/` 已 gitignore） |
 | `docs/engineering/SCHEMA.md` `AGENT_OWNERSHIP.md` `DEPLOYMENT.md` `ARCHITECTURE.md` | doc-engineer | 工程文档（前4个）；`REVIEW_REPORT.md` 由 reviewer 写 |
 | `工程根配置`（package.json/vite.config.ts/tsconfig.json/tsconfig.node.json/index.html/README.md）| doc-engineer | 脚手架与构建配置 |
 | `.github/workflows/deploy.yml` | doc-engineer | CI |
@@ -89,8 +89,8 @@ phase4（前端实现）期间 `public/data/**` **只读**。数据变更必须�
 - `public/data/phone/**`（sms / calls / doorbells 的叙事文案）
 - `public/data/story/**`（monologues / 旁白）
 
-### frontend-engine
-- `src/engine/**`（loader / puzzle 校验 / PuzzleEffect 执行器 / ClueRegistry / CountdownService / RiskService）
+### frontend-engine（历史）
+- ~~`src/engine/**`~~（2026-08 已删除；职责拆到 `src/game/**` 与 `src/utils/shellState.ts`）
 - `src/data/loader.ts`
 - 协作维护 `src/types/index.ts`
 
@@ -98,7 +98,7 @@ phase4（前端实现）期间 `public/data/**` **只读**。数据变更必须�
 - `src/apps/PhoneShell/**`、`src/ui/**`、`src/main.tsx`、`src/App.tsx`
 - AppRegistry（`import.meta.glob('./apps/*/manifest.ts')` 聚合）
 
-### frontend-wechat / frontend-qq / frontend-browser / frontend-phone-apps
+### frontend-wechat / frontend-qq / frontend-phone-apps（+ 各站点 `src/sites/site-*`）
 - 各自 `src/apps/<App>/**`
 
 ### reviewer

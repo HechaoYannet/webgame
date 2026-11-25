@@ -1286,3 +1286,75 @@
   color: #c7c7cc;
   line-height: 1;
 }
+
+/* ===== 资源图片 / 头像（统一候选扩展名解析，含 .svg） ===== */
+.wc-asset-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+.wc-asset-image-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+/* 全部候选资产缺失时的中性回退：无文字浅灰块（不显示「图片」/assetId） */
+.wc-asset-image-fallback {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 40px;
+  background: #e8eaed;
+}
+.wc-avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+/* 微信图片消息气泡 */
+.wc-msg-kind-image {
+  padding: 0;
+  background: transparent;
+}
+.wc-msg-images {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.wc-msg-image-thumb {
+  width: 132px;
+  height: 132px;
+  border-radius: 4px;
+  overflow: hidden;
+}
+/* 文章配图 */
+.wc-article-img {
+  width: 100%;
+  max-height: 320px;
+  border-radius: 4px;
+  overflow: hidden;
+  background: #f0f0f0;
+}
+/* 放大查看器回退块：中性灰，无文字 */
+.wc-image-viewer-placeholder {
+  width: 60vw;
+  height: 40vh;
+  max-width: 320px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.08);
+}
+/* 已删除死按钮后的布局占位（保持标题居中） */
+.wc-navbar-spacer,
+.wc-chat-header-spacer {
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+}
+.wc-chat-header-spacer {
+  width: 40px;
+  height: 40px;
+}
+

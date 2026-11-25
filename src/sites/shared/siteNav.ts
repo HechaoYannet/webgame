@@ -24,7 +24,7 @@ export function useSiteBase(): string {
 /**
  * 把站点根 base 与相对段 rel 拼成绝对站点路径。
  *   sitePath('/site/site-arxiv', 'list') → '/site/site-arxiv/list'
- *   sitePath('/site/site-arxiv', 'abs/2026.0228.001') → '/site/site-arxiv/abs/2026.0228.001'
+ *   sitePath('/site/site-arxiv', 'abs/2603.01187') → '/site/site-arxiv/abs/2603.01187'
  *   sitePath('/site/site-arxiv', '') → '/site/site-arxiv'
  * rel 若已是绝对路径（以 / 开头）且以 base 开头则原样返回；否则以 base 为准拼。
  */

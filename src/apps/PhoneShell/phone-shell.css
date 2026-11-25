@@ -1,0 +1,433 @@
+/* src/apps/PhoneShell/phone-shell.css
+ *
+ * 手机外壳 / 桌面 / 状态栏的视觉层（2026-11 改版）。
+ *
+ * 目标：让"居中模拟手机"从一块暗色矩形，变成一台放在暗房间里的真机：
+ *   - 舞台：失焦的房间背景、背光、暗角、取景框四角、角落监控水印；
+ *   - 机身：金属中框（多层 ring）、侧键、动态岛、摄像头幽光、玻璃反光；
+ *   - 屏幕：圆角裁切、内阴影，内容再叠氛围层（颗粒/暗角/低语）。
+ *
+ * 所有恐怖强度由父级 --dread（0..3）驱动，见 src/ui/atmosphere/。
+ */
+
+/* ===== 舞台 ===== */
+
+.stage {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: #040406;
+  font-family: var(--font-ui);
+}
+
+.stage-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  filter: blur(30px) brightness(0.34) saturate(0.6);
+  transform: scale(1.18);
+  z-index: 0;
+}
+
+/* ===== 机身 ===== */
+
+.phone {
+  position: relative;
+  z-index: 2;
+  width: 390px;
+  height: min(844px, 96vh);
+  max-height: 844px;
+  border-radius: 52px;
+  background: #050508;
+  box-shadow:
+    0 0 0 2px #05050a,
+    0 0 0 11px #17171f,
+    0 0 0 12px #33333e,
+    0 0 0 13px #0b0b10,
+    0 44px 110px -24px rgba(0, 0, 0, 0.95),
+    0 0 100px rgba(88, 104, 132, calc(0.08 + var(--dread, 0) * 0.03));
+  transition: box-shadow 0.4s ease;
+}
+
+/* 屏幕：圆角裁切 + 内阴影（玻璃边缘的暗） */
+.phone-screen {
+  position: absolute;
+  inset: 0;
+  border-radius: 52px;
+  overflow: hidden;
+  background: #050508;
+  /* 底部 Home 手势区高度：所有 App 的根容器预留同样的下内边距，
+     让 TabBar / 挂断键 / 输入栏等交互元素天然落在指示条上方，
+     而不是被指示条的点击热区盖住（见 .phone-home）。 */
+  --home-inset: 30px;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.045),
+    inset 0 0 26px rgba(0, 0, 0, 0.65);
+}
+
+.phone-content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.phone-app {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* 动态岛 */
+.phone-island {
+  position: absolute;
+  top: 9px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 112px;
+  height: 32px;
+  border-radius: 18px;
+  background: #000;
+  z-index: 40;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.03);
+}
+
+/* 侧键 */
+.phone-key {
+  position: absolute;
+  width: 3px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, #43434f, #16161c 45%, #2e2e38);
+  box-shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.8);
+  z-index: 0;
+}
+
+.key-mute { left: -15px; top: 118px; height: 26px; }
+.key-vol-up { left: -15px; top: 158px; height: 46px; }
+.key-vol-down { left: -15px; top: 212px; height: 46px; }
+.key-power { right: -15px; top: 180px; height: 74px; }
+
+/* Home 指示条（可点击回桌面） */
+.phone-home {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 30px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 6px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  z-index: 41;
+}
+
+.phone-home span {
+  display: block;
+  width: 124px;
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.42);
+  transition: background 0.2s ease;
+}
+
+.phone-home:hover span {
+  background: rgba(255, 255, 255, 0.7);
+}
+
+/* 小屏：铺满（保持 390 的逻辑宽度，避免各 App 布局被挤压） */
+@media (max-width: 460px), (max-height: 700px) {
+  .phone {
+    height: 100vh;
+    max-height: none;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  .phone-screen { border-radius: 0; }
+  .phone-key { display: none; }
+  .phone-island { top: 6px; }
+}
+
+/* ===== 桌面 ===== */
+
+.desk {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  padding: 56px 14px calc(108px + var(--home-inset));
+  background-color: #08080c;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  scrollbar-width: none;
+  /* 章节越往后，壁纸的颜色一点点褪掉（dread 0..3） */
+  filter: saturate(calc(1 - var(--dread, 0) * 0.16)) contrast(calc(1 + var(--dread, 0) * 0.02));
+}
+
+.desk::-webkit-scrollbar { display: none; }
+
+.desk::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(120% 80% at 50% 20%, transparent 40%, rgba(0, 0, 0, 0.45) 100%);
+}
+
+/* 桌面顶部：时间 + 日期 + 地点 */
+.desk-clock {
+  position: relative;
+  z-index: 2;
+  padding: 6px 8px 20px;
+  color: #f4efe4;
+  user-select: none;
+}
+
+/* 顶部压暗：保证大时钟在任何壁纸上都读得清 */
+.desk::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 210px;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(4, 4, 8, 0.62) 0%, rgba(4, 4, 8, 0.28) 55%, transparent 100%);
+}
+
+.desk-time {
+  font-family: var(--font-ui);
+  font-size: 62px;
+  font-weight: 200;
+  line-height: 0.98;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 4px 30px rgba(0, 0, 0, 0.7);
+}
+
+.desk-date-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  color: rgba(233, 227, 213, 0.78);
+  text-transform: uppercase;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.8);
+}
+
+.desk-date-row .dot {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: rgba(226, 56, 43, 0.9);
+}
+
+/* 图标网格 */
+.desk-grid {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px 4px;
+  padding: 4px 2px;
+  max-width: 340px;
+  margin: 0 auto;
+}
+
+.desk-icon {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+  color: #f2f2f7;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.desk-tile {
+  width: 58px;
+  height: 58px;
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow:
+    0 6px 16px rgba(0, 0, 0, 0.45),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  transition: transform 0.18s var(--ease-out-soft), box-shadow 0.18s;
+}
+
+.desk-tile--line {
+  background: rgba(255, 255, 255, 0.09);
+  backdrop-filter: blur(8px);
+}
+
+.desk-icon:hover .desk-tile {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow:
+    0 12px 22px rgba(0, 0, 0, 0.55),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.16);
+}
+
+.desk-icon:active .desk-tile {
+  transform: scale(0.94);
+}
+
+.desk-label {
+  max-width: 78px;
+  font-size: 10.5px;
+  letter-spacing: 0.02em;
+  color: #f2f2f7;
+  text-align: center;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.85);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Dock：悬浮玻璃条 */
+.dock {
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  bottom: calc(16px + var(--home-inset));
+  z-index: 3;
+  height: 72px;
+  border-radius: 26px;
+  padding: 0 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  background: rgba(24, 24, 32, 0.44);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(22px) saturate(1.3);
+  -webkit-backdrop-filter: blur(22px) saturate(1.3);
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.45);
+}
+
+.dock-btn {
+  width: 54px;
+  height: 54px;
+  border-radius: 15px;
+  overflow: hidden;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  transition: transform 0.16s var(--ease-out-soft);
+}
+
+.dock-btn--line {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.dock-btn:hover { transform: translateY(-1px); }
+.dock-btn:active { transform: scale(0.92); }
+
+/* 手势条上方的页码点 */
+.desk-dots {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(96px + var(--home-inset));
+  z-index: 3;
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  pointer-events: none;
+}
+
+.desk-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.desk-dot.active {
+  background: rgba(255, 255, 255, 0.8);
+}
+
+/* ===== App 安全区 ===== */
+/* 微信 / QQ 的根容器为内部滚动 + 底部 TabBar（在文档流内）。给根容器加下安全区，
+   TabBar 会自动上移到指示条上方，同时根容器背景仍然覆盖指示条区域。 */
+.wc-app,
+.qq-app {
+  padding-bottom: var(--home-inset);
+}
+
+/* ===== 状态栏 ===== */
+
+.statusbar {
+  position: relative;
+  flex-shrink: 0;
+  height: 44px;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 18px;
+  color: #f2f2f7;
+  font-size: 12.5px;
+  font-weight: 650;
+  letter-spacing: 0.01em;
+  font-variant-numeric: tabular-nums;
+  pointer-events: none;
+  background: rgba(8, 8, 12, 0.42);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.statusbar-time {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding-left: 6px;
+}
+
+.statusbar-time.subliminal {
+  color: #e2382b;
+  text-shadow: 0 0 10px rgba(226, 56, 43, 0.7);
+}
+
+.statusbar-right {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.statusbar-batt {
+  font-size: 10.5px;
+  letter-spacing: 0.02em;
+  opacity: 0.9;
+}
+
+/* 状态栏里的录制点（dread=3） */
+.statusbar-rec {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #e2382b;
+  box-shadow: 0 0 7px rgba(226, 56, 43, 0.9);
+  animation: atm-rec 2.6s ease-in-out infinite;
+}

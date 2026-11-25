@@ -67,13 +67,13 @@ export interface PuzzleApi {
   submit: (puzzleId: PuzzleId, payload?: PuzzleSubmitInput) => void
   /** 引擎实际收集到的证据 ID（useGameStore.collectedEvidenceIds 真源，只读）。 */
   collectedEvidenceIds: readonly EvidenceId[]
-  /** puzzleId 是否已解（驱动 isGeneratedContent 文章渲染，CLAUDE.md §6.5）。 */
+  /** puzzleId 是否已解（历史接口：曾驱动 isGeneratedContent 文章渲染；该机制已废弃）。 */
   isSolved: (puzzleId: PuzzleId) => boolean
 }
 
 export function usePuzzle(): PuzzleApi {
   const collectedEvidenceIds = useGameStore((s) => s.collectedEvidenceIds)
-  // 订阅 solvedPuzzleIds 使 isSolved 在渲染期同步且响应式（驱动 isGeneratedContent 文章渲染）。
+  // 订阅 solvedPuzzleIds 使 isSolved 在渲染期同步且响应式。
   const solvedPuzzleIds = useGameStore((s) => s.solvedPuzzleIds)
   const submit = useCallback((puzzleId: PuzzleId, payload?: PuzzleSubmitInput) => {
     const value = payload?.answer ?? payload?.assetId ?? payload?.text ?? ''

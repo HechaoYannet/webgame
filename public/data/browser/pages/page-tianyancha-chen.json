@@ -1,7 +1,7 @@
 {
   "id": "page-tianyancha-chen",
   "siteId": "site-tianyancha",
-  "url": "https://www.tianyancha.com/search/key=陈建国",
+  "url": "https://www.tianyancha.com/search?key=陈建国",
   "title": "天眼查 — 陈建国 关联企业",
   "accessibility": {
     "kind": "public"
@@ -21,12 +21,12 @@
       ],
       "rows": [
         [
-          "山河医科大学生物能源与疾病控制国家重点实验室",
-          "法定代表人/主任",
-          "—"
+          "长沙源石生物科技有限公司",
+          "法定代表人、执行董事",
+          "55%"
         ],
         [
-          "长沙新希望成长中心",
+          "长沙新希望成长中心有限责任公司",
           "股东",
           "40%"
         ]

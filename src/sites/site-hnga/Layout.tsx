@@ -125,9 +125,9 @@ export default function Layout({
             <Link to={sitePath(base, 'disclose')}>信息公开</Link>
           </div>
           <div>主办单位：湖南省公安厅　承办单位：湖南省公安厅宣传处</div>
-          <div>地址：湖南省长沙市八一路　邮政编码：410001　联系电话：0731-88888888</div>
+          <div>地址：湖南省长沙市芙蓉区八一路110号　邮政编码：410001　联系电话：0731-88888888</div>
           <div className="hnga-footer-copy">
-            湘ICP备12345678号　湘公网安备 43000002000001号　网站标识码：4300000038
+            湘ICP备05001889号　湘公网安备43010202000045号　网站标识码：4300000038
           </div>
         </div>
       </footer>

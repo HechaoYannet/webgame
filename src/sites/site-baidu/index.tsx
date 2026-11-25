@@ -14,7 +14,8 @@
 import { useEffect, useState, type CSSProperties, type FormEvent } from 'react'
 import { Link, Routes, Route, useNavigate, useSearchParams } from 'react-router'
 import { sitePath, useSiteBase } from '@/sites/shared/siteNav'
-import { search, siteRootUrl, warmup, type SearchResult } from './search'
+import { getPageContent } from '@/sites/shared/pageContent'
+import { search, warmup, type SearchResult } from './search'
 
 export const siteId = 'site-baidu'
 
@@ -167,26 +168,45 @@ function ResultPage(): JSX.Element {
 }
 
 function ResultItem({ r, q }: { r: SearchResult; q: string }): JSX.Element {
+  // 结果标题取"命中页面"的真实标题（搜索框搜的是页面，不是站点）。
+  const [pageTitle, setPageTitle] = useState<string | null>(null)
+  useEffect(() => {
+    let alive = true
+    void getPageContent(r.pageId).then((page) => {
+      if (alive && page?.title) setPageTitle(page.title)
+    })
+    return () => {
+      alive = false
+    }
+  }, [r.pageId])
+
+  const title = pageTitle ?? r.siteName
+  // 站内绝对地址：/webgame/#/site/<siteId>/<path>（命中页面，不是站点根）。
+  const href = `${import.meta.env.BASE_URL}#${r.routePath}`
+  // 展示用网址：把站内 slug 拼到站点公开域名后，像真实搜索结果一样可读。
+  const displayUrl =
+    r.baseUrl.replace(/\/+$/, '') + (r.pagePath ? '/' + r.pagePath.replace(/^\/+/, '') : '/')
+
   function onClick(): void {
     // 用户手势内 window.open 新标签；noopener 避免泄漏 opener。
-    window.open(siteRootUrl(r.siteId), '_blank', 'noopener')
+    window.open(href, '_blank', 'noopener')
   }
 
   return (
     <article style={itemStyle}>
-      <div style={itemUrlStyle}>{r.baseUrl}</div>
+      <div style={itemUrlStyle}>{displayUrl}</div>
       <h3 style={itemTitleWrapStyle}>
         <a
-          href={siteRootUrl(r.siteId)}
+          href={href}
           onClick={(e) => {
             // 阻止默认跳转（hash 重复刷新无意义），改新标签打开。
             e.preventDefault()
             onClick()
           }}
           style={itemTitleStyle}
-          title={`点击新标签打开 ${r.siteName}`}
+          title={`点击新标签打开 ${title}`}
         >
-          {highlight(r.siteName, q)}
+          {highlight(title, q)}
         </a>
       </h3>
       <div style={itemDescStyle}>

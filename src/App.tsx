@@ -25,6 +25,12 @@ import { AppRouter } from '@/apps/PhoneShell/AppRouter'
 import { IntroScreen } from '@/apps/PhoneShell/IntroScreen'
 import { useGameStore } from '@/game/gameStore'
 
+/** 当前 hash 是否为「独立网站」路由（#/site/...）。
+ *  站点是新标签页打开的全屏网页，不属于手机外壳。 */
+function isSiteHash(): boolean {
+  return typeof window !== 'undefined' && window.location.hash.startsWith('#/site/')
+}
+
 function App() {
   // 依据持久化存档判断：无进度且未通关 → 显示入口；否则直接进游戏。
   const isFresh = useGameStore(
@@ -40,8 +46,18 @@ function App() {
     if (isFresh) setEntered(false)
   }, [isFresh])
 
+  // BUG 修复：站点以新标签页打开时，新标签是「全新会话」（entered=false），
+  // 若此时还没解过任何谜题（isFresh=true），欢迎页会盖在网站上——表现为
+  // 「在微信里点开链接又重走一遍开场」。站点路由下强制不显示入口覆盖层。
+  const [isSiteRoute, setIsSiteRoute] = useState(isSiteHash)
+  useEffect(() => {
+    const onHash = () => setIsSiteRoute(isSiteHash())
+    window.addEventListener('hashchange', onHash)
+    return () => window.removeEventListener('hashchange', onHash)
+  }, [])
+
   // 全新开局且本次还没进入 → 显示入口覆盖层；onEnter 卸载覆盖层露出下层 PhoneShell。
-  const showIntro = isFresh && !entered
+  const showIntro = isFresh && !entered && !isSiteRoute
 
   return (
     <ImageViewerProvider>

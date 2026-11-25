@@ -21,7 +21,7 @@
  *   useGameStore.pushEnding（openNewsApp 等价 pushEnding，EndingOverlay 读 endings.json 渲染）。
  */
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
 import type {
   CallRecord,
@@ -33,11 +33,14 @@ import type {
 import {
   getAllCallRecords,
   getCallScriptById,
+  getEvidenceById,
+  getPuzzleById,
 } from '@/data/loader';
 import { checkAnswer } from '@/game/answerCheck';
 import { useGameStore } from '@/game/gameStore';
 import * as AudioService from '@/game/audio';
 import { useCountdown, usePendingAnsweredCall, consumePendingAnsweredCall } from '@/utils/shellState';
+import { formatGameTime } from '@/utils/time';
 
 type Phase = 'recents' | 'dial' | 'calling';
 
@@ -175,7 +178,7 @@ export default function PhoneApp(): ReactNode {
             <div style={displayNumber}>{draft || '请输入号码'}</div>
             {countdownRunning && draft.length > 0 && (
               <div style={{ color: '#ff6666', fontSize: 12 }}>
-                倒计时进行中，速拨举报电话
+                倒计时进行中
               </div>
             )}
           </div>
@@ -272,10 +275,14 @@ function CallView({ display, script, onHangup }: CallViewProps): ReactNode {
   // baseBlocks 取自当前 script（任意预设通话如班主任脚本都有自带 blocks）。
   // 之前只取 dispatcherScript.blocks 导致非举报电话（班主任/未知号码）baseBlocks 为空、
   // visibleBlocks 永远为 []，通话卡在"正在呼叫…"——表现为"打不通"。这里改用 script.blocks。
-  const baseBlocks: CallScriptBlock[] = script?.blocks ?? [];
-  const branchBlocks: CallScriptBlock[] = branch
-    ? dispatcherScript?.branches?.[branch]?.blocks ?? []
-    : [];
+  // 必须 useMemo：CallView 会因倒计时每秒 tick（useCountdown）而重渲染；
+  // 若这里的数组每次渲染都是新引用，下面的分块推进 effect 会被反复 cleanup
+  // → 定时器永远不触发，通话卡在「正在呼叫…」（实测回归）。
+  const baseBlocks = useMemo<CallScriptBlock[]>(() => script?.blocks ?? [], [script]);
+  const branchBlocks = useMemo<CallScriptBlock[]>(
+    () => (branch ? dispatcherScript?.branches?.[branch]?.blocks ?? [] : []),
+    [branch, dispatcherScript],
+  );
   const visibleBlocks = useMemo(
     () => [...baseBlocks, ...branchBlocks].slice(0, nowIdx + 1),
     [baseBlocks, branchBlocks, nowIdx],
@@ -350,15 +357,29 @@ function CallView({ display, script, onHangup }: CallViewProps): ReactNode {
     return () => AudioService.stop('audio-call-ringback');
   }, []);
 
+  // onHangup 是父组件每次渲染都会重建的函数；若直接进 effect 依赖，倒计时每秒重渲染
+  // 都会清理并重建 1.5s 定时器，导致"通话结束"后永远回不到通话记录（挂断键像死键）。
+  // 用 ref 固定最新回调，effect 只在 callEnded 翻转时启动一次。
+  const onHangupRef = useRef(onHangup);
+  onHangupRef.current = onHangup;
+
   useEffect(() => {
+    if (!callEnded) return;
+    AudioService.stop();
+    haptic(80);
+    setStatus('通话结束');
+    const t = setTimeout(() => onHangupRef.current(), 1500);
+    return () => clearTimeout(t);
+  }, [callEnded]);
+
+  /** 挂断：通话未结束时先结束；已结束时直接退回通话记录（按钮永远有反馈）。 */
+  function hangUp(): void {
     if (callEnded) {
-      AudioService.stop();
-      haptic(80);
-      setStatus('通话结束');
-      const t = setTimeout(onHangup, 1500);
-      return () => clearTimeout(t);
+      onHangupRef.current();
+      return;
     }
-  }, [callEnded, onHangup]);
+    setCallEnded(true);
+  }
 
   // evidenceSelection 节点打开证据勾选弹窗（终章核心联动）。
   // 提交时调 checkAnswer(puzzle-evidence-finale, {selected})：纯函数校验，由本组件
@@ -449,7 +470,7 @@ function CallView({ display, script, onHangup }: CallViewProps): ReactNode {
       )}
 
       <div style={callActionsStyle}>
-        <button style={hangupBtn} onClick={() => setCallEnded(true)}>
+        <button style={hangupBtn} onClick={hangUp}>
           挂断
         </button>
       </div>
@@ -492,9 +513,27 @@ interface EvidenceSelectionProps {
 }
 
 function EvidenceSelection({ onSubmit, onCancel }: EvidenceSelectionProps): ReactNode {
-  // 直接读 gameStore 的 collectedEvidenceIds 渲染可勾选证据
+  // 已收集证据（查看即归档，见 AlbumApp/QQ/各站点钩子）
   const collected = useGameStore((s) => s.collectedEvidenceIds);
   const [selected, setSelected] = useState<Set<EvidenceId>>(new Set(collected));
+
+  // 必选/最少数量来自 puzzles.json（puzzle-evidence-finale），单一真源。
+  const finalePuzzle = getPuzzleById(FINALE_PUZZLE_ID);
+  const requiredIds: EvidenceId[] =
+    finalePuzzle?.matchStrategy.kind === 'evidenceSet'
+      ? finalePuzzle.matchStrategy.requiredEvidenceIds
+      : [];
+  const minLength: number =
+    finalePuzzle?.matchStrategy.kind === 'evidenceSet'
+      ? finalePuzzle.matchStrategy.minLength
+      : 5;
+
+  const evidenceById = new Map(
+    collected.map((id) => {
+      const ev = getEvidenceById(id);
+      return [id, ev];
+    }),
+  );
 
   const toggle = (id: EvidenceId) =>
     setSelected((s) => {
@@ -504,12 +543,22 @@ function EvidenceSelection({ onSubmit, onCancel }: EvidenceSelectionProps): Reac
       return n;
     });
 
+  const requiredSelected = requiredIds.filter((id) => selected.has(id)).length;
+  // 允许在未集齐必选时发送（证据不足 → 普通结局分支）；集齐才进入真结局。
+  // 审核报告 E2E-2：原先 canSend 要求 selected.size >= minLength(5)，而全库可收集证据
+  // 上限恰好 5 项、且第 6 项此前无任何获取路径 → 「证据不足→普通结局」永远走不到，
+  // 按钮被禁用成死锁。契约 §7「不足或漏掉经费报告 → 普通结局」：只要有勾选即允许发送，
+  // 由 checkAnswer 决定走真/普通分支。
+  const canSend = selected.size >= 1;
+
   return (
     <div style={evidenceModalStyle}>
       <div style={evidenceModalCard}>
         <div style={{ fontSize: 14, fontWeight: 600, marginBottom: 8 }}>从证据库勾选关键证据</div>
         <div style={{ fontSize: 11, color: '#aab', marginBottom: 12 }}>
-          至少勾选 5 项关键证据（含聊天记录/协议/合作新闻/论文/经费报告）
+          勾满 {minLength} 项且包含全部 {requiredIds.length} 项必选证据，警方才会立即立案；
+          证据不足也可以发送，但接线员只会「进一步核实」
+          （必选已勾 {requiredSelected}/{requiredIds.length}）
         </div>
         <div style={{ maxHeight: 240, overflowY: 'auto' }}>
           {collected.length === 0 && (
@@ -517,36 +566,43 @@ function EvidenceSelection({ onSubmit, onCancel }: EvidenceSelectionProps): Reac
               证据库为空。请先在各 App 查看关键页面/聊天收集证据。
             </div>
           )}
-          {collected.map((id) => (
-            <label
-              key={id}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 8,
-                padding: '6px 8px',
-                cursor: 'pointer',
-                borderBottom: '1px solid #1f2a3a',
-                fontSize: 12,
-              }}
-            >
-              <input
-                type="checkbox"
-                checked={selected.has(id)}
-                onChange={() => toggle(id)}
-              />
-              <span style={{ fontFamily: 'monospace' }}>{id}</span>
-            </label>
-          ))}
+          {collected.map((id) => {
+            const ev = evidenceById.get(id);
+            const isReq = requiredIds.includes(id);
+            return (
+              <label
+                key={id}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 8,
+                  padding: '6px 8px',
+                  cursor: 'pointer',
+                  borderBottom: '1px solid #1f2a3a',
+                  fontSize: 12,
+                }}
+              >
+                <input
+                  type="checkbox"
+                  checked={selected.has(id)}
+                  onChange={() => toggle(id)}
+                />
+                <span style={{ flex: 1 }}>
+                  {ev?.title ?? id}
+                  {isReq ? <span style={{ color: '#ffd666', marginLeft: 6 }}>必选</span> : null}
+                </span>
+              </label>
+            );
+          })}
         </div>
         <div style={{ display: 'flex', gap: 8, marginTop: 12, justifyContent: 'flex-end' }}>
           <button style={ghostBtn} onClick={onCancel}>
             取消
           </button>
           <button
-            style={primaryBtn(selected.size >= 5)}
+            style={primaryBtn(canSend)}
             onClick={() => onSubmit(Array.from(selected))}
-            disabled={selected.size < 5}
+            disabled={!canSend}
           >
             发送证据（{selected.size}）
           </button>
@@ -598,15 +654,9 @@ function isNoAnswer(display: string): boolean {
   return !/88888888/.test(display) && !/^0?731/.test(display) && /^[0-9*#+-]{3,}$/.test(display);
 }
 
+// 统一走 @/utils/time（游戏时区 +08:00）。
 function fmtTime(iso: string): string {
-  try {
-    const d = new Date(iso);
-    const hh = String(d.getHours()).padStart(2, '0');
-    const mm = String(d.getMinutes()).padStart(2, '0');
-    return `${hh}:${mm}`;
-  } catch {
-    return '';
-  }
+  return formatGameTime(iso);
 }
 
 function Header({
@@ -641,6 +691,8 @@ const wrapStyle: React.CSSProperties = {
   background: '#0e1620',
   color: '#e7eef7',
   fontFamily: 'system-ui, -apple-system, "PingFang SC", sans-serif',
+  // 底部 Home 手势区：拨号栏/通话按钮不再被指示条热区遮住。
+  paddingBottom: 'var(--home-inset)',
 };
 const headerStyle: React.CSSProperties = {
   height: 44,
@@ -787,6 +839,8 @@ const callWrapStyle: React.CSSProperties = {
   flexDirection: 'column',
   background: 'linear-gradient(180deg,#0a121d,#101e2f)',
   color: '#e7eef7',
+  // 挂断按钮与底部安全区之间留出 Home 手势区，避免点按钮却回桌面。
+  paddingBottom: 'var(--home-inset)',
 };
 const callHeaderStyle: React.CSSProperties = {
   display: 'flex',

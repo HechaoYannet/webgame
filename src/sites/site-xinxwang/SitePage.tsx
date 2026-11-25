@@ -9,7 +9,7 @@ import { useEffect, useState, type ReactElement } from 'react'
 import { Link, useNavigate } from 'react-router'
 import { useSiteBase, sitePath } from '@/sites/shared/siteNav'
 import { getPageContent, type SitePage as SitePageData } from '@/sites/shared/pageContent'
-import { reportPuzzleSolved } from '@/sites/shared/gameEvent'
+import { reportPageViewed, reportPuzzleSolved } from '@/sites/shared/gameEvent'
 import { BlockRenderer } from './BlockRenderer'
 import { Layout, pageIdToPath } from './Layout'
 import { slugByPageId, manifest } from './manifest'
@@ -29,6 +29,11 @@ export function SitePage({ pageId }: SitePageProps): ReactElement {
     void getPageContent(pageId).then(setPage)
   }, [pageId])
 
+  // 上报页面浏览：合作新闻页（page-xinxwang-news-lab）为关键证据归档点（幂等）。
+  useEffect(() => {
+    if (page) reportPageViewed(page.id)
+  }, [page])
+
   if (!page) {
     return (
       <Layout>
@@ -39,10 +44,8 @@ export function SitePage({ pageId }: SitePageProps): ReactElement {
 
   // admin 页：含 loginForm，登录成功跳 financial
   if (pageId === 'page-xinxwang-admin') {
-    // 登录成功：跳财务页 + 上报 puzzle-xinxwang-backend 已解（站点唯一触游戏状态处，
-    // 与 site-ai-pdf / site-lvzhong 同构：reportPuzzleSolved 经 gameEvent 间接写 gameStore，
-    // 不违站→游戏边界）。后台登录是红鲱鱼支线（88888888），不进通关必需证据，但登录后
-    // 会触发手机收到"验证码短信"与"未知号码来电"，强化机构监视玩家的压迫感。
+    // 登录成功：跳财务页 + 上报 puzzle-xinxwang-backend 已解（红鲱鱼支线 88888888，
+    // 不进通关必需证据；登录后手机收到 10086 验证码短信，强化被监视感）。
     const backendPuzzleId = manifest.loginPuzzleIds[0] ?? 'puzzle-xinxwang-backend'
     const handleLoginSuccess = (): void => {
       reportPuzzleSolved(backendPuzzleId)

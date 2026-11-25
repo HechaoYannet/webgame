@@ -18,7 +18,7 @@ import { Link, Routes, Route, useNavigate } from 'react-router'
 import { getPageContent, type SitePage } from '@/sites/shared/pageContent'
 import { PlaceholderImage, PlaceholderPdf } from '@/sites/shared/placeholder'
 import { checkLogin } from '@/sites/shared/answerCheck'
-import { reportPuzzleSolved } from '@/sites/shared/gameEvent'
+import { reportPageViewed, reportPuzzleSolved } from '@/sites/shared/gameEvent'
 import { sitePath, useSiteBase } from '@/sites/shared/siteNav'
 import type { PageBlock, PageId } from '@/types'
 import { pageIdBySlug, slugByPageId } from './manifest'
@@ -131,9 +131,9 @@ function SiteNav(): ReactElement {
 function SiteFooter(): ReactElement {
   return (
     <footer className="lv-footer">
-      <div>湖南绿草中学 · 地址：长沙市岳麓区绿草路1号 · 邮编：410006</div>
-      <div>电话：0731-8800XXXX · 邮箱：office@lvzhong-edu.cn</div>
-      <div>湘ICP备 2026 绿草中学 版权所有 · 湘教QS（2026）第 号</div>
+      <div>湖南绿草中学 · 地址：湖南省长沙市岳麓区麓山南路389号 · 邮编：410006</div>
+      <div>电话：0731-88661234 · 邮箱：office@lvzhong-edu.cn</div>
+      <div>© 2026 绿草中学 版权所有 · 湘ICP备2024013579号 · 湘公网安备43010302001188号</div>
     </footer>
   )
 }
@@ -154,6 +154,11 @@ function PageFrame({ slug }: { slug: string }): ReactElement {
     void getPageContent(pageId).then((p) => setPage(p))
   }, [pageId])
 
+  // 上报页面浏览（游戏侧按 pageId 归档证据等；幂等）
+  useEffect(() => {
+    if (page) reportPageViewed(page.id)
+  }, [page])
+
   if (page === undefined) return <div className="lv-loading">加载中…</div>
   if (page === null) return <NotFound />
   return <PageBody page={page} />
@@ -172,6 +177,11 @@ function AdminGuard({ slug }: { slug: string }): ReactElement {
     setPage(undefined)
     void getPageContent(pageId).then((p) => setPage(p))
   }, [pageId])
+
+  // 上报页面浏览（协议页为关键证据归档点）
+  useEffect(() => {
+    if (page && loggedIn) reportPageViewed(page.id)
+  }, [page, loggedIn])
 
   if (!loggedIn) return <LoginRequired />
   if (page === undefined) return <div className="lv-loading">加载中…</div>
@@ -513,6 +523,8 @@ function LoginFormBlock({ loginTokens }: { loginTokens?: string[] }): ReactEleme
     if (ok) {
       LoginCtx.set(true)
       setError(null)
+      // 上报校务系统登录已解（幂等）。
+      reportPuzzleSolved('puzzle-lvzhong-internal')
       // 登录成功跳到协议页（后台首页）。用绝对站点路径，避免相对解析累积。
       navigate(sitePath(base, 'agreement'))
     } else {
@@ -522,10 +534,6 @@ function LoginFormBlock({ loginTokens }: { loginTokens?: string[] }): ReactEleme
 
   return (
     <div className="lv-login-box">
-      <div className="lv-login-hint">
-        账号：zhangqiang<br />
-        密码提示：校长寄语中张校长说「我的小目标是先挣一个亿」。
-      </div>
       <form className="lv-form" onSubmit={submit} style={{ margin: 0 }}>
         <div className="lv-form-field">
           <label htmlFor="lv-login-account">账号</label>

@@ -127,6 +127,12 @@
     ]
   },
   {
+    "keyword": "预印本论文库",
+    "pageIds": [
+      "page-arxiv-list"
+    ]
+  },
+  {
     "keyword": "论文",
     "pageIds": [
       "page-shanhe-publications",

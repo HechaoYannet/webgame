@@ -3,9 +3,15 @@
  *
  * QqApp 本地展示组件（frontend-qq 独占）。
  * 不依赖 src/ui（phone-shell agent 独占，并行构建、API 未冻结），自包含轻量件：
- * 头像/图片占位+查看器/密码框/加载态/返回头/时间格式化/useAsync。资源（avatar
- * assetId）由资源 agent 后续补齐，此处用字符占位，以 characterId 作配色 key。
+ * 头像/图片查看器/加载态/返回头/时间格式化/useAsync。
+ *
+ * 资源解析统一走 @/utils/assetUrl 的 imageUrlCandidates（含 .svg 候选）；
+ * 全部候选失败才回退（头像→首字色块，图片→无文字中性灰块）。
+ * 不显示「图片」/「占位」等字样，也不显示 assetId 调试文本。
  */
+import { imageUrlCandidates } from '@/utils/assetUrl'
+import { getContact } from '@/data/loader'
+import { formatShortDateTime } from '@/utils/time'
 import { useEffect, useState, type CSSProperties, type ReactNode } from 'react'
 import type { ContactId } from '@/types'
 
@@ -17,6 +23,15 @@ function colorFor(id: string): string {
   let h = 0
   for (let i = 0; i < id.length; i++) h = (h * 31 + id.charCodeAt(i)) >>> 0
   return AVATAR_COLORS[h % AVATAR_COLORS.length]
+}
+
+/** 安全取角色头像 assetId（loader 未就绪/无该角色时返回空串）。 */
+function avatarAssetIdFor(charId: string): string {
+  try {
+    return getContact(charId)?.avatarAssetId ?? ''
+  } catch {
+    return ''
+  }
 }
 
 export function Avatar({
@@ -31,6 +46,13 @@ export function Avatar({
   isGroup?: boolean
 }) {
   const label = isGroup ? '群' : (name?.[0] ?? '?')
+  const assetId = isGroup ? '' : avatarAssetIdFor(charId)
+  const [idx, setIdx] = useState(0)
+  useEffect(() => {
+    setIdx(0)
+  }, [assetId])
+  const candidates = assetId ? imageUrlCandidates(assetId) : []
+  const hasImage = idx < candidates.length
   return (
     <div
       className="qq-avatar"
@@ -38,13 +60,23 @@ export function Avatar({
         {
           width: `${size}px`,
           height: `${size}px`,
-          background: colorFor(charId),
+          background: hasImage ? 'transparent' : colorFor(charId),
           fontSize: `${Math.round(size * 0.42)}px`,
         } as CSSProperties
       }
       aria-label={name}
     >
-      {label}
+      {hasImage ? (
+        <img
+          className="qq-avatar-img"
+          src={candidates[idx]}
+          alt=""
+          loading="lazy"
+          onError={() => setIdx((i) => i + 1)}
+        />
+      ) : (
+        label
+      )}
     </div>
   )
 }
@@ -63,16 +95,31 @@ export function ImagePlaceholder({
   size?: 'normal' | 'small'
 }) {
   const cls = size === 'small' ? 'qq-image-placeholder small' : 'qq-image-placeholder'
+  const [idx, setIdx] = useState(0)
+  useEffect(() => {
+    setIdx(0)
+  }, [assetId])
+  const candidates = imageUrlCandidates(assetId)
+  const failed = !assetId || idx >= candidates.length
+  const label = alt ?? caption ?? ''
   return (
     <button
       type="button"
-      className={`${cls}${onZoom ? ' zoomable' : ''}`}
+      className={`${cls}${onZoom ? ' zoomable' : ''}${failed ? ' is-fallback' : ' has-image'}`}
       onClick={onZoom}
-      title={alt ?? caption ?? assetId}
+      title={label || undefined}
     >
-      <span className="qq-image-placeholder-glyph">🖼</span>
-      <span className="qq-image-placeholder-id">{alt ?? caption ?? assetId}</span>
-      {onZoom && <span className="qq-image-placeholder-hint">点击放大</span>}
+      {failed ? (
+        <span className="qq-image-fallback" aria-hidden="true" />
+      ) : (
+        <img
+          className="qq-image-real"
+          src={candidates[idx]}
+          alt={label}
+          loading="lazy"
+          onError={() => setIdx((i) => i + 1)}
+        />
+      )}
     </button>
   )
 }
@@ -95,12 +142,27 @@ export function ImageViewer({
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
   }, [onClose])
+  const [idx, setIdx] = useState(0)
+  const candidates = imageUrlCandidates(assetId)
+  useEffect(() => {
+    setIdx(0)
+  }, [assetId])
+  const failed = !assetId || idx >= candidates.length
+  const label = alt ?? caption ?? ''
   return (
-    <div className="qq-image-viewer" onClick={onClose} role="dialog" aria-label="图片预览">
+    <div className="qq-image-viewer" onClick={onClose} role="dialog" aria-label={caption ?? '图片预览'}>
       <div className="qq-image-viewer-inner" onClick={(e) => e.stopPropagation()}>
         <div className="qq-image-viewer-img">
-          <span className="qq-image-placeholder-glyph big">🖼</span>
-          <span className="qq-image-placeholder-id">{alt ?? caption ?? assetId}</span>
+          {failed ? (
+            <span className="qq-image-fallback big" aria-hidden="true" />
+          ) : (
+            <img
+              src={candidates[idx]}
+              alt={label}
+              onError={() => setIdx((i) => i + 1)}
+              style={{ maxWidth: '100%', maxHeight: '65vh', borderRadius: 8, display: 'block' }}
+            />
+          )}
         </div>
         {caption && <p className="qq-image-viewer-caption">{caption}</p>}
         <button type="button" className="qq-image-viewer-close" onClick={onClose}>
@@ -141,14 +203,9 @@ export function SubHeader({
   )
 }
 
+/** 统一走 @/utils/time（游戏时区 +08:00），转调 formatShortDateTime。 */
 export function formatTime(iso: string): string {
-  const d = new Date(iso)
-  if (Number.isNaN(d.getTime())) return iso
-  const mm = String(d.getMonth() + 1).padStart(2, '0')
-  const dd = String(d.getDate()).padStart(2, '0')
-  const hh = String(d.getHours()).padStart(2, '0')
-  const mi = String(d.getMinutes()).padStart(2, '0')
-  return `${mm}-${dd} ${hh}:${mi}`
+  return formatShortDateTime(iso) || iso
 }
 
 /** 通用异步加载 hook（用于 loadGameData / getMessages / loadGroupFiles）。 */

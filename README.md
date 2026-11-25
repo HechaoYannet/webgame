@@ -1,8 +1,20 @@
 # 《张强宿舍大逃杀》
 
-一款网页解谜游戏。玩家扮演高二学生林哲，通过模拟智能手机界面（微信 / QQ / 浏览器 / 短信 / 电话 / 门铃等 App）调查同学失联案，收集证据、破解密码、在倒计时内报警举报。
+一款网页解谜游戏。玩家扮演高二学生林哲，通过模拟智能手机界面（微信 / QQ / 短信 / 电话 / 门铃 / 相册 / 备忘录 共 7 个 App，桌面另有"百度搜索"入口）调查同学失联案；"真实网站"是**独立全屏路由**（新标签打开），不是手机里的浏览器 App。收集证据、破解密码、在倒计时内拨通举报电话。
 
-**纯前端、零后端**，部署到 GitHub Pages。所有"上传 PDF 解读""搜索""登录后台"均为前端伪造，数据全部 JSON 化。
+**纯前端、零后端**，部署到 GitHub Pages。所有"搜索""登录后台""AI 解读"均为前端伪造，数据全部 JSON 化。
+
+---
+
+## 玩法主线
+
+1. **序幕**：翻看微信聊天与朋友圈，找出"密码是那个日子"指向的日期，登录李桥瑞的 QQ（`20251128`，终末地全面测试开启日，可点朋友圈链接访问真实官网核对）。
+2. **绿中官网**：百度搜索 → 官网通知公告 → 页面源码里藏着校务系统隐藏入口 → 用校长寄语中的"小目标"登录（`yigeyi`），看到合作协议、加密筛查名单（密码 `0312`）、通讯录。
+3. **新希望成长中心**：官网新闻 + 天眼查工商信息，坐实张强与陈建国的利益链。
+4. **论文与真相**：在预印本库下载论文 PDF，到"论文 AI 翻译解读"上传（站点按 sha256 校验你刚下载的那份 PDF）→ 出解读，得到实验室后台地址与密码线索（基金号后 6 位 `123456`）。**解读只存在于该网站，微信内不会出现。**
+5. **终章**：登录实验室后台，打开经费申请报告——**倒计时 3 分钟开始**，威胁短信与刀哥门铃同步到达。在倒计时内集齐 5 项关键证据，拨打 `0731-88888888`，在通话中提交证据，触发真 / 普通结局；超时则坏结局。
+
+证据为**查看即归档**：看到关键聊天 / 协议 / 新闻 / 论文解读 / 经费报告，会自动归档到相册，无需手动记录。
 
 ---
 
@@ -11,109 +23,54 @@
 | 层 | 选型 | 说明 |
 |---|---|---|
 | 构建 | **Vite + React + TypeScript**（`react-ts` 模板） | Node 20.19+/22.12+ |
-| 状态 | **Zustand 5** + `persist` 中间件 | localStorage 断点续玩；柯里化 `create<T>()(persist(...))` |
-| 路由 | **React Router v7+ + HashRouter**（强制，实际装 `react-router@8.3.0`） | GitHub Pages 静态托管不支持服务端重写，BrowserRouter 刷新子路由会 404 |
+| 状态 | **Zustand 5** + `persist` 中间件 | localStorage 断点续玩；只持久化极简检查点 |
+| 路由 | **React Router v8 + HashRouter**（强制） | GitHub Pages 静态托管刷新不 404 |
 | 数据校验 | **Zod** | 开发期校验 `public/data/**/*.json` 满足 `src/types` 契约 |
-| 部署 | **GitHub Actions**（非 gh-pages 包） | `npm ci && npm run build` → `upload-pages-artifact` → `deploy-pages` |
+| 部署 | **GitHub Actions** | `npm ci && npm run build` → Pages |
 | 包管理 | **npm**（与 CI `npm ci` 一致） | 不混用 pnpm/yarn |
-
-> 详见 `.claude/CLAUDE.md` §2（技术栈，命令与配置已核实官方源）。
-
----
 
 ## 开发命令
 
 ```bash
 npm install        # 装依赖
-npm run dev        # 开发服务器 http://localhost:5173/
-npm run build      # 生产构建到 dist/
-npm run preview    # 预览构建产物
-npm run lint       # ESLint
-npx tsc --noEmit   # 类型检查
+npm run dev        # 开发服务器 http://localhost:5173/webgame/
+npm run typecheck  # tsc --noEmit -p tsconfig.app.json
+npm run build      # tsc -b && vite build
+npm run lint       # oxlint
 ```
-
-## 部署
-
-仓库 **Settings → Pages → Source 选 "GitHub Actions"**，推送 `main` 分支即触发 `.github/workflows/deploy.yml` 自动部署到 `https://<user>.github.io/webgame/`。
-
-关键配置：
-- `vite.config.ts` 的 `base: '/webgame/'`（首尾斜杠都要，仓库名 webgame）
-- **HashRouter**（`createHashRouter`），刷新子路由不 404
-- 动态拼 URL 用 `import.meta.env.BASE_URL`（**必须原样出现**，括号访问不工作）
-
-详见 `docs/engineering/DEPLOYMENT.md`。
-
----
 
 ## 目录结构
 
 ```
 webgame/
-├── .claude/                    # 主控 agent：契约 + agent 定义 + settings
-│   ├── CLAUDE.md               # ★ 全局最高契约，所有 agent 启动必读
-│   ├── agents/                 # 各 sub-agent 定义
-│   └── settings.json
-├── .github/workflows/
-│   └── deploy.yml              # GitHub Pages CI（doc-engineer）
-├── docs/
-│   ├── game_about/             # ★ 只读源真相（剧情/信息架构/交互设计）
-│   └── engineering/            # 工程文档（doc-engineer）
-│       ├── SCHEMA.md           # 类型契约人类可读版
-│       ├── AGENT_OWNERSHIP.md  # 文件所有权表
-│       ├── DEPLOYMENT.md       # 部署说明
-│       └── ARCHITECTURE.md     # React 架构（phase1 产出）
 ├── public/
-│   ├── data/                   # ★ 数据即契约（文案 agent 写，前端读）
-│   │   ├── meta/  puzzle/  clustering/   # level-designer
-│   │   ├── wechat/  qq/  browser/        # writer-{wechat,qq,browser}
-│   │   └── phone/  story/                # writer-phone-story
-│   └── assets/                 # 图片/音频/PDF（资源 agent）
+│   ├── data/                   # ★ 全部游戏内容（JSON 即内容）
+│   │   ├── meta/  puzzle/      # 章节 / 人物 / 结局 / 证据 / 谜题答案
+│   │   ├── wechat/  qq/        # 微信（会话/朋友圈/公众号）与 QQ（会话/空间/群文件）
+│   │   ├── browser/            # 站点清单 / 搜索索引 / 各网页内容
+│   │   └── phone/  story/      # 短信 / 门铃 / 通话 / 独白
+│   └── assets/                 # 图片 / 音频 / PDF（数据里用 assetId，解析时按候选扩展名补全）
+│                               #   ↑ 命名、体积与清单见 docs/engineering/ASSETS.md
 ├── src/
-│   ├── types/index.ts          # ★ 类型契约，所有 agent 的依赖根（doc-engineer）
-│   ├── engine/                 # 加载器/puzzle校验/PuzzleEffect执行器（frontend-engine）
-│   ├── apps/                   # 各 App（目录即锁，见 .claude/）
-│   │   ├── PhoneShell/  WechatApp/  QqApp/  BrowserApp/
-│   │   └── PhoneApp/  SmsApp/  DoorbellApp/  AlbumApp/  FilesApp/  NotesApp/
-│   ├── ui/                     # 共享 UI（frontend-phone-shell）
-│   ├── main.tsx  App.tsx       # 入口（frontend-phone-shell）
-│   └── ...
-├── package.json  vite.config.ts  tsconfig.json  index.html   # 工程配置（doc-engineer）
-└── README.md
+│   ├── game/                   # ★ 极简游戏状态：检查点 + 倒计时 + 答案校验（无引擎）
+│   ├── apps/                   # 手机 App：Wechat / Qq / Sms / Phone / Doorbell / Album / Notes
+│   ├── sites/                  # ★ 10 个全屏"真网站"（独立路由 #/site/…，与游戏解耦，经 shared/gameEvent 回调）
+│   ├── data/loader.ts          # 唯一数据加载层（fetch + Zod 校验 + 索引）
+│   ├── ui/  utils/  types/     # 共享 UI / 工具 / 类型契约
+│   └── main.tsx  App.tsx       # 入口（先 await loadGameData 再渲染）
+└── docs/  .claude/             # 设计文档与协作约定
 ```
 
----
+## 设计要点
 
-## 数据即契约（CLAUDE.md §4）
+- **没有游戏引擎**：这类体量的解谜游戏不需要引擎。状态收敛在 `src/game`（Zustand 检查点），谜题校验是 `src/game/answerCheck.ts` 的纯函数，网站与手机通过 `src/sites/shared/gameEvent.ts` 单点回调。
+- **数据即内容**：所有剧情文本、站点页面、谜题答案都在 `public/data/**/*.json`，前端代码不硬编码答案。
+- **查看即收集**：证据收集由"查看关键内容"自动触发（幂等），相册只展示已收集的证据；终局判定唯一入口是举报电话内的证据勾选。
+- **倒计时仅内存**：刷新即清，避免"刷新即坏结局"；`startedAt` 不落盘。
+- **站点与游戏解耦**：各站是独立全屏路由（`#/site/:siteId`），只能通过 `@/sites/shared/*` 访问受限接口。
+- **静态资源**：数据里只写不带扩展名的 assetId，文件名严格等于 `<assetId>.<ext>`（候选链见 `src/utils/assetUrl.ts`）；位图统一长边 ≤2000 + JPEG q90，`public/assets` 总预算 ≤25 MB，AI 原图放 `src/assets/img/`（不进仓库、不进构建）。清单见 `docs/engineering/ASSETS.md`。
 
-`public/data/**/*.json` 是文案 agent 与前端 agent 的**唯一耦合面**：
-- 前端只读 JSON、不生成 JSON；文案只写 JSON、不触碰 `src/`。
-- "是什么"在数据（谜题答案在 `puzzles.json`），"怎么验"在代码（前端 `engine/puzzle` 按校验逻辑实现，**前端不持硬编码答案**）。
-- 跨 agent 引用必须用稳定 ID（`contactId`/`puzzleId`/`evidenceId`/`pageId`/`clueId`），命名约定见 CLAUDE.md §4.2。
+## 部署
 
-完整类型契约见 `src/types/index.ts`，人类可读版见 `docs/engineering/SCHEMA.md`。
-
----
-
-## Agent 集群
-
-本项目由多个 sub-agent 协作开发（见 `.claude/agents/`）。主控 agent 按 CLAUDE.md §5 的 6 阶段编排：
-
-```
-Phase 0 契约固化  → Phase 1 骨架数据 → Phase 2 文案填充 → Phase 3 钩子回填 → Phase 4 前端实现 → Phase 5 对抗验证
-```
-
-- **所有权表**（谁写哪个目录）：见 `.claude/CLAUDE.md` §3 与 `docs/engineering/AGENT_OWNERSHIP.md`。
-- **agent 定义**：`.claude/agents/*.md`。
-- **环境约束**：WebFetch/WebSearch 被阻断，查官方文档用 `curl`（CLAUDE.md §2.1）。
-
----
-
-## 验证标准（CLAUDE.md §9，端到端）
-
-1. `tsc --noEmit` 通过
-2. Zod schema 在 loader.ts 对所有 JSON 校验通过
-3. `npm run dev` 手动走通主线
-4. 三结局分别触发（真/普通/坏）
-5. 红鲱鱼：登录新希望后台（`88888888`）能进入但不影响通关
-6. `npm run build` 产物正确带 base；推 GitHub → Actions 部署成功；刷新子路由不 404
-7. reviewer 的 `docs/engineering/REVIEW_REPORT.md` 全部通过或已修复
+仓库 **Settings → Pages → Source 选 "GitHub Actions"**，推送 `main` 分支触发 `.github/workflows/deploy.yml`。
+关键配置：`vite.config.ts` 的 `base: "/webgame/"`；HashRouter；动态 URL 用 `import.meta.env.BASE_URL`。

@@ -1,10 +1,12 @@
 /**
  * WechatApp/Avatar.tsx — 角色头像
  *
- * 资源体系未落地时用首字符圆形占位；assetId 透传给 phone-shell 资源层做替换。
- * CLAUDE.md §3：不触碰 src/ui，本目录自带最小实现，签名稳定。
+ * 优先渲染 character.avatarAssetId 对应的真实头像（经 @/utils/assetUrl 候选扩展名解析，
+ * 含 .svg）；全部候选失败才回退"首字符 + 稳定色相"色块。不显示 assetId 调试文本。
  */
+import { useEffect, useState } from "react";
 import type { Character } from "@/types";
+import { imageUrlCandidates } from "@/utils/assetUrl";
 import { displayName } from "./data";
 
 export interface AvatarProps {
@@ -25,12 +27,23 @@ export function Avatar({
 }: AvatarProps): JSX.Element {
   const name = displayName(character);
   const first = name.trim().charAt(0) || "?";
-  // 用 characterId 哈希出稳定色相，避免资源未落地时一片灰白
+  const assetId = character?.avatarAssetId ?? "";
+  const [idx, setIdx] = useState(0);
+
+  // 切换人物时重置候选下标
+  useEffect(() => {
+    setIdx(0);
+  }, [assetId]);
+
+  const candidates = assetId ? imageUrlCandidates(assetId) : [];
+  const showImage = idx < candidates.length;
+
+  // 用 characterId 哈希出稳定色相，仅作为图片全部失败时的首字色块底色
   const hue = hashHue(character?.id ?? characterId ?? name);
   const style: React.CSSProperties = {
     width: size,
     height: size,
-    background: `hsl(${hue} 55% 55%)`,
+    background: showImage ? undefined : `hsl(${hue} 55% 55%)`,
     fontSize: size * 0.42,
   };
   return (
@@ -40,7 +53,17 @@ export function Avatar({
       data-asset-id={character?.avatarAssetId}
       aria-label={name}
     >
-      {first}
+      {showImage ? (
+        <img
+          className="wc-avatar-img"
+          src={candidates[idx]}
+          alt=""
+          loading="lazy"
+          onError={() => setIdx((i) => i + 1)}
+        />
+      ) : (
+        first
+      )}
     </div>
   );
 }

@@ -19,6 +19,7 @@ import {
   showToast,
 } from '@/utils/shellState';
 import type { EndingId, SmsEvent, SmsFrom } from '@/types';
+import { formatGameDate, formatGameTime } from '@/utils/time';
 
 // ===== 类型 =====
 
@@ -103,15 +104,9 @@ function avatarLetter(key: ThreadKey): string {
   return threadDisplayName(key).charAt(0);
 }
 
-function fmtTime(iso: string): string {
-  try { const d = new Date(iso); return `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`; }
-  catch { return ''; }
-}
-
-function fmtDate(iso: string): string {
-  try { const d = new Date(iso); return `${String(d.getMonth()+1).padStart(2,'0')}/${String(d.getDate()).padStart(2,'0')}`; }
-  catch { return ''; }
-}
+// 统一走 @/utils/time（游戏时区 +08:00），不再各写一套本地时区格式化。
+function fmtTime(iso: string): string { return formatGameTime(iso); }
+function fmtDate(iso: string): string { return formatGameDate(iso); }
 
 function trunc(s: string, n: number): string { return s.length > n ? s.slice(0, n) + '…' : s; }
 
@@ -210,7 +205,8 @@ export default function SmsApp(): ReactNode {
         list.push({
           key: LIUSHU_KEY, displayName: threadDisplayName(LIUSHU_KEY),
           avatarLetter: avatarLetter(LIUSHU_KEY), avatarColor: avatarColor(LIUSHU_KEY),
-          lastMessageTime: 0, // 刘叔线程不参与按时间的顺序优先级，置 0 保持靠后
+          // 用故事内基准时间：原先置 0 → new Date(0) 渲染成 01/01（1970 纪元，审核报告 2.E）。
+          lastMessageTime: new Date('2026-03-13T15:35:00+08:00').getTime(),
           lastMessagePreview: preview,
         });
       }
@@ -351,9 +347,7 @@ function ThreadList({ threads, onSelect, countdownActive, finaleReady }: {
       </div>
       {(countdownActive || finaleReady) && (
         <div style={S.hintBar}>
-          {countdownActive
-            ? '倒计时进行中——证据齐备后速去电话 App 拨打 0731-88888888'
-            : '证据已齐备，去电话 App 拨打 0731-88888888'}
+          {countdownActive ? '倒计时进行中' : '关键证据已归档'}
         </div>
       )}
     </>
@@ -469,7 +463,7 @@ function DateSep({ label }: { label: string }): ReactNode {
 // 集中定义以减少重复
 
 const _S = {
-  wrap: { height: '100%', display: 'flex', flexDirection: 'column', background: '#0e1620', color: '#e7eef7', fontFamily: 'system-ui, -apple-system, "PingFang SC", sans-serif' } as React.CSSProperties,
+  wrap: { height: '100%', display: 'flex', flexDirection: 'column', background: '#0e1620', color: '#e7eef7', fontFamily: 'system-ui, -apple-system, "PingFang SC", sans-serif', paddingBottom: 'var(--home-inset)' } as React.CSSProperties,
   header: { height: 44, display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 14px', background: '#141f2c', borderBottom: '1px solid #1d2a3a' } as React.CSSProperties,
   headerTitle: { fontSize: 15, fontWeight: 600 } as React.CSSProperties,
   headerHint: { fontSize: 11, color: '#667' } as React.CSSProperties,
@@ -483,7 +477,7 @@ const _S = {
   time: { fontSize: 11, color: '#667' } as React.CSSProperties,
   preview: { fontSize: 12, color: '#889', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' } as React.CSSProperties,
   hintBar: { padding: '8px 12px', background: '#3a1d1d', color: '#ff9080', fontSize: 12, textAlign: 'center', borderTop: '1px solid #4d2a2a' } as React.CSSProperties,
-  convWrap: { height: '100%', display: 'flex', flexDirection: 'column', background: '#0e1620' } as React.CSSProperties,
+  convWrap: { height: '100%', display: 'flex', flexDirection: 'column', background: '#0e1620', paddingBottom: 'var(--home-inset)' } as React.CSSProperties,
   convHeader: { height: 44, display: 'flex', alignItems: 'center', background: '#141f2c', borderBottom: '1px solid #1d2a3a' } as React.CSSProperties,
   backBtn: { width: 50, padding: '0 10px', background: 'none', border: 'none', color: '#8ab4f8', fontSize: 13, cursor: 'pointer', textAlign: 'left', fontFamily: 'inherit' } as React.CSSProperties,
   convTitle: { fontSize: 15, fontWeight: 600, flex: 1, textAlign: 'center' } as React.CSSProperties,
