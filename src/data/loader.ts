@@ -9,7 +9,7 @@
  *  3. 建内存索引：contactById / wechatContactByCharacterId / qqContactByCharacterId /
  *     puzzleById / evidenceById / threadById / pageById /
  *     siteById / chapterById / endingById / monologueById / smsEventById / doorbellEventById /
- *     callScriptById / callRecordById / articleById / noteById。
+ *     callScriptById / callRecordById / articleById。
  *  4. 消息按 thread 拆分按需加载（getMessages(threadId)）。
  *  5. 不生成 JSON，不缓存到 localStorage（localStorage 由 persist 层负责）。
  *
@@ -36,7 +36,6 @@ import type {
   QqGroupFilesFile,
   Site,
   SmsEvent,
-  Note,
   ThreadId,
   WebPage,
   WechatContact,
@@ -300,15 +299,6 @@ const callRecordSchema: z.ZodType<CallRecord> = z.object({
   scriptId: idStr.nullable().optional(),
 }) as unknown as z.ZodType<CallRecord>
 
-const noteSchema: z.ZodType<Note> = z.object({
-  id: idStr,
-  title: z.string(),
-  createdAt: isoStr,
-  pinned: z.boolean().optional(),
-  body: z.string(),
-  isTemplate: z.boolean().optional(),
-}) as unknown as z.ZodType<Note>
-
 const siteSchema: z.ZodType<Site> = z.object({
   id: idStr,
   name: z.string(),
@@ -427,11 +417,6 @@ async function loadCallRecords(): Promise<CallRecord[]> {
   const raw = (data as { records: CallRecord[] }).records
   return validate('phone/call-log.json records', raw, z.array(callRecordSchema)) as unknown as CallRecord[]
 }
-async function loadNotes(): Promise<Note[]> {
-  const data = await fetchJson('data/phone/notes.json')
-  const raw = (data as { notes: Note[] }).notes
-  return validate('phone/notes.json notes', raw, z.array(noteSchema)) as unknown as Note[]
-}
 async function loadSites(): Promise<Site[]> {
   return validate('browser/sites.json', await fetchJson('data/browser/sites.json'), z.array(siteSchema)) as unknown as Site[]
 }
@@ -477,7 +462,6 @@ interface GameDataSnapshot {
   doorbellEvents: DoorbellEvent[]
   callScripts: CallScript[]
   callRecords: CallRecord[]
-  notes: Note[]
   sites: Site[]
   qqGroupFiles: QqGroupFilesFile
 }
@@ -500,7 +484,6 @@ export interface GameDataIndex {
   callRecordById: Map<string, CallRecord>
   articleById: Map<string, OfficialAccountArticle>
   siteById: Map<string, Site>
-  noteById: Map<string, Note>
   /** QQ 群文件按 threadId 索引 */
   qqGroupFilesByThreadId: Map<string, QqGroupFilesEntry>
   /** 全部群文件扁平索引 by file id */
@@ -525,19 +508,19 @@ export async function loadGameData(): Promise<{ data: GameDataSnapshot; index: G
     characters, wechatContacts, qqContacts, wechatThreads, qqThreads,
     moments, qzone, articles, puzzles, evidence, endings, chapters,
     monologues, smsEvents, doorbellEvents, callScripts, callRecords,
-    notes, sites, qqGroupFiles,
+    sites, qqGroupFiles,
   ] = await Promise.all([
     loadCharacters(), loadWechatContacts(), loadQqContacts(), loadWechatThreads(), loadQqThreads(),
     loadMoments(), loadQzone(), loadArticles(), loadPuzzles(), loadEvidence(), loadEndings(), loadChapters(),
     loadMonologues(), loadSmsEvents(), loadDoorbellEvents(), loadCallScripts(), loadCallRecords(),
-    loadNotes(), loadSites(), loadQqGroupFiles(),
+    loadSites(), loadQqGroupFiles(),
   ])
 
   _snapshot = {
     characters, wechatContacts, qqContacts, wechatThreads, qqThreads,
     moments, qzone, articles, puzzles, evidence, endings, chapters,
     monologues, smsEvents, doorbellEvents, callScripts, callRecords,
-    notes, sites, qqGroupFiles,
+    sites, qqGroupFiles,
   }
 
   // 建索引
@@ -594,9 +577,6 @@ export async function loadGameData(): Promise<{ data: GameDataSnapshot; index: G
   const siteById = new Map<string, Site>()
   for (const s of sites) siteById.set(s.id, s)
 
-  const noteById = new Map<string, Note>()
-  for (const n of notes) noteById.set(n.id, n)
-
   const qqGroupFilesByThreadId = new Map<string, QqGroupFilesEntry>()
   const qqGroupFileById = new Map<string, QqGroupFile>()
   for (const g of qqGroupFiles.groups) {
@@ -610,7 +590,7 @@ export async function loadGameData(): Promise<{ data: GameDataSnapshot; index: G
     puzzleById, evidenceById,
     chapterById, endingById, monologueById, monologueByChapterId,
     smsEventById, doorbellEventById, callScriptById, callRecordById,
-    articleById, siteById, noteById,
+    articleById, siteById,
     qqGroupFilesByThreadId, qqGroupFileById,
   }
 
@@ -720,12 +700,6 @@ export function getSiteById(id: string): Site | undefined {
 }
 export function getAllSites(): Site[] {
   return requireSnapshot().sites
-}
-export function getNoteById(id: string): Note | undefined {
-  return requireIndex().noteById.get(id)
-}
-export function getAllNotes(): Note[] {
-  return requireSnapshot().notes
 }
 export function getMoments(): MomentsPost[] {
   return requireSnapshot().moments

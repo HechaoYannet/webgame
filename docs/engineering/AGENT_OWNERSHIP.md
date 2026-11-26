@@ -23,7 +23,7 @@
 | `src/apps/WechatApp/**` | frontend-wechat | 微信 App |
 | `src/apps/QqApp/**` | frontend-qq | QQ App |
 | ~~`src/apps/BrowserApp/**`~~ | — | **已删除**：真实网站改为独立全屏路由 `src/sites/site-*/**`（新标签打开）；桌面保留一个"百度搜索"入口 |
-| `src/apps/{Phone,Sms,Doorbell,Album,Notes}App/**` | frontend-phone-apps | 系统 App（FilesApp 已删除） |
+| `src/apps/{Phone,Sms,Doorbell,Album}App/**` | frontend-phone-apps | 系统 App（FilesApp、NotesApp 已删除；NotesApp 因备忘录剧透于 2026-11-26 移除） |
 | `public/assets/**` | 资源 agent（主控指派） | 图片/音频/PDF；**清单、命名与体积约定见 `docs/engineering/ASSETS.md`**（≤25 MB；位图长边 ≤2000 JPEG q90；原图投放区 `src/assets/img/` 已 gitignore） |
 | `docs/engineering/SCHEMA.md` `AGENT_OWNERSHIP.md` `DEPLOYMENT.md` `ARCHITECTURE.md` | doc-engineer | 工程文档（前4个）；`REVIEW_REPORT.md` 由 reviewer 写 |
 | `工程根配置`（package.json/vite.config.ts/tsconfig.json/tsconfig.node.json/index.html/README.md）| doc-engineer | 脚手架与构建配置 |

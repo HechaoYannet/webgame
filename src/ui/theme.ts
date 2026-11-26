@@ -43,7 +43,6 @@ export const palette = {
   doorbellCyan: '#06b6d4',
   albumPurple: '#a855f7',
   filesAmber: '#eab308',
-  notesYellow: '#facc15',
   settingsGray: '#6b7280',
 } as const
 
@@ -59,7 +58,6 @@ export const appThemeColor: Record<string, string> = {
   doorbell: palette.doorbellCyan,
   album: palette.albumPurple,
   files: palette.filesAmber,
-  notes: palette.notesYellow,
   settings: palette.settingsGray,
 }
 

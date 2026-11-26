@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-《张强宿舍大逃杀》— a pure-frontend, zero-backend web puzzle game. The player is林哲, investigating a classmate's disappearance through a **simulated smartphone** (WeChat / QQ / SMS / phone / doorbell / album-evidence-vault / notes — 7 apps, plus a 百度搜索 entry on the desktop). "Real websites" are **not** an in-phone browser app: each site is a full-screen hash route (`#/site/<siteId>/...`) opened in a new tab via `openSitePage(pageId)`. Collect evidence, crack passwords, call the police before a 3-minute countdown expires. Deployed to GitHub Pages; every "upload PDF / search / login backend" is faked client-side from JSON data.
+《张强宿舍大逃杀》— a pure-frontend, zero-backend web puzzle game. The player is林哲, investigating a classmate's disappearance through a **simulated smartphone** (WeChat / QQ / SMS / phone / doorbell / album-evidence-vault — 6 apps, plus a 百度搜索 entry on the desktop). "Real websites" are **not** an in-phone browser app: each site is a full-screen hash route (`#/site/<siteId>/...`) opened in a new tab via `openSitePage(pageId)`. Collect evidence, crack passwords, call the police before a 3-minute countdown expires. Deployed to GitHub Pages; every "upload PDF / search / login backend" is faked client-side from JSON data.
 
 ## Commands
 
@@ -48,7 +48,7 @@ The old engine (`src/engine/**`: PuzzleService / EffectExecutor / ClueRegistry /
 - `ui/` — shared components (`RichBlocks` renders all `ArticleBlock` + `PageBlock` types; `ImageViewer` supports zoom for hidden details in images; `Countdown`, `Primitives`, `icons.tsx`, `theme.ts`). Apps import from `@/ui` rather than reinventing.
 - `ui/atmosphere/` — the **only** place that models "how wrong things feel": `dread.ts` (chapter + evidence count + finale → level 0–3, pure `computeDread`), `AtmosphereLayer.tsx` (grain / breathing vignette / scanlines / whispers / one-frame glitch / tab-title trick), `atmosphere.css`. Mounted by `PhoneShell` over the screen. **Do not add ad-hoc horror effects in individual apps** — read `useDread()` (or the inherited `--dread` CSS var) so intensity stays single-sourced and reversible. Visual tokens (ink / bone / blood / `--font-serif` / `--font-mono`) live in `src/index.css`; shell chrome in `PhoneShell/phone-shell.css`; landing + cinematic in `PhoneShell/intro.css`.
 - `PhoneShell/EndingOverlay.tsx` — renders the three endings' `epilogueBlocks` when `GameState.finished === true`, covering any app. This is the **only** consumer of `endings.json`'s epilogue text.
-- **7 apps**: `WechatApp`, `QqApp` (incl. QQ空间), `PhoneApp` (dialer + call scripts, finale), `SmsApp`, `DoorbellApp` (plays `video-doorbell-dao-loop`), `AlbumApp` (evidence vault, finale), `NotesApp`.
+- **6 apps**: `WechatApp`, `QqApp` (incl. QQ空间), `PhoneApp` (dialer + call scripts, finale), `SmsApp`, `DoorbellApp` (plays `video-doorbell-dao-loop`), `AlbumApp` (evidence vault, finale). `NotesApp` (备忘录) was removed on 2026-11-26 — its notes.json spelled out the case checklist/timeline/hotline and leaked the plot.
 - `src/sites/**` — 10 standalone "real website" routes (`site-lvzhong` `site-xinxwang` `site-shanhe-med` `site-arxiv` `site-news` `site-tianyancha` `site-baidu` `site-hnedu` `site-hnga` `site-ai-pdf`) sharing `sites/shared/**` (`pageContent`, `siteNav`, `placeholder`, `gameEvent`). Sites may **not** import `@/game` or `@/utils` directly.
 
 ### Load-order invariant (violating it crashes at runtime — `tsc`/`build` will NOT catch it)

@@ -6,7 +6,7 @@
 
 ## 0. 项目一句话
 
-一款网页解谜游戏《张强宿舍大逃杀》，玩家扮演高二学生林哲，通过模拟智能手机界面（微信/QQ/短信/电话/门铃/相册/备忘录 **7 个 App**）与**独立全屏"真实网站"路由**（`#/site/site-*`，新标签打开）调查同学失联案，收集证据、破解密码、在倒计时内报警举报。部署到 GitHub Pages（纯前端、零后端）。
+一款网页解谜游戏《张强宿舍大逃杀》，玩家扮演高二学生林哲，通过模拟智能手机界面（微信/QQ/短信/电话/门铃/相册 **6 个 App**）与**独立全屏"真实网站"路由**（`#/site/site-*`，新标签打开）调查同学失联案，收集证据、破解密码、在倒计时内报警举报。部署到 GitHub Pages（纯前端、零后端）。
 
 游戏完整设计见只读文档：
 - `docs/game_about/剧情大纲.md` — 人物、5章+终章剧情、三结局、谜题答案
@@ -69,7 +69,7 @@
 | `src/apps/PhoneShell/**` `src/ui/**` `src/main.tsx` `src/App.tsx` `src/utils/{shellState,time,assetUrl}.ts` | frontend-phone-shell |
 | `src/apps/WechatApp/**` | frontend-wechat |
 | `src/apps/QqApp/**` | frontend-qq |
-| `src/apps/{Phone,Sms,Doorbell,Album,Notes}App/**` | frontend-phone-apps |
+| `src/apps/{Phone,Sms,Doorbell,Album}App/**` | frontend-phone-apps |
 | `src/sites/site-*/**` `src/sites/shared/**` | 各站点 agent（真实网站 = 独立全屏路由） |
 | `public/assets/**` | 资源 agent（主控指派）——清单与约定见 `docs/engineering/ASSETS.md` |
 | `docs/engineering/**` 构建配置/CI/README/SCHEMA | doc-engineer |
@@ -134,7 +134,7 @@ Phase 0 契约固化  → Phase 1 骨架数据 → Phase 2 文案填充 → Phas
 ### Phase 4 — 前端实现（前端 6 agent + 资源 agent 全并行；data/ 冻结只读）
 - frontend-engine / frontend-phone-shell / frontend-wechat / frontend-qq / frontend-browser / frontend-phone-apps
 - 各占 `src/apps/<App>` 目录，依赖 AppRegistry（`import.meta.glob('./apps/*/manifest.ts')`）自动聚合，零跨目录冲突
-- **2026-08 重构后**：引擎层已删除（游戏状态收敛到 `src/game`），浏览器 App 已删除（站点改为独立全屏路由 `src/sites/site-*`），文件 App 已删除。当前 **7 个 App**：Wechat / Qq / Phone / Sms / Doorbell / Album / Notes。`.claude/agents/*.md` 中 frontend-engine / frontend-browser / writer-browser 三份定义已过期，以 `src/` 为准。
+- **2026-08 重构后**：引擎层已删除（游戏状态收敛到 `src/game`），浏览器 App 已删除（站点改为独立全屏路由 `src/sites/site-*`），文件 App 已删除。当前 **6 个 App**：Wechat / Qq / Phone / Sms / Doorbell / Album（NotesApp 已于 2026-11-26 删除：备忘录内容剧透案件清单/时间线/举报电话）。`.claude/agents/*.md` 中 frontend-engine / frontend-browser / writer-browser 三份定义已过期，以 `src/` 为准。
 
 ### Phase 5 — 对抗式验证（reviewer，blind-review skill 多代理盲审）
 - 线索闭环：5 个关键证据每项是否都有从序章到终章的可达路径

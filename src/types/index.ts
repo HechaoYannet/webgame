@@ -452,16 +452,6 @@ export interface CallRecord {
   scriptId?: string | null;
 }
 
-/** 备忘录笔记（data/phone/notes.json notes[]）。引擎 ClueRegistry 自动追加线索摘要。 */
-export interface Note {
-  id: string;
-  title: string;
-  createdAt: ISODateString;
-  pinned?: boolean;
-  body: string;
-  isTemplate?: boolean;
-}
-
 /** 章节开场独白（data/story/monologues.json[]）。 */
 export interface Monologue {
   id: string;

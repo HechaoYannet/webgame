@@ -569,6 +569,7 @@ evaluateCondition 正确处理 gameStart/puzzleSolved/evidenceCollected/clueRegi
 | R6 | **站点页重复播开场动画（已修）** | 在手机里点链接新标签打开 `#/site/...` 时，`src/App.tsx` 用 `isSiteHash()` 守卫，不再渲染开场覆盖层 |
 | R7 | **文档同步** | 根 `CLAUDE.md` 的 Layer2/Layer3/不变式/设计决策已按当前架构重写；`docs/engineering/{ASSETS.md 新增, SCHEMA.md, AGENT_OWNERSHIP.md, DEPLOYMENT.md}` 与 `.claude/CLAUDE.md` §0/§2/§3/§5/§6 已同步；`docs/game_about/信息架构.md` 只做与已实现素材对齐的定点更新 |
 | R8 | **仍未做（已知缺口）** | ①`.claude/agents/*.md` 中 frontend-engine / frontend-browser / writer-browser 三份定义仍是旧架构（已在 `.claude/CLAUDE.md` §5 标注"以 `src/` 为准"）；②风险值 `risk` 为空实现（`useRisk` 恒返回 0，`meta/risk-events.json` 无消费者）；③`photo-principal-office` 缺"角落文件袋上隐约可见新希望字样"（`信息架构.md` §4.2）；④`page-lvzhong-principal-mailbox.json` 缺"校长信箱源码注释里藏新希望后台地址"（`信息架构.md` §4.2；该地址目前靠 `search-index.json` 关键词可查得） |
+| R9 | **备忘录 App 删除（剧透，2026-11-26）** | `NotesApp` 的 4 条初始笔记把案件调查清单、涉及人员（含"校长疑似幕后""刀哥要来抓人"）、主线待办与完整时间线、举报电话全部写给玩家，等于开场剧透整条证据链。按产品决定**整体删除该功能**：移除 `src/apps/NotesApp/**`、`public/data/phone/notes.json`，以及 `src/data/loader.ts` 的 `Note` schema/加载/索引/getter、`src/types/index.ts` 的 `Note` 类型、`src/ui/{icons,theme}.ts` 的 notes 图标与主题色。桌面由 AppRegistry 自动聚合，无需改列表（7→6 个 App） |
 
 **验证（2026-09）**：`npm run typecheck` ✅；`npm run lint` ✅（0 error，11 条既有 fast-refresh warning）；`npm run build` ✅；对 `npm run preview` 逐个 `HEAD` 探测全部 assetId 候选链——命中且 `Content-Type` 正确（0 未解析）；无头 Chrome `--dump-dom` 校验主界面、站点页与公众号数据渲染正常。
 11. **[Phase4 frontend-engine]** L8：在 solve/register/collect 成功后调 store.completeObjective，或 UI 改从派生状态；L10：ChapterDirector.enterChapter 只 emit 一次 chapterAdvanced。
